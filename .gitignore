@@ -1,0 +1,6 @@
+# Godot 4+ specific ignores
+.godot/
+
+/addons/sooty_engine/
+/addons/rich_text/
+/addons/util/

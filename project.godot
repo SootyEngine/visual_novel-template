@@ -1,0 +1,139 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+_global_script_classes=[{
+"base": "BaseDataClass",
+"class": &"Achievement",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Achievement.gd"
+}, {
+"base": "Resource",
+"class": &"BaseDataClass",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/BaseDataClass.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"BaseDataClassExtra",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/BaseDataClassExtra.gd"
+}, {
+"base": "BaseDataClassExtra",
+"class": &"Character",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Character.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"DateTime",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/DateTime.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"EquipmentSlots",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/EquipmentSlots.gd"
+}, {
+"base": "Node",
+"class": &"Fader",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/fader/fader.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"Inventory",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Inventory.gd"
+}, {
+"base": "BaseDataClassExtra",
+"class": &"Item",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Item.gd"
+}, {
+"base": "BaseDataClassExtra",
+"class": &"Location",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Location.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"Note",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Note.gd"
+}, {
+"base": "BaseDataClassExtra",
+"class": &"Reward",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Reward.gd"
+}, {
+"base": "Button",
+"class": &"SceneActionButton",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/nodes/SceneActionButton.gd"
+}, {
+"base": "Node",
+"class": &"SootScene",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/nodes/SootScene.gd"
+}, {
+"base": "Sprite2D",
+"class": &"Sprite2DAnimations",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/nodes/Sprite2DAnimations.gd"
+}, {
+"base": "Resource",
+"class": &"SpriteTransitions",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/shaders/SpriteTransition.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"Task",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Task.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"VBool",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/VBool.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"VEnum",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/VEnum.gd"
+}, {
+"base": "BaseDataClass",
+"class": &"VStat",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/VStat.gd"
+}]
+_global_script_class_icons={
+"Achievement": "",
+"BaseDataClass": "",
+"BaseDataClassExtra": "",
+"Character": "",
+"DateTime": "",
+"EquipmentSlots": "",
+"Fader": "",
+"Inventory": "",
+"Item": "",
+"Location": "",
+"Note": "",
+"Reward": "",
+"SceneActionButton": "",
+"SootScene": "",
+"Sprite2DAnimations": "",
+"SpriteTransitions": "",
+"Task": "",
+"VBool": "",
+"VEnum": "",
+"VStat": ""
+}
+
+[application]
+
+config/name="sooty-visual_novel"
+config/icon="res://icon.png"
+config/features=PackedStringArray("4.0", "Vulkan Clustered")
