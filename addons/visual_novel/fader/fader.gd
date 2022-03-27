@@ -23,11 +23,13 @@ func setup(callback: Variant, done_callback: Variant = null, kwargs := {}):
 			$backing.modulate.a = 1.0
 			t.tween_property($backing, "modulate:a", 0.0, kwargs.get("time", DEFAULT_TIME))
 			if callback is Callable:
+				t.tween_interval(.1) # wait a tick before calling, so fully faded out
 				t.tween_callback(callback)
 		"in_out":
 			$backing.modulate.a = 0.0
 			t.tween_property($backing, "modulate:a", 1.0, kwargs.get("time", DEFAULT_TIME))
 			if callback is Callable:
+				t.tween_interval(.1) # wait a tick before calling, so fully faded out
 				t.tween_callback(callback)
 			t.tween_property($backing, "modulate:a", 0.0, kwargs.get("time", DEFAULT_TIME))
 	
