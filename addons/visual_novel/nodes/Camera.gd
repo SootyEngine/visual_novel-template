@@ -1,7 +1,6 @@
 @tool
 extends Camera2D
 
-@onready var position_at_start: Vector2 = position
 @onready var flow_manager: Node = get_tree().get_first_node_in_group("flow_manager")
 
 @export var _zoom := 0.25
@@ -142,7 +141,7 @@ func __move(t: Tween, x: float = 0.0, y: float = 0.0, time: float = 0.5):
 	t.tween_method(set_position, position, position + Vector2(x, y), time).set_trans(Tween.TRANS_BACK)
 	
 func __move_back(t: Tween, time: float = 0.5):
-	t.tween_method(set_position, position, position_at_start, time).set_trans(Tween.TRANS_BACK)
+	t.tween_method(set_position, position, Vector2.ZERO, time).set_trans(Tween.TRANS_BACK)
 
 func set_shake(t: float, amount: float, kwargs: Dictionary):
 	# 0-1 -> 0-1-0

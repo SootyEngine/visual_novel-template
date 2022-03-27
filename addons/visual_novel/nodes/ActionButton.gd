@@ -1,15 +1,20 @@
 extends Button
 
-@export_multiline var action := ""
+@export var action := ""
+@export var condition_visible := ""
 
 func _init() -> void:
 	DialogueStack.started.connect(set_disabled.bind(true))
-	DialogueStack.finished.connect(set_disabled.bind(false))
+	DialogueStack.ended.connect(set_disabled.bind(false))
+
+func _ready() -> void:
+	if len(condition_visible):
+		visible = true if State._eval(condition_visible) else false
 
 func _pressed() -> void:
+	release_focus()
+	
 	if DialogueStack.can_do(action):
 		DialogueStack.do(action)
 	else:
-		State.do(action)
-	
-	release_focus()
+		StringAction.do(action)

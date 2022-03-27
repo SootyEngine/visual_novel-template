@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://itewhkvbpvi1"]
 
 [ext_resource type="Script" path="res://addons/visual_novel/fader/fader.gd" id="1_yxog0"]
 

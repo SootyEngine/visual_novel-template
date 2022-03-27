@@ -16,25 +16,39 @@ var last_speaker := ""
 func _init() -> void:
 	add_to_group("sa:scene")
 	add_to_group("sa:visual_novel_version")
+	add_to_group("sa:start_new")
+	add_to_group("sa:quit")
+	
 	Mods.pre_loaded.connect(_clear_mods)
 	Mods.load_all.connect(_load_mods)
 	Mods._add_mod("res://addons/visual_novel", true)
 	
 	DialogueStack.started.connect(_dialogue_started)
+	DialogueStack.ended.connect(_dialogue_ended)
 	DialogueStack.flow_started.connect(_flow_started)
 	DialogueStack.flow_ended.connect(_flow_ended)
 	DialogueStack.on_line.connect(_on_text)
 
-func scene(id: String):
+func _ready() -> void:
+	$captions/backing.visible = false
+
+func scene(id: String, kwargs := {}):
 	if id in scenes:
 		State.current_scene = id
 		DialogueStack.halt(self)
 		Fader.create(
 			Global.change_scene.bind(scenes[id]),
-			DialogueStack.unhalt.bind(self),
-			{wait=1.0})
+			DialogueStack.unhalt.bind(self))
 	else:
 		push_error("Couldn't find scene %s." % id)
+
+func start_new():
+	print("start new game")
+	DialogueStack.execute("MAIN.START")
+
+func quit():
+	# TODO: Autosave.
+	get_tree().quit()
 
 func visual_novel_version() -> String:
 	return "[%s]%s[]" % [Color.TOMATO, VERSION]
@@ -50,7 +64,11 @@ func _load_mods(mods: Array):
 			mod.meta.scenes.append(scene_path)
 
 func _dialogue_started():
+	$captions/backing.visible = true
 	State.flow_history.clear()
+
+func _dialogue_ended():
+	$captions/backing.visible = false
 
 func _flow_started(flow: String):
 	State.flow_history.append(flow)
@@ -59,8 +77,8 @@ func _flow_ended(flow: String):
 	UDict.tick(State.flow_visited, flow) # tick number of times visited
 	
 	# goto the ending node
-	if len(State.flow_history) and State.flow_history[-1] != "MAIN.END":
-		DialogueStack.goto("MAIN.END", DialogueStack.STEP_GOTO)
+	if len(State.flow_history) and State.flow_history[-1] != "MAIN.FLOW_END":
+		DialogueStack.goto("MAIN.FLOW_END", DialogueStack.STEP_GOTO)
 
 func _input(event: InputEvent) -> void:
 	if not DialogueStack.is_active():
