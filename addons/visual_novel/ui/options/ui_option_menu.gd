@@ -8,7 +8,6 @@ extends Control
 @onready var selection_indicator: Node = get_node(_selection_indicator)
 
 var _can_select := false
-var _shown := false
 var _tween: Tween
 var _options: Array
 
@@ -26,19 +25,22 @@ var hovered := 0:
 
 func _ready() -> void:
 	button_parent.remove_child(button_prefab)
-	Saver.pre_load.connect(_pre_load)
-
-func _pre_load():
-	_hide()
+	Saver.pre_load.connect(_hide)
+	Global.ended.connect(_hide)
 
 func _input(event: InputEvent) -> void:
-	if _shown:
+	if visible:
 		if event.is_action_pressed("ui_up"):
 			hovered -= 1
+			get_viewport().set_input_as_handled()
+		
 		elif event.is_action_pressed("ui_down"):
 			hovered += 1
+			get_viewport().set_input_as_handled()
+		
 		elif event.is_action_pressed("advance") and _can_select:
 			_select(_options[hovered])
+			get_viewport().set_input_as_handled()
 
 func has_options() -> bool:
 	return len(_options) > 0
@@ -46,12 +48,11 @@ func has_options() -> bool:
 func _set_line(line: DialogueLine):
 	if line.has_options():
 		_options = line.get_options()
-		if not Sooty.debug_show_hidden_options:
+		if not VisualNovel.debug.show_hidden_options:
 			_options = _options.filter(func(x): return x.passed)
 	else:
 		_options = []
 	
-	_shown = true
 	visible = true
 	modulate.a = 0.0
 	_can_select = false
@@ -88,7 +89,6 @@ func _select(option: DialogueLine):
 
 func _hide():
 	visible = false
-	_shown = false
 	
 	for button in button_parent.get_children():
 		button_parent.remove_child(button)

@@ -12,6 +12,7 @@ var desc := ""
 var toll := 1
 var hide := true
 var icon := "res://icon.png"
+var date := -1
 
 var _unlocked: bool = false:
 	get: return tick == toll
@@ -25,3 +26,5 @@ var _progress: float = 0.0:
 var tick := 0:
 	set(x):
 		tick = clampi(x, 0, toll)
+		if _unlocked:
+			date = DateTime.create_from_current().total_seconds
