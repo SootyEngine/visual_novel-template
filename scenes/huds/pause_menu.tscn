@@ -10,7 +10,11 @@ shader = ExtResource( "2_g01dm" )
 shader_param/amount = 1.0
 shader_param/power = 1.0
 
-[node name="pause_menu" type="CanvasLayer"]
+[node name="pause_menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( "1_wwqvn" )
 _buttons = NodePath("MarginContainer/HBoxContainer/items")
 _screen_parent = NodePath("MarginContainer/HBoxContainer/Control")
