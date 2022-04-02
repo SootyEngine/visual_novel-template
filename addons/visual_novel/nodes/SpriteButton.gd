@@ -1,4 +1,5 @@
-extends Node2D
+@tool
+extends SootButton
 
 signal mouse_entered
 signal mouse_exited
@@ -36,19 +37,24 @@ var _pressed := false:
 				button_up.emit()
 
 func _input(event: InputEvent) -> void:
+	if Engine.is_editor_hint():
+		return
+	
 	if not disabled:
 		# detect mouse over
 		if event is InputEventMouseMotion:
 			_hovered = _is_pixel_opaque()
+#			prints(name, _hovered)
 		
 		# detect pressed
 		elif event is InputEventMouseButton:
 			if _hovered:
 				_pressed = event.pressed
+				get_viewport().set_input_as_handled()
 
 func _is_pixel_opaque() -> bool:
 	if get_class() == "Sprite2D":
-		if self.is_pixel_opaque(get_local_mouse_position()):
+		if self.is_pixel_opaque(self.get_local_mouse_position()):
 			return true
 	
 	for child in get_children():

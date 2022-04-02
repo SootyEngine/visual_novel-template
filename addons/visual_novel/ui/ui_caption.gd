@@ -1,5 +1,4 @@
-@tool
-extends Control#"res://addons/visual_novel/ui/EdgeClampContainer.gd"
+extends Control
 
 @export var _rtl_from: NodePath = ""
 @export var _rtl_text: NodePath = ""

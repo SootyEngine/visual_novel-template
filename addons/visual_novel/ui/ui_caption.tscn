@@ -28,7 +28,7 @@ _option_menu = NodePath("")
 
 [node name="from" type="RichTextLabel" parent="."]
 offset_left = 512.0
-offset_top = 88.0
+offset_top = 66.0
 offset_right = 512.0
 offset_bottom = 88.0
 size_flags_horizontal = 4
@@ -53,7 +53,6 @@ script = ExtResource( "2_w06q7" )
 bbcode = "[dim;dim]\\[[]From[dim;dim]\\][]"
 font = "robotomono"
 outline_colored = 4
-outline_adjust = 0.25
 
 [node name="text" type="RichTextLabel" parent="."]
 offset_top = 92.0
@@ -82,8 +81,9 @@ hint_underlined = false
 script = ExtResource( "7_eg04a" )
 font_size = 24
 outline_colored = 6
+outline_adjust = 0.5
 play_speed = 60.0
-effect_time = 85.211
+effect_time = 31.1383
 _triggers = {}
 _alpha_real = []
 _alpha_goal = []

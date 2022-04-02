@@ -1,5 +1,0 @@
-=== STORY_START
-    // Will be called when the game first starts.
-
-=== FLOW_END
-    // Will be called whenever a flow ends (except when this one ends.)
