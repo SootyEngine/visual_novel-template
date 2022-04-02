@@ -9,4 +9,7 @@ func _ready() -> void:
 
 func _recreate():
 	UNode.remove_children(self)
-	Scene.create(scene_id, self)
+	if Scene.has(scene_id):
+		Scene.create(scene_id, self)
+	else:
+		push_error("No scene '%s'." % scene_id)
