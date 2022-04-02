@@ -56,14 +56,14 @@ _option_menu = NodePath("../bottom/option_menu")
 [node name="bottom" type="VBoxContainer" parent="captions"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 642.0
-offset_bottom = 42.0
+offset_top = 639.0
+offset_bottom = 39.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 alignment = 2
 script = ExtResource( "2_mqxw1" )
-margin = 4.0
+margin = 16.0
 
 [node name="bottom" parent="captions/bottom" instance=ExtResource( "1_5fvuj" )]
 visible = false
@@ -158,7 +158,7 @@ script = ExtResource( "15_tuye1" )
 [node name="RichTextLabel" type="RichTextLabel" parent="debug/debug_menu/scenes"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.67, 0.67, 0.67, 1)
 theme_override_constants/outline_size = 0
 theme_override_font_sizes/mono_font_size = 16
 theme_override_font_sizes/bold_italics_font_size = 16
@@ -168,6 +168,7 @@ theme_override_font_sizes/normal_font_size = 16
 meta_underlined = false
 script = ExtResource( "16_roqut" )
 alignment = 0
+outline_adjust = 0.5
 markdown_enabled = false
 
 [node name="dialogue" type="Control" parent="debug/debug_menu"]
@@ -185,7 +186,7 @@ minimum_size = Vector2(300, 0)
 offset_right = 300.0
 offset_bottom = 40.0
 size_flags_vertical = 3
-theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.67, 0.67, 0.67, 1)
 theme_override_constants/outline_size = 0
 theme_override_font_sizes/mono_font_size = 16
 theme_override_font_sizes/bold_italics_font_size = 16
@@ -196,6 +197,7 @@ meta_underlined = false
 autowrap_mode = 0
 script = ExtResource( "16_roqut" )
 alignment = 0
+outline_adjust = 0.5
 markdown_enabled = false
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="debug/debug_menu/dialogue/HBoxContainer"]
@@ -205,7 +207,7 @@ offset_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 2
-theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.67, 0.67, 0.67, 1)
 theme_override_constants/outline_size = 0
 theme_override_font_sizes/mono_font_size = 16
 theme_override_font_sizes/bold_italics_font_size = 16
@@ -218,6 +220,7 @@ meta_underlined = false
 autowrap_mode = 0
 script = ExtResource( "16_roqut" )
 alignment = 0
+outline_adjust = 0.5
 markdown_enabled = false
 
 [node name="audio" type="Control" parent="debug/debug_menu"]
@@ -229,7 +232,7 @@ script = ExtResource( "19_ptcwf" )
 [node name="RichTextLabel" type="RichTextLabel" parent="debug/debug_menu/audio"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.67, 0.67, 0.67, 1)
 theme_override_constants/outline_size = 0
 theme_override_font_sizes/mono_font_size = 16
 theme_override_font_sizes/bold_italics_font_size = 16
@@ -239,6 +242,7 @@ theme_override_font_sizes/normal_font_size = 16
 meta_underlined = false
 script = ExtResource( "16_roqut" )
 alignment = 0
+outline_adjust = 0.5
 markdown_enabled = false
 
 [node name="history" type="Control" parent="debug/debug_menu"]
@@ -267,7 +271,7 @@ offset_right = 158.0
 offset_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_outline_color = Color(0.67, 0.67, 0.67, 1)
 theme_override_constants/outline_size = 0
 theme_override_font_sizes/mono_font_size = 16
 theme_override_font_sizes/bold_italics_font_size = 16
@@ -276,6 +280,7 @@ theme_override_font_sizes/bold_font_size = 16
 theme_override_font_sizes/normal_font_size = 16
 meta_underlined = false
 script = ExtResource( "16_roqut" )
+outline_adjust = 0.5
 
 [node name="overdraw" type="CanvasLayer" parent="."]
 layer = 128

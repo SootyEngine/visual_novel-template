@@ -31,7 +31,7 @@ func _ready() -> void:
 	indicator.modulate.a = 0.0
 
 func _input(event: InputEvent) -> void:
-	if DialogueStack.is_active() and visible:
+	if visible:
 		if event.is_action_pressed("advance"):
 			var waiting_for := []
 			_do("advance", waiting_for)

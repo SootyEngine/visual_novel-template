@@ -1,7 +1,7 @@
 extends Node
 
 func _ready():
-	DialogueStack.tick_started.connect(_redraw_stack)
+	DialogueStack.tick.connect(_redraw_stack)
 	_ready_deferred.call_deferred()
 
 func _ready_deferred():
