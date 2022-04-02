@@ -22,7 +22,7 @@ func _start(loaded: bool):
 	
 	if not loaded:
 		var fs := Soot.join_path([id, "START"])
-		if DialogueStack.has_steps():
+		if DialogueStack.is_active():
 			DialogueStack.ended.connect(DialogueStack.goto.bind(fs), CONNECT_ONESHOT)
 		else:
 			DialogueStack.goto(fs)
