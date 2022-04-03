@@ -28,7 +28,7 @@ func _start(loaded: bool):
 			DialogueStack.goto(fs)
 
 func _property_changed(property: String):
-	var fs := Soot.join_path([id, "CHANGED:%s" % property])
+	var fs := Soot.join_path([id, "CHANGED_%s" % property])
 	if Dialogues.has_dialogue_flow(fs):
 		DialogueStack.execute(fs)
 

@@ -6,13 +6,14 @@ func _ready() -> void:
 	DialogueStack.started.connect(_hide)
 	DialogueStack.ended.connect(_show)
 	if DialogueStack.is_active():
-		_hide()
+		modulate.a = 0.0
 
 func _init_tween():
 	if _tween:
 		_tween.kill()
 	_tween = get_tree().create_tween()
 	_tween.bind_node(self)
+	_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 
 func _hide():
 	_init_tween()
