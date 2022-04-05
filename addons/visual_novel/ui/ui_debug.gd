@@ -31,13 +31,13 @@ func _filter_changed(t: String):
 func _update():
 	var node = Persistent if persistent else State
 	var state := node._get_changed_states() if only_modified else node._get_state()
-	lines = JSON.new().stringify(state, "\t", false).split("\n")
+	lines = DataParser.new().dict_to_str(state).split("\n")
 	for i in len(lines):
+		var clr = Color.TAN
+		clr.h = wrapf(clr.h + .15 * UString.count_leading(lines[i], "\t"), 0.0, 1.0)
 		if ":" in lines[i]:
 			var p = lines[i].split(":", true, 1)
-			p[0] = p[0].replace('"', "")
-			p[1] = UString.unwrap(p[1].strip_edges().trim_suffix(","), '"')
-			lines[i] = "[dim]%s[dim]:[/] %s" % [p[0], p[1]]
+			lines[i] = "[%s]%s[]: %s" % [clr, p[0], p[1]]
 	_redraw()
 
 func _redraw():

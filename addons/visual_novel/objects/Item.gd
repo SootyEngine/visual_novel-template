@@ -1,4 +1,4 @@
-extends BaseDataClassExtra
+extends BaseDataClassExtendable
 class_name Item
 
 func get_class() -> String:
@@ -12,12 +12,3 @@ var worn_to := []
 
 func is_wearable() -> bool:
 	return len(worn_to) > 0
-
-static func get_item(type: String) -> Item:
-	return null if not exists(type) else State[type]
-
-static func exists(id: String) -> bool:
-	return State._has_of_type(id, Item)
-
-static func get_all() -> Dictionary:
-	return State._get_all_of_type(Item)

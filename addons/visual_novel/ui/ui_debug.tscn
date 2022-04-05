@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfngd7b38mvow"]
+[gd_scene load_steps=7 format=3 uid="uid://bfngd7b38mvow"]
 
 [ext_resource type="Script" path="res://addons/visual_novel/ui/ui_debug.gd" id="1_6bneo"]
 [ext_resource type="Script" path="res://addons/rich_text/RichTextLabel2.gd" id="2_ktixg"]
+[ext_resource type="Font" uid="uid://dpy1gmyfrww2t" path="res://addons/visual_novel/fonts/font-r.tres" id="2_tt7y6"]
+[ext_resource type="Font" uid="uid://2j2j280vtmte" path="res://addons/visual_novel/fonts/font-bi.tres" id="3_2hmhc"]
+[ext_resource type="Font" uid="uid://b0o1i3qufj2wj" path="res://addons/visual_novel/fonts/font-i.tres" id="4_e07ay"]
+[ext_resource type="Font" uid="uid://dyigxv1dsx6yj" path="res://addons/visual_novel/fonts/font-b.tres" id="5_ghicj"]
 
 [node name="ui_debug" type="Control"]
 anchor_right = 1.0
@@ -53,6 +57,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_constants/outline_size = 0
+theme_override_fonts/mono_font = ExtResource( "2_tt7y6" )
+theme_override_fonts/bold_italics_font = ExtResource( "3_2hmhc" )
+theme_override_fonts/italics_font = ExtResource( "4_e07ay" )
+theme_override_fonts/bold_font = ExtResource( "5_ghicj" )
+theme_override_fonts/normal_font = ExtResource( "2_tt7y6" )
 theme_override_font_sizes/mono_font_size = 16
 theme_override_font_sizes/bold_italics_font_size = 16
 theme_override_font_sizes/italics_font_size = 16
@@ -60,5 +69,7 @@ theme_override_font_sizes/bold_font_size = 16
 theme_override_font_sizes/normal_font_size = 16
 script = ExtResource( "2_ktixg" )
 alignment = 0
+font_dir = "res://addons/visual_novel/fonts"
+font = "font"
 nicer_quotes_enabled = false
 markdown_enabled = false

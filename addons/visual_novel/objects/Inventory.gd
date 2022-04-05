@@ -6,12 +6,27 @@ func get_class() -> String:
 
 signal gained(type: Item, quantity: int)
 signal lost(type: Item, quantity: int)
-signal equipped(type: Item, slot: String)
-signal unequipped(type: Item, slot: String)
 
+var _character: Character
 var items := []
-var worn := {}
-var slots := ""
+
+func _added(parent: BaseDataClass):
+	_character = parent
+
+func _patch(key: String, type: String, patch: Variant, sources: Array):
+#	match key:
+#		"items":
+		patch = UObject.patch_to_vars(patch)
+		gain(key, patch)
+#		match typeof(patch):
+#			TYPE_ARRAY:
+#				for item in patch:
+#					gain(item)
+#			TYPE_DICTIONARY:
+#				for k in patch:
+#					gain(k, patch[k])
+#			_:
+#				push_error("Not implemented %s %s." % [key, patch])
 
 func _get(property: StringName):
 	if has(str(property)):
@@ -26,11 +41,6 @@ func has(type: String, quantity := 1) -> bool:
 			return true
 	return false
 
-func get_slot_info() -> EquipmentSlots:
-	if State._has(slots):
-		return State._get(slots)
-	return EquipmentSlots.new()
-
 func count(type: String) -> int:
 	var out := 0
 	for i in len(items):
@@ -39,14 +49,13 @@ func count(type: String) -> int:
 	return out
 
 func gain(type: String, quantity := 1, _meta := {}):
-	if not Item.exists(type):
-		push_error("No item type '%s'." % type)
+	var all_items: Items = State.items
+	var info: Item = all_items.find(type, "gain")
+	if not info:
 		return
 	
-	var info := Item.get_item(type)
-	var q := quantity
-	
 	# try to append to previous slots
+	var q := quantity
 	for item in items:
 		if item.type == type and item.total < info.slot_max:
 			var amount := mini(info.slot_max, q)
@@ -65,13 +74,12 @@ func gain(type: String, quantity := 1, _meta := {}):
 	gained.emit(info, dif)
 
 func lose(type: String, quantity := 1, _meta := {}):
-	if not Item.exists(type):
-		push_error("No item type '%s'." % type)
+	var all_items: Items = State.items
+	var info: Item = all_items.find(type, "lose")
+	if not info:
 		return
 	
-	var info := Item.get_item(type)
 	var q := quantity
-	
 	for i in range(len(items)-1, -1, -1):
 		var item = items[i]
 		if item.type == type:
@@ -84,41 +92,3 @@ func lose(type: String, quantity := 1, _meta := {}):
 	
 	var dif := quantity - q
 	lost.emit(info, dif)
-
-func wear(type: String, slot: String = "", gain_if_has_not := false):
-	var info := Item.get_item(type)
-	# does slot exist?
-	if not get_slot_info().has_slot(slot):
-		push_error("No slot '%s' in '%s'." % [slot])
-		return
-	
-	# not wearable
-	if not info.is_wearable():
-		push_error("Item '%s' isn't wearable.")
-		return
-	
-	# don't have it
-	if not has(type) and not gain_if_has_not:
-		push_error("Can't wear item you don't have. Call wear(id, slot, true).")
-		return
-	
-	# take off items in other slots
-	if slot in worn:
-		bare_at(slot)
-	
-	# bare any other slots
-	for b in get_slot_info().slots[slot].bare:
-		bare_at(b)
-	
-	worn[slot] = { type=type }
-
-func bare(type: String):
-	for slot in worn:
-		if worn[slot].type == type:
-			worn.erase(slot)
-			break
-
-func bare_at(slot: String):
-	if slot in worn:
-		pass
-

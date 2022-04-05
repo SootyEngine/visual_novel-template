@@ -1,4 +1,4 @@
-extends BaseDataClassExtra
+extends BaseDataClassExtendable
 class_name Character
 
 func get_class() -> String:
@@ -9,13 +9,10 @@ var format := ""
 var gender := ""
 var at := ""
 var color := Color.WHITE
-var inventory := Inventory.new()
 
 func _get(property: StringName):
 	var k := str(property)
 	match k:
-		"items": return inventory
-		
 		"they": return "he" if gender=="m" else "she" if gender=="f" else "they"
 		"They": return "He" if gender=="m" else "She" if gender=="f" else "They"
 		"theyll": return "he'll" if gender=="m" else "she'll" if gender=="f" else "they'll"
