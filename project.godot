@@ -65,11 +65,6 @@ _global_script_classes=[{
 "path": "res://addons/sooty_engine/dialogue/Dialogue.gd"
 }, {
 "base": "Resource",
-"class": &"DialogueLang",
-"language": &"GDScript",
-"path": "res://addons/sooty_engine/dialogue/DialogueLang.gd"
-}, {
-"base": "Resource",
 "class": &"DialogueLine",
 "language": &"GDScript",
 "path": "res://addons/sooty_engine/dialogue/DialogueLine.gd"
@@ -311,7 +306,6 @@ _global_script_class_icons={
 "DataParser": "",
 "DateTime": "",
 "Dialogue": "",
-"DialogueLang": "",
 "DialogueLine": "",
 "DialogueParser": "",
 "Emoji": "",
@@ -363,7 +357,7 @@ _global_script_class_icons={
 [application]
 
 config/name="sooty-visual_novel"
-run/main_scene="res://empty_scene.tscn"
+run/main_scene="res://scenes/empty_scene.tscn"
 config/icon="res://icon.png"
 config/features=PackedStringArray("4.0", "Vulkan Clustered")
 

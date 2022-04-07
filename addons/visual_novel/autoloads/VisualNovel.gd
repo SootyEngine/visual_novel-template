@@ -50,7 +50,6 @@ func _dialogue_ended():
 	$captions/backing.visible = false
 
 func _caption_msg(msg_type: String, msg: Variant = null):
-	return
 	Global.call_group_flags(SceneTree.GROUP_CALL_REALTIME, "caption", "_caption", [State.caption_at, msg_type, msg])
 
 func _on_text(line: DialogueLine):

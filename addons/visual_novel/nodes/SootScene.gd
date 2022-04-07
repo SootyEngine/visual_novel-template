@@ -16,12 +16,12 @@ func get_soot_path() -> String:
 	return UFile.get_file_in_dir("res://dialogue", "%s%s" % [id, Soot.EXT_DIALOGUE])
 
 func _start(loaded: bool):
-	var fi := Soot.join_path([id, "INIT"])
+	var fi := Soot.join_path([id, "scene_init"])
 	if Dialogues.has_flow(fi):
 		DialogueStack.execute(fi)
 	
 	if not loaded:
-		var fs := Soot.join_path([id, "START"])
+		var fs := Soot.join_path([id, "scene_started"])
 		if DialogueStack.is_active():
 			DialogueStack.ended.connect(DialogueStack.goto.bind(fs), CONNECT_ONESHOT)
 		else:
