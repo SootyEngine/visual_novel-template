@@ -1,0 +1,6 @@
+[gd_resource type="Resource" format=3 uid="uid://dbt24qegglo3q"]
+
+[resource]
+metadata/data = {
+"prefab": Vector2(0, 0)
+}

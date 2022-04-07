@@ -1,23 +1,24 @@
-extends BaseDataClass
+extends Data
 class_name Inventory
 
 func get_class() -> String:
 	return "Inventory"
 
-signal gained(type: Item, quantity: int)
-signal lost(type: Item, quantity: int)
+signal gained(item_info: ItemInfo, quantity: int)
+signal lost(item_info: ItemInfo, quantity: int)
 
 var _character: Character
-var items := []
+var slots := []
 
-func _added(parent: BaseDataClass):
+# called by UObject
+func _added(parent: Object):
 	_character = parent
 
-func _patch(key: String, type: String, patch: Variant, sources: Array):
-#	match key:
-#		"items":
-		patch = UObject.patch_to_vars(patch)
-		gain(key, patch)
+#func _patch(key: String, type: String, patch: Variant, sources: Array):
+##	match key:
+##		"items":
+#		patch = UObject.patch_to_var(patch, sources, TYPE_INT)
+#		gain.call_deferred(key, patch)
 #		match typeof(patch):
 #			TYPE_ARRAY:
 #				for item in patch:
@@ -34,32 +35,32 @@ func _get(property: StringName):
 
 func has(type: String, quantity := 1) -> bool:
 	var q := 0
-	for i in len(items):
-		if items[i].type == type:
-			q += items[i].total
+	for i in len(slots):
+		if slots[i].id == type:
+			q += slots[i].sum
 		if q >= quantity:
 			return true
 	return false
 
 func count(type: String) -> int:
 	var out := 0
-	for i in len(items):
-		if items[i].type == type:
-			out += items[i].total
+	for i in len(slots):
+		if slots[i].id == type:
+			out += slots[i].sum
 	return out
 
 func gain(type: String, quantity := 1, _meta := {}):
-	var all_items: Items = State.items
-	var info: Item = all_items.find(type, "gain")
+	var all_items: ItemInfos = State.item_info
+	var info: ItemInfo = all_items.find(type, "gain")
 	if not info:
 		return
 	
 	# try to append to previous slots
 	var q := quantity
-	for item in items:
-		if item.type == type and item.total < info.slot_max:
+	for slot in slots:
+		if slot.id == type and slot.sum < info.slot_max:
 			var amount := mini(info.slot_max, q)
-			item.total += amount
+			slot.sum += amount
 			q -= amount
 			if q <= 0:
 				break
@@ -68,27 +69,30 @@ func gain(type: String, quantity := 1, _meta := {}):
 	for i in ceil(q / float(info.slot_max)):
 		var amount := mini(info.slot_max, q)
 		q -= amount
-		items.append({ type=type, total=amount })
+		_add_slot(type, amount)
 	
 	var dif := quantity - q
 	gained.emit(info, dif)
 
 func lose(type: String, quantity := 1, _meta := {}):
-	var all_items: Items = State.items
-	var info: Item = all_items.find(type, "lose")
+	var all_items: ItemInfos = State.item_info
+	var info: ItemInfo = all_items.find(type, "gain")
 	if not info:
 		return
 	
 	var q := quantity
-	for i in range(len(items)-1, -1, -1):
-		var item = items[i]
-		if item.type == type:
-			var amount := mini(item.total, q)
-			item.total -= amount
+	for i in range(len(slots)-1, -1, -1):
+		var slot: InventoryItem = slots[i]
+		if slot.id == type:
+			var amount := mini(slot.sum, q)
+			slot.sum -= amount
 			q -= amount
 			if q <= 0:
-				items.remove_at(i)
+				slots.remove_at(i)
 				break
 	
 	var dif := quantity - q
 	lost.emit(info, dif)
+
+func _add_slot(type: String, total: int):
+	slots.append(InventoryItem.new(type, total))

@@ -9,14 +9,15 @@ func _ready() -> void:
 	parent.remove_child(prefab)
 	
 	await get_tree().process_frame
+	Mods.loaded.connect(_connect)
+
+func _connect():
 	var awards: Awards = Persistent.awards
 	awards.unlocked.connect(_update)
 	awards.progress.connect(_update)
 	_update()
 
 func _update(_x=null):
-	print("Update")
-	
 	for child in parent.get_children():
 		parent.remove_child(child)
 		child.queue_free()

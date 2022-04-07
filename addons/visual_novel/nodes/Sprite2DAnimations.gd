@@ -62,8 +62,8 @@ func _get_tool_buttons():
 	shake_yes, shake_no,
 	breath, pant, stop, woozy,
 	
-	trans.bind(preload("res://chars/20170305_concierge-female.png")),
-	trans.bind(preload("res://chars/20191124_man4.png")),
+#	trans.bind(preload("res://chars/20170305_concierge-female.png")),
+#	trans.bind(preload("res://chars/20191124_man4.png")),
 	
 	white_in,
 	radiate
