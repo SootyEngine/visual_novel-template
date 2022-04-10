@@ -3,9 +3,9 @@ extends Control
 var _tween: Tween
 
 func _ready() -> void:
-	DialogueStack.started.connect(_hide)
-	DialogueStack.ended.connect(_show)
-	if DialogueStack.is_active():
+	Dialogue.started.connect(_hide)
+	Dialogue.ended.connect(_show)
+	if Dialogue.is_active():
 		modulate.a = 0.0
 
 func _init_tween():

@@ -1,0 +1,33 @@
+0Q3mG: 
+	M: {id: 0Q3mG, file: res://dialogue/empty_scene.soot, line: 2}
+	type: text
+	text: Once upon a time.
+ANHl2: 
+	M: {id: ANHl2, file: res://dialogue/empty_scene.soot, line: 4}
+	type: text
+	text: ``john: What about the {rand| [green;i]money[] | [cyan;i]cars[] | [red;b]babes[]! }? You owe me``
+XOewK: 
+	M: {id: XOewK, file: res://dialogue/empty_scene.soot, line: 7}
+	type: text
+	text: I'm gonna knock you're teeth out.
+RAnVL: 
+	M: {id: RAnVL, file: res://dialogue/empty_scene.soot, line: 8}
+	type: text
+	text: Get over here!
+SCwbA: 
+	M: {id: SCwbA, file: res://dialogue/empty_scene.soot, line: 9}
+	type: text
+	text: Where'd he go?
+NnlfL: 
+	M: {id: NnlfL, file: res://dialogue/empty_scene.soot, line: 6}
+	type: list
+	list_type: rand
+	list: [XOewK, RAnVL, SCwbA]
+KSXYU: 
+	M: {id: KSXYU, file: res://dialogue/empty_scene.soot, line: 11}
+	type: goto
+	goto: scene_started
+empty_scene/scene_started: 
+	M: {id: scene_started, file: res://dialogue/empty_scene.soot, line: 0}
+	type: flow
+	then: [0Q3mG, ANHl2, NnlfL, KSXYU]

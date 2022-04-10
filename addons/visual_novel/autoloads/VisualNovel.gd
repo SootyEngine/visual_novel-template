@@ -1,12 +1,6 @@
-extends Node
+extends Waiter
 
 const VERSION := "1.0"
-const FORMAT_FROM := "[white;dim]｢[] %s [white;dim]｣[]"
-const FORMAT_ACTION := "[gray;i]*%s*[]"
-const FORMAT_PREDICATE := "[dim]%s[]"
-const FORMAT_QUOTE := "[q]%s[]"
-const FORMAT_INNER_QUOTE := "[i]%s[]"
-const QUOTE_DELAY := 0.25 # a delay between predicates and quotes.
 
 class Debug:
 	# when displaying dialogue options, do you want hidden ones to be shown?
@@ -17,31 +11,57 @@ class Debug:
 
 var debug := Debug.new()
 
+func _init() -> void:
+	add_to_group("@VN")
+
 func _ready() -> void:
 	await get_tree().process_frame
 	Mods._add_mod("res://addons/visual_novel", true)
 	Scene._goto = _goto_scene
 	
 	if not Engine.is_editor_hint():
-		DialogueStack.started.connect(_dialogue_started)
-		DialogueStack.ended.connect(_dialogue_ended)
-		DialogueStack.on_line.connect(_on_text)
-		DialogueStack._refresh.connect(DialogueStack.unhalt.bind(self))
+		Dialogue.started.connect(_dialogue_started)
+		Dialogue.ended.connect(_dialogue_ended)
+		Dialogue.caption.connect(_caption)
+#		Dialogue.reloaded.connect(Dialogue.unwait.bind(self))
 	
 	$captions/backing.visible = false
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("advance"):
+		if is_waiting():
+			StringAction.do_group_action("@advance_caption")
+		else:
+			StringAction.do_group_action("@hide_caption")
+			Dialogue.unwait(self)
+
+func _caption(text: String, line: Dictionary):
+	# replace list patterns
+	text = Dialogue.replace_list_text(line.M.id, text)
+	
+	var d := DialogueTools.str_to_dialogue(text)
+#	d.text = DialogueTools.str_to_caption(d.from, d.text)
+#	d.from = DialogueTools.str_to_speaker(d.from)
+	
+	StringAction.do_group_action_w_args("@show_caption", [
+#		format_from(from),
+#		format_text(from , text),
+		d.from,
+		d.text,
+		line])
+
 func _goto_scene(id: String, kwargs := {}):
 	if Scene.find(id):
-		DialogueStack.halt(self)
+		Dialogue.wait(self)
 		Fader.create(
 			Scene.change.bind(Scene.scenes[id]),
-			DialogueStack.unhalt.bind(self))
+			Dialogue.unwait.bind(self))
 	else:
 		# Scene.find will push_error with more useful data.
 		pass
 
 func version() -> String:
-	return "[%s]%s[]" % [Color.TOMATO, VERSION]
+	return VERSION
 
 func _dialogue_started():
 	$captions/backing.visible = true
@@ -49,117 +69,7 @@ func _dialogue_started():
 func _dialogue_ended():
 	$captions/backing.visible = false
 
-func _caption_msg(msg_type: String, msg: Variant = null):
-	Global.call_group_flags(SceneTree.GROUP_CALL_REALTIME, "caption", "_caption", [State.caption_at, msg_type, msg])
 
-func _on_text(line: DialogueLine):
-	var from = format_from(line.from)
-	var text := format_text(line.text, from != null)
-	_caption_msg("show_line", {
-		from=from,
-		text=text,
-		line=line
-	})
-
-func format_from(from: Variant) -> Variant:
-	if from is String:
-		# if wrapped, use as is.
-		if UString.is_wrapped(from, '"'):
-			from = UString.unwrap(from, '"')
-		
-		# if multiple names, join them together.
-		elif " " in from:
-			var names = Array(from.split(" "))
-			for i in len(names):
-				if State._has(names[i]):
-					names[i] = UString.as_string(State._get(names[i]))
-			from = names.pop_back()
-			if len(names):
-				from = ", ".join(names) + ", and " + from
-		
-		# if a state, format it's text.
-		elif State._has(from):
-			from = UString.as_string(State._get(from))
-		
-		from = FORMAT_FROM % from
-	
-	return from
-
-func format_text(text: String, has_speaker: bool) -> String:
-	if has_speaker:
-		return _format_text(text,
-		"(", ")",
-		"[i;dim]", "[]",
-		UString.CHAR_QUOTE_OPENED, UString.CHAR_QUOTE_CLOSED)
-	else:
-		return _format_text(UString.fix_quotes(text),
-		UString.CHAR_QUOTE_OPENED, UString.CHAR_QUOTE_CLOSED,
-		UString.CHAR_QUOTE_OPENED, UString.CHAR_QUOTE_CLOSED,
-		'[dim]', '[]')
-
-func _format_text(text: String,
-	inner_opened := "(",
-	inner_closed := ")",
-	quote_opened := "{",
-	quote_closed := "}",
-	pred_opened := "<",
-	pred_closed := ">"
-	) -> String:
-	var out := ""
-	var leading := ""
-	
-	var in_pred := not text.begins_with(inner_opened)
-	var start := true
-	var started := false
-	var in_tag := false
-	
-	for c in text:
-		if c == "[":
-			in_tag = true
-			leading += c
-		elif c == "]":
-			in_tag = false
-			leading += c
-		elif in_tag:
-			leading += c
-		
-		elif c == inner_opened:
-			in_pred = false
-			start = true
-			if started:
-				out += pred_closed
-			leading += quote_opened
-		
-		elif c == inner_closed:
-			in_pred = true
-			start = true
-			out += quote_closed
-		
-		elif c == " ":
-			leading += " "
-		
-		else:
-			if in_pred:
-				if leading:
-					out += leading
-					leading = ""
-				
-				if start:
-					start = false
-					started = true
-					out += pred_opened
-			
-			else:
-				if leading:
-					out += leading
-					leading = ""
-			
-			out += c
-	
-	if in_pred and not start:
-		out += pred_closed
-	
-	return out
 
 #func format_text(text: String, has_speaker: bool) -> String:
 #	var out := ""

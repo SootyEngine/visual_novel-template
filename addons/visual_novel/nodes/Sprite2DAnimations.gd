@@ -73,8 +73,8 @@ var _tween: Tween
 
 # will prevent dialogue stack from running until all tweens finish.
 func wait():
-	DialogueStack.halt(self)
-	_tween.tween_callback(DialogueStack.unhalt.bind(self))
+	Dialogue.wait(self)
+	_tween.tween_callback(Dialogue.unwait.bind(self))
 
 func white_in():
 	var t := _create()

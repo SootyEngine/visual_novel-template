@@ -1,2 +1,13 @@
 === scene_started
-	Hello world.
+	
+	Once upon a time.
+	
+	john: What about the {rand| [green;i]money[] | [cyan;i]cars[] | [red;b]babes[]! }? You owe me
+	
+	{[rand]}
+		I'm gonna knock you're teeth out.
+		Get over here!
+		Where'd he go?
+	
+	=> scene_started
+
