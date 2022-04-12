@@ -1,7 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://dirg46vf4ckhn"]
+[gd_scene load_steps=3 format=3 uid="uid://dirg46vf4ckhn"]
 
 [ext_resource type="Script" path="res://addons/visual_novel/nodes/SootScene.gd" id="1_oj2nw"]
+[ext_resource type="Script" path="res://TestClass.gd" id="2_5cajf"]
 
-[node name="Node2D" type="Node2D"]
+[node name="scene_root" type="Node2D" groups=["@test"]]
 script = ExtResource( "1_oj2nw" )
 soot_path = "res://scenes/empty_scene.soot"
+
+[node name="enemy" type="Node" parent="." groups=["@.heal", "@enemy"]]
+script = ExtResource( "2_5cajf" )

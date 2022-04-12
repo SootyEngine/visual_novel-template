@@ -2,10 +2,8 @@ extends Control
 
 @export var _rtl_from: NodePath = ""
 @export var _rtl_text: NodePath = ""
-@export var _indicator: NodePath = ""
 @onready var rtl_from: RichTextLabel2 = get_node(_rtl_from) 
 @onready var rtl_text: RichTextAnimation = get_node(_rtl_text) 
-@onready var indicator: TextureRect = get_node(_indicator)
 
 # optional choice menu this caption will use
 @export var _option_menu: NodePath = ""
@@ -16,10 +14,6 @@ var _waiting_for_option := false
 var hiding := false
 var _can_skip := true
 var _tween: Tween
-var _tween_indicator: Tween
-
-var show_indicator := false:
-	set = set_show_indicator
 
 func _init() -> void:
 	add_to_group("@.show_caption")
@@ -29,12 +23,9 @@ func _init() -> void:
 func _ready() -> void:
 	rtl_from.clear()
 	rtl_text.clear()
-	rtl_text.faded_in.connect(set_show_indicator.bind(true))
-	rtl_text.started.connect(set_show_indicator.bind(false))
 	Dialogue.reloaded.connect(_hide)
 	Dialogue.ended.connect(_hide)
 	visible = false
-	indicator.modulate.a = 0.0
 
 func captioner(id: String):
 	enabled = name == id
@@ -61,22 +52,6 @@ func _delay_action():
 	_can_skip = false
 	get_tree().create_timer(0.25).timeout.connect(set.bind("_can_skip", true))
 
-func set_show_indicator(s):
-	if show_indicator != s:
-		if s and _waiting_for_option:
-			return
-		
-		show_indicator = s
-		if _tween_indicator:
-			_tween_indicator.stop()
-		_tween_indicator = get_tree().create_tween()
-		if s:
-			# wait half a second before showing indicator
-			_tween_indicator.tween_interval(0.5)
-			_tween_indicator.tween_property(indicator, "modulate:a", 1.0, 0.125)
-		else:
-			_tween_indicator.tween_property(indicator, "modulate:a", 0.0, 0.0125)
-
 func _show_line(from: String, text: String, line := {}):
 	if from:
 		rtl_from.visible = true
@@ -90,13 +65,11 @@ func _show_line(from: String, text: String, line := {}):
 	
 	# show choices?
 	_waiting_for_option = false
-	indicator.visible = true
 	if Dialogue.line_has_options(line):
 		if option_menu:
 			option_menu.set_options(line)
 			if option_menu.has_options():
 				_waiting_for_option = true
-				indicator.visible = false
 				rtl_text.faded_in.connect(option_menu._show_options, CONNECT_ONESHOT)
 				Dialogue.selected.connect(_option_selected, CONNECT_ONESHOT)
 		else:
@@ -108,7 +81,6 @@ func _show_line(from: String, text: String, line := {}):
 
 func _option_selected(option: String):
 	_waiting_for_option = false
-	indicator.visible = true
 	Dialogue.unwait(self)
 
 # wait a period of time before hiding, in case there will be another text showing up.
@@ -123,7 +95,6 @@ func _hide_eventually():
 
 func _hide():
 	visible = false
-	show_indicator = false
 	rtl_from.clear()
 	rtl_text.clear()
 

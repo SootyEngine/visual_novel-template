@@ -214,10 +214,15 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/shaders/SpriteTransition.gd"
 }, {
-"base": "RefCounted",
+"base": "Node",
 "class": &"TestClass",
 "language": &"GDScript",
 "path": "res://TestClass.gd"
+}, {
+"base": "RefCounted",
+"class": &"UClr",
+"language": &"GDScript",
+"path": "res://addons/util/UClr.gd"
 }, {
 "base": "RefCounted",
 "class": &"UDebug",
@@ -342,6 +347,7 @@ _global_script_class_icons={
 "Sprite2DAnimations": "",
 "SpriteTransitions": "",
 "TestClass": "",
+"UClr": "",
 "UDebug": "",
 "UDict": "",
 "UError": "",
@@ -369,7 +375,6 @@ config/features=PackedStringArray("4.0", "Vulkan Clustered")
 
 [autoload]
 
-VisualNovel="*res://addons/visual_novel/autoloads/VisualNovel.tscn"
 Global="*res://addons/sooty_engine/autoloads/Global.gd"
 Mods="*res://addons/sooty_engine/autoloads/Mods.gd"
 Settings="*res://addons/sooty_engine/autoloads/Settings.gd"
@@ -381,6 +386,8 @@ StringAction="*res://addons/sooty_engine/autoloads/StringAction.gd"
 Music="*res://addons/sooty_engine/autoloads/Music.gd"
 SFX="*res://addons/sooty_engine/autoloads/SFX.gd"
 Dialogue="*res://addons/sooty_engine/autoloads/Dialogue.gd"
+VisualNovel="*res://addons/visual_novel/autoloads/VisualNovel.gd"
+VisualNovelUI="*res://addons/visual_novel/autoloads/VisualNovelUI.tscn"
 
 [editor_plugins]
 

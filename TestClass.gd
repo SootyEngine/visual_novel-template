@@ -1,8 +1,16 @@
+@tool
+extends Node
 class_name TestClass
 
-var name := ""
+@export var health := 4321
 var _data := {x="true"}
 var EXO := Vector2.ZERO
+
+func damage(amount := 0, kwargs := {}):
+	print("Damaged %s! (%s)" % [amount, kwargs])
+
+func heal(amount := 0):
+	print("Healed %s!" % amount)
 
 func _get(property: StringName):
 	return _data.get(property)

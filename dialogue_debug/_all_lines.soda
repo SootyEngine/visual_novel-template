@@ -1,33 +1,99 @@
-0Q3mG: 
-	M: {id: 0Q3mG, file: res://dialogue/empty_scene.soot, line: 2}
+A3txC: 
+	M: {id: A3txC, file: res://dialogue/empty_scene.soot, line: 1}
 	type: text
-	text: Once upon a time.
-ANHl2: 
-	M: {id: ANHl2, file: res://dialogue/empty_scene.soot, line: 4}
-	type: text
-	text: ``john: What about the {rand| [green;i]money[] | [cyan;i]cars[] | [red;b]babes[]! }? You owe me``
-XOewK: 
-	M: {id: XOewK, file: res://dialogue/empty_scene.soot, line: 7}
-	type: text
-	text: I'm gonna knock you're teeth out.
-RAnVL: 
-	M: {id: RAnVL, file: res://dialogue/empty_scene.soot, line: 8}
-	type: text
-	text: Get over here!
-SCwbA: 
-	M: {id: SCwbA, file: res://dialogue/empty_scene.soot, line: 9}
-	type: text
-	text: Where'd he go?
-NnlfL: 
-	M: {id: NnlfL, file: res://dialogue/empty_scene.soot, line: 6}
-	type: list
-	list_type: rand
-	list: [XOewK, RAnVL, SCwbA]
-KSXYU: 
-	M: {id: KSXYU, file: res://dialogue/empty_scene.soot, line: 11}
-	type: goto
-	goto: scene_started
+	text: Hello world.
 empty_scene/scene_started: 
 	M: {id: scene_started, file: res://dialogue/empty_scene.soot, line: 0}
 	type: flow
-	then: [0Q3mG, ANHl2, NnlfL, KSXYU]
+	then: [A3txC]
+1IC82: 
+	M: {id: 1IC82, file: res://dialogue/empty_scene.soot, line: 5}
+	type: if
+	cond: match score and not false
+	cond_type: if
+	conds: [match score and not false]
+	cond_lines: [[]]
+pW7Z7: 
+	M: {id: pW7Z7, file: res://dialogue/empty_scene.soot, line: 7}
+	type: do
+	do: ~ $score += 20
+XU5BH: 
+	M: {id: XU5BH, file: res://dialogue/empty_scene.soot, line: 10}
+	type: text
+	text: What was all that about!?
+cZpT2: 
+	M: {id: cZpT2, file: res://dialogue/empty_scene.soot, line: 9}
+	type: if
+	cond: ``$time.weekday in ["SATURDAY", "SUNDAY"]``
+	cond_type: if
+	conds: [$time.weekday in ["SATURDAY", "SUNDAY"]]
+	cond_lines: [[XU5BH]]
+cQPm5: 
+	M: {id: cQPm5, file: res://dialogue/empty_scene.soot, line: 12}
+	type: do
+	do: ~ score += 20.0
+p4Cuk: 
+	M: {id: p4Cuk, file: res://dialogue/empty_scene.soot, line: 13}
+	type: do
+	do: ~ $score.war = "false or not"
+d9rGd: 
+	M: {id: d9rGd, file: res://dialogue/empty_scene.soot, line: 15}
+	type: do
+	do: @score true "asd" 2 3 x:true
+zKj8s: 
+	M: {id: zKj8s, file: res://dialogue/empty_scene.soot, line: 16}
+	type: do
+	do: @score true 2 3 tint:false
+S7F1U: 
+	M: {id: S7F1U, file: res://dialogue/empty_scene.soot, line: 17}
+	type: do
+	cond: if $score > 20 or stairs in and the trees
+	do: ~ score += @enemy.health(2, false)
+kKZHB: 
+	M: {id: kKZHB, file: res://dialogue/empty_scene.soot, line: 18}
+	type: do
+	do: ~ score += @okay.well("Nevermind I'll do it myself.")
+k5v0S: 
+	M: {id: k5v0S, file: res://dialogue/empty_scene.soot, line: 22}
+	type: text
+	text: A level 1 archer? You stink.
+wJMAO: 
+	M: {id: wJMAO, file: res://dialogue/empty_scene.soot, line: 21}
+	type: if
+	cond_type: if
+	cond: class:archer lvl:1
+	conds: [class:archer lvl:1]
+	cond_lines: [[k5v0S]]
+3y0vx: 
+	M: {id: 3y0vx, file: res://dialogue/empty_scene.soot, line: 24}
+	type: text
+	text: Default archer message.
+lO5uu: 
+	M: {id: lO5uu, file: res://dialogue/empty_scene.soot, line: 23}
+	type: if
+	cond_type: if
+	cond: class:archer lvl:_
+	conds: [class:archer lvl:_]
+	cond_lines: [[3y0vx]]
+sl0ps: 
+	M: {id: sl0ps, file: res://dialogue/empty_scene.soot, line: 26}
+	type: text
+	text: Default message.
+seoNF: 
+	M: {id: seoNF, file: res://dialogue/empty_scene.soot, line: 25}
+	type: if
+	cond_type: if
+	cond: class:_ lvl:_
+	conds: [class:_ lvl:_]
+	cond_lines: [[sl0ps]]
+ZZ8Nq: 
+	M: {id: ZZ8Nq, file: res://dialogue/empty_scene.soot, line: 20}
+	type: if
+	cond: @class.open("well", true, 0.0) + @okay.well("the battle is over") + $orc.well.opened("true", true) 
+	cond_type: if
+	conds: [@class.open("well", true, 0.0) + @okay.well("the battle is over") + $orc.well.opened("true", true) ]
+	cond_lines: [[wJMAO, lO5uu, seoNF]]
+empty_scene/junk: 
+	M: {id: junk, file: res://dialogue/empty_scene.soot, line: 3}
+	type: flow
+	then: [1IC82, pW7Z7, cZpT2, cQPm5, p4Cuk, d9rGd, zKj8s, S7F1U, kKZHB, ZZ8Nq]

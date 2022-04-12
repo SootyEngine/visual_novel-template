@@ -1,5 +1,7 @@
 extends DataManager
 class_name Awards
+func get_class() -> String:
+	return "Awards"
 
 const MSG_AWARD_PROGRESS := "award_progress"
 const MSG_AWARD_UNLOCKED := "award_unlocked"

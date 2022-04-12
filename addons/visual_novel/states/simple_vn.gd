@@ -1,3 +1,4 @@
+@tool
 extends Node
 
 var flow_history := []
@@ -6,6 +7,8 @@ var choice_history := {}
 var caption_at := "bottom"
 var caption_auto_clear := true
 var time := DateTime.new({weekday="sat"})
+
+var score := 123
 
 var _MAIN_flow_ended = Soot.join_path(["MAIN", "flow_ended"])
 var _MAIN_started = Soot.join_path(["MAIN", "started"])

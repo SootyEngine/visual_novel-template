@@ -1,3 +1,4 @@
+@tool
 extends Waiter
 
 const VERSION := "1.0"
@@ -18,37 +19,6 @@ func _ready() -> void:
 	await get_tree().process_frame
 	Mods._add_mod("res://addons/visual_novel", true)
 	Scene._goto = _goto_scene
-	
-	if not Engine.is_editor_hint():
-		Dialogue.started.connect(_dialogue_started)
-		Dialogue.ended.connect(_dialogue_ended)
-		Dialogue.caption.connect(_caption)
-#		Dialogue.reloaded.connect(Dialogue.unwait.bind(self))
-	
-	$captions/backing.visible = false
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("advance"):
-		if is_waiting():
-			StringAction.do_group_action("@advance_caption")
-		else:
-			StringAction.do_group_action("@hide_caption")
-			Dialogue.unwait(self)
-
-func _caption(text: String, line: Dictionary):
-	# replace list patterns
-	text = Dialogue.replace_list_text(line.M.id, text)
-	
-	var d := DialogueTools.str_to_dialogue(text)
-#	d.text = DialogueTools.str_to_caption(d.from, d.text)
-#	d.from = DialogueTools.str_to_speaker(d.from)
-	
-	StringAction.do_group_action_w_args("@show_caption", [
-#		format_from(from),
-#		format_text(from , text),
-		d.from,
-		d.text,
-		line])
 
 func _goto_scene(id: String, kwargs := {}):
 	if Scene.find(id):
@@ -62,14 +32,6 @@ func _goto_scene(id: String, kwargs := {}):
 
 func version() -> String:
 	return VERSION
-
-func _dialogue_started():
-	$captions/backing.visible = true
-
-func _dialogue_ended():
-	$captions/backing.visible = false
-
-
 
 #func format_text(text: String, has_speaker: bool) -> String:
 #	var out := ""
@@ -113,4 +75,3 @@ func _dialogue_ended():
 #	var l := len(s) - len(s.strip_edges(true, false))
 #	var r := len(s) - len(s.strip_edges(false, true))
 #	return s.substr(0, l) + "%s" + s.substr(len(s) - r)
-
