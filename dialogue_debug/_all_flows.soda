@@ -1,0 +1,36 @@
+East: 
+	M: {id: East, file: res://dialogue/areas.soot, line: 0}
+	type: flow
+	then: [EvC9J]
+	flows: []
+empty_scene: 
+	M: {id: empty_scene, file: res://dialogue/empty_scene.soot, line: 0}
+	type: flow
+	then: []
+	flows: [empty_scene/scene_started]
+empty_scene/scene_started: 
+	M: {id: empty_scene/scene_started, file: res://dialogue/empty_scene.soot, line: 1}
+	type: flow
+	then: [A3txC, Q3HGA, xBZEB]
+	flows: [empty_scene/scene_started/going_down, empty_scene/scene_started/sister]
+empty_scene/scene_started/going_down: 
+	M: 
+		id: empty_scene/scene_started/going_down
+		file: res://dialogue/empty_scene.soot
+		line: 7
+	type: flow
+	then: [40t6k, vpSc1]
+	flows: []
+empty_scene/scene_started/sister: 
+	M: 
+		id: empty_scene/scene_started/sister
+		file: res://dialogue/empty_scene.soot
+		line: 11
+	type: flow
+	then: [m8e68, Mv9FN]
+	flows: []
+root: 
+	M: {id: root, file: res://dialogue/empty_scene.soot, line: 15}
+	type: flow
+	then: [voclX]
+	flows: []

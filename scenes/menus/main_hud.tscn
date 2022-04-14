@@ -21,7 +21,3 @@ theme_override_constants/outline_size = 4
 text = "HUD"
 horizontal_alignment = 1
 vertical_alignment = 1
-__meta__ = {
-"_edit_layout_mode": 0,
-"_edit_use_custom_anchors": false
-}

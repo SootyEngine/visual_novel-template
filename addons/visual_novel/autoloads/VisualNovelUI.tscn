@@ -1,6 +1,6 @@
-[gd_scene load_steps=24 format=3 uid="uid://cwcjf3olw4pb2"]
+[gd_scene load_steps=24 format=3]
 
-[ext_resource type="PackedScene" uid="uid://b0v05js0hc5gq" path="res://addons/visual_novel/ui/ui_caption.tscn" id="1_5fvuj"]
+[ext_resource type="PackedScene" uid="uid://dm6jk8csh0bk6" path="res://addons/visual_novel/ui/captions/ui_caption.tscn" id="1_5fvuj"]
 [ext_resource type="Script" path="res://addons/visual_novel/autoloads/VisualNovelUI.gd" id="1_jx60b"]
 [ext_resource type="Script" path="res://addons/visual_novel/ui/EdgeClampContainer.gd" id="2_mqxw1"]
 [ext_resource type="Shader" path="res://addons/visual_novel/ui/ui_gradient_blur.gdshader" id="3_kr04k"]

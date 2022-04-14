@@ -102,3 +102,29 @@ What was that all about?
 ~snode.ass(3, true, "ok", "and then")
 ~snode.ass 2 true ok `and then`
 *a,b,c,d tint:true x:y
+
+
+=== junk
+	
+	{{match score and not false}}
+	
+	~ $score += 20
+	
+	{{$time.weekday in ["SATURDAY", "SUNDAY"]}}
+		What was all that about!?
+	
+	~ score += 20.0
+	~ $score.war = "false or not"
+	
+	@score true "asd" 2 3 x:true
+	@score true 2 3 tint:false
+	~ score += @enemy.health(2, false) {{if $score > 20 or stairs in and the trees}}
+	~ score += @okay.well("Nevermind I'll do it myself.")
+	
+	{{@class.open("well", true, 0.0) + @okay.well("the battle is over") + $orc.well.opened("true", true) }}
+		{(class:archer lvl:1)}
+			A level 1 archer? You stink.
+		{(class:archer lvl:_)}
+			Default archer message.
+		{(class:_ lvl:_)}
+			Default message.

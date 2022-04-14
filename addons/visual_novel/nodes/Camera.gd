@@ -24,7 +24,7 @@ var position_offset := Vector2.ZERO
 		update()
 
 func _init():
-	add_to_group("@camera")
+	add_to_group("@:camera")
 
 func target(id: String, snap := false):
 	__target(_get_tween(), id, snap)

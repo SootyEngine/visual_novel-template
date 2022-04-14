@@ -17,11 +17,10 @@ func _reload():
 func _redraw_dialogues():
 	var text := []
 	var meta := {}
-	for d_id in Dialogue.dialogues:
-		var d: Dictionary = Dialogue.dialogues[d_id]
+	for d_id in Dialogue._flows:
+		var d: Dictionary = Dialogue._flows[d_id]
 		text.append("[b]%s[]" % [d_id])
 		for f_id in d.flows:
-#			var flow := Soot.join_path([d_id, f_id])
 			text.append("\t[meta %s]%s[]" % [f_id, f_id])
 			meta[f_id] = Dialogue.goto.bind(f_id)
 	$VBoxContainer/HBoxContainer/dialogues.set_bbcode("\n".join(text))

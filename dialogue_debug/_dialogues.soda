@@ -1,2 +1,3 @@
+areas: {flows: [East, West]}
 empty_scene: 
-	flows: [empty_scene/scene_started, empty_scene/junk]
+	flows: [dummy, scene_started, start, junk]

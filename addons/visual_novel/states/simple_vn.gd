@@ -10,9 +10,9 @@ var time := DateTime.new({weekday="sat"})
 
 var score := 123
 
-var _MAIN_flow_ended = Soot.join_path(["MAIN", "flow_ended"])
-var _MAIN_started = Soot.join_path(["MAIN", "started"])
-var _MAIN_dialogue_ended = Soot.join_path(["MAIN", "dialogue_ended"])
+var _FLOW_flow_ended = "/flow_started"
+var _FLOW_started = "/started"
+var _FLOW_dialogue_ended = "/dialogue_ended"
 
 func _ready() -> void:
 	Global.started.connect(_game_started)
@@ -23,10 +23,10 @@ func _ready() -> void:
 	Dialogue.selected.connect(_selected)
 
 func _game_started():
-	if Dialogue.has_flow(_MAIN_started):
-		Dialogue.goto(_MAIN_started)
+	if Dialogue.has_path(_FLOW_started):
+		Dialogue.goto(_FLOW_started)
 	else:
-		push_error("There is no '%s' flow." % _MAIN_started)
+		push_error("There is no '%s' flow." % _FLOW_started)
 
 func _selected(id: String):
 	UDict.tick(choice_history, id)
@@ -36,9 +36,9 @@ func _dialogue_started():
 	flow_history.clear()
 
 func _dialogue_ended():
-	var dialogue_ended := _MAIN_dialogue_ended
-	if len(flow_history) and flow_history[-1] != _MAIN_dialogue_ended and Dialogue.has_flow(_MAIN_dialogue_ended):
-		Dialogue.stack(_MAIN_dialogue_ended)
+	var dialogue_ended := _FLOW_dialogue_ended
+	if len(flow_history) and flow_history[-1] != _FLOW_dialogue_ended and Dialogue.has_path(_FLOW_dialogue_ended):
+		Dialogue.stack(_FLOW_dialogue_ended)
 
 func _flow_started(flow: String):
 	flow_history.append(flow)
@@ -47,8 +47,8 @@ func _flow_ended(flow: String):
 	# tick number of times visited
 	UDict.tick(flow_visited, flow)
 	# goto the ending node
-	if len(flow_history) and not flow_history[-1] in [_MAIN_dialogue_ended, _MAIN_flow_ended] and Dialogue.has_flow(_MAIN_flow_ended):
-		Dialogue.stack(_MAIN_flow_ended)
+	if len(flow_history) and not flow_history[-1] in [_FLOW_dialogue_ended, _FLOW_flow_ended] and Dialogue.has_path(_FLOW_flow_ended):
+		Dialogue.stack(_FLOW_flow_ended)
 
 func caption(kwargs: Dictionary):
 	if "at" in kwargs:

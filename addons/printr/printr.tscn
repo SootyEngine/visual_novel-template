@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgnndttiowcns"]
+
+[ext_resource type="Script" path="res://addons/printr/Printr.gd" id="1_kr7ob"]
+[ext_resource type="Font" uid="uid://dpy1gmyfrww2t" path="res://addons/visual_novel/fonts/font-r.tres" id="1_lduvs"]
+
+[node name="Control" type="Control" groups=["prntr"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource( "1_kr7ob" )
+
+[node name="Console" type="RichTextLabel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_fonts/normal_font = ExtResource( "1_lduvs" )
+bbcode_enabled = true
+text = "[url=:Tu068][hint='Ass'][Mods - 3][/hint][/url]
+[url=:Tu072][hint='Ass']	1 res://[/hint][/url]
+[url=:Tu072][hint='Ass']	2 res://addons/sooty_engine[/hint][/url]
+[url=:Tu072][hint='Ass']	3 res://addons/visual_novel[/hint][/url]
+[url=:Tu083][hint='Ass'][Settings - 1][/hint][/url]
+[url=:Tu085][hint='Ass']	1 common_settings.gd[/hint][/url]
+[url=:Tu083][hint='Ass'][Scenes - 6][/hint][/url]
+[url=:Tu085][hint='Ass']	1 empty_scene.tscn[/hint][/url]
+[url=:Tu085][hint='Ass']	2 main_hud.tscn[/hint][/url]
+[url=:Tu085][hint='Ass']	3 save_game_menu.tscn[/hint][/url]
+[url=:Tu085][hint='Ass']	4 load_game_menu.tscn[/hint][/url]
+[url=:Tu085][hint='Ass']	5 pause_menu.tscn[/hint][/url]
+[url=:Tu085][hint='Ass']	6 main_menu.tscn[/hint][/url]
+[url=:Tu083][hint='Ass'][Persistent - 1][/hint][/url]
+[url=:Tu085][hint='Ass']	1 achievements.gd[/hint][/url]
+[url=:Tu083][hint='Ass'][States - 1][/hint][/url]
+[url=:Tu085][hint='Ass']	1 simple_vn.gd[/hint][/url]
+[url=:Tu083][hint='Ass'][Dialogue - 2][/hint][/url]
+[url=:Tu085][hint='Ass']	1 areas.soot[/hint][/url]
+[url=:Tu085][hint='Ass']	2 empty_scene.soot[/hint][/url]
+[url=:Tu087][hint='Ass'][No Music, Sfx, Lang found][/hint][/url]"
+meta_underlined = false
+hint_underlined = false

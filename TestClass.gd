@@ -8,9 +8,11 @@ var EXO := Vector2.ZERO
 
 func damage(amount := 0, kwargs := {}):
 	print("Damaged %s! (%s)" % [amount, kwargs])
-
+	return health
+	
 func heal(amount := 0):
 	print("Healed %s!" % amount)
+	return health
 
 func _get(property: StringName):
 	return _data.get(property)

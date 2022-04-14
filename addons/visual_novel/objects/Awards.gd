@@ -36,7 +36,7 @@ func _changed(property: Array):
 			Global.notify({
 				type=MSG_AWARD_PROGRESS,
 				text=[ a.name, a.desc ],
-				prog=a._progress,
+				prog=a.get_progress(),
 				play="award_progress"
 			})
 			progress.emit(a)
