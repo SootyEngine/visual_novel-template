@@ -1,3 +1,0 @@
-areas: {flows: [East, West]}
-empty_scene: 
-	flows: [dummy, scene_started, start, junk]
