@@ -1,6 +1,5 @@
 extends Data
-class_name Goal
-
+class_name Goal, "res://addons/visual_novel/icons/goal.png"
 func get_class() -> String:
 	return "Goal"
 

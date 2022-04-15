@@ -1,7 +1,8 @@
+@tool
 extends DataManager
-class_name Awards
+class_name AwardManager
 func get_class() -> String:
-	return "Awards"
+	return "AwardManager"
 
 const MSG_AWARD_PROGRESS := "award_progress"
 const MSG_AWARD_UNLOCKED := "award_unlocked"

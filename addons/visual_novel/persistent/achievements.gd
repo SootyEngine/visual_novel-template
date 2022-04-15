@@ -1,3 +1,3 @@
 extends Node
 
-var awards: Awards = Awards.new()
+var awards := AwardManager.new()

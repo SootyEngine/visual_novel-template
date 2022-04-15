@@ -1,8 +1,5 @@
 extends PatchableData
-class_name ItemInfo
-
-func get_class() -> String:
-	return "ItemInfo"
+class_name Item, "res://addons/visual_novel/icons/item.png"
 
 var name := ""
 var desc := ""

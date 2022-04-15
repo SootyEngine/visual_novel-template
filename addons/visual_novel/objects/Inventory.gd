@@ -1,11 +1,9 @@
+@tool
 extends Data
-class_name Inventory
+class_name Inventory, "res://addons/visual_novel/icons/inventory.png"
 
-func get_class() -> String:
-	return "Inventory"
-
-signal gained(item_info: ItemInfo, quantity: int)
-signal lost(item_info: ItemInfo, quantity: int)
+signal gained(item: Item, quantity: int)
+signal lost(item: Item, quantity: int)
 
 var _character: Character
 var slots := []
@@ -49,34 +47,35 @@ func count(type: String) -> int:
 			out += slots[i].sum
 	return out
 
-func gain(type: String, quantity := 1, _meta := {}):
-	var all_items: ItemInfos = State.item_info
-	var info: ItemInfo = all_items.find(type, "gain")
-	if not info:
-		return
+func gain(item: Item, quantity := 1, kwargs := {}):
+	var all_items: ItemManager = item.get_manager()
+	var id: String = item.get_id()
+	
+	prints(item, id)
+	return
 	
 	# try to append to previous slots
 	var q := quantity
 	for slot in slots:
-		if slot.id == type and slot.sum < info.slot_max:
-			var amount := mini(info.slot_max, q)
+		if slot.id == id and slot.sum < item.slot_max:
+			var amount := mini(item.slot_max, q)
 			slot.sum += amount
 			q -= amount
 			if q <= 0:
 				break
 	
 	# create new slots for leftovers
-	for i in ceil(q / float(info.slot_max)):
-		var amount := mini(info.slot_max, q)
+	for i in ceil(q / float(item.slot_max)):
+		var amount := mini(item.slot_max, q)
 		q -= amount
-		_add_slot(type, amount)
+		_add_slot(id, amount)
 	
 	var dif := quantity - q
-	gained.emit(info, dif)
+	gained.emit(item, dif)
 
-func lose(type: String, quantity := 1, _meta := {}):
-	var all_items: ItemInfos = State.item_info
-	var info: ItemInfo = all_items.find(type, "gain")
+func lose(type: String, quantity := 1, kwargs := {}):
+	var all_items: ItemManager = State.get_first(ItemManager)
+	var info: Item = all_items.find(type, "gain")
 	if not info:
 		return
 	
