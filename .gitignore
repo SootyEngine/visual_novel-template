@@ -4,5 +4,11 @@
 /addons/sooty_engine/
 /addons/rich_text/
 /addons/util/
+/addons/tool_button/
+
+/fonts/
+/scenes/
 /dialogue/
+/states
+/persistent/
 /debug_output/
