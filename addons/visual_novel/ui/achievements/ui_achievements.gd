@@ -12,7 +12,7 @@ func _ready() -> void:
 	Mods.loaded.connect(_connect)
 
 func _connect():
-	var awards: Awards = Persistent.awards
+	var awards: AwardManager = Persistent.awards
 	awards.unlocked.connect(_update)
 	awards.progress.connect(_update)
 	_update()

@@ -51,7 +51,6 @@ func gain(item: Item, quantity := 1, kwargs := {}):
 	var all_items: ItemManager = item.get_manager()
 	var id: String = item.get_id()
 	
-	prints(item, id)
 	return
 	
 	# try to append to previous slots

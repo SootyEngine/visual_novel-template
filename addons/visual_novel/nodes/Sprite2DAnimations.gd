@@ -71,8 +71,8 @@ func _get_tool_buttons():
 
 # will prevent dialogue stack from running until all tweens finish.
 func wait():
-	Dialogue.wait(self)
-	_tween.tween_callback(Dialogue.unwait.bind(self))
+	VisualNovel.wait(self)
+	_tween.tween_callback(VisualNovel.unwait.bind(self))
 
 func flip():
 	var t := _create()

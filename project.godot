@@ -323,11 +323,6 @@ _global_script_classes=[{
 "class": &"UType",
 "language": &"GDScript",
 "path": "res://addons/util/UType.gd"
-}, {
-"base": "Node",
-"class": &"Waiter",
-"language": &"GDScript",
-"path": "res://addons/sooty_engine/common/Waiter.gd"
 }]
 _global_script_class_icons={
 "Award": "res://addons/visual_novel/objects/Award.gd",
@@ -392,8 +387,7 @@ _global_script_class_icons={
 "UTime": "",
 "UTween": "",
 "UTween2D": "",
-"UType": "",
-"Waiter": ""
+"UType": ""
 }
 
 [application]

@@ -3,8 +3,8 @@ extends Node
 func _ready():
 	await Mods.loaded
 	
-	Dialogue.tick.connect(_redraw_stack)
-	Dialogue.waiting_list_changed.connect(_redraw_halting)
+	Dialogue.step_started.connect(_redraw_stack)
+	VisualNovel.waiting_changed.connect(_redraw_halting)
 	$VBoxContainer/reload.pressed.connect(_reload)
 	
 	_redraw_dialogues()
@@ -46,6 +46,6 @@ func _redraw_stack():
 func _redraw_halting():
 	var text := []
 	text.append("Waiting for...")
-	for h in Dialogue._waiting_for:
+	for h in VisualNovel.waiting_for:
 		text.append(str(h.get_path()))
 	$VBoxContainer/halting_for.set_text("\n".join(text))

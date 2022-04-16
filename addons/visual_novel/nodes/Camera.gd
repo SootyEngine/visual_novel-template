@@ -97,8 +97,8 @@ func _get_tween() -> Tween:
 	return _tween
 
 func wait():
-	Dialogue.wait(self)
-	_tween.chain().tween_callback(Dialogue.unwait.bind(self))
+	VisualNovel.wait(self)
+	_tween.chain().tween_callback(VisualNovel.unwait.bind(self))
 
 func pan(x := 0.0, y := 0.0):
 	var t := _get_tween()

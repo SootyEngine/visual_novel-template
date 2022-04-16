@@ -1,13 +1,24 @@
 @tool
 extends Node
 
+# data managers
+var items := ItemManager.new()
+var characters := CharacterManager.new()
+var goals := GoalManager.new()
+var locations := LocationManager.new()
+var equipment_slots := EquipmentSlotManager.new()
+
+# flow state
 var flow_history := []
 var flow_visited := {}
 var choice_history := {}
+
+# captions
 var caption_at := "bottom"
 var caption_auto_clear := true
-var time := DateTime.new({weekday="sat"})
 
+# common
+var time := DateTime.new({weekday="sat"})
 var score := 123
 
 var _FLOW_flow_ended = "/flow_started"
@@ -30,7 +41,6 @@ func _game_started():
 
 func _selected(id: String):
 	UDict.tick(choice_history, id)
-	print("Selected ", id, choice_history)
 
 func _dialogue_started():
 	flow_history.clear()

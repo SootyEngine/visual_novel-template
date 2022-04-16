@@ -2,8 +2,7 @@
 extends Node
 class_name SootScene
 
-@export var flow: String = "":
-	set(v): flow = v if v else UFile.get_file_name(scene_file_path)
+@export var flow: String = UFile.get_file_name(scene_file_path)
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
@@ -20,9 +19,9 @@ func _start(loaded: bool):
 	if not loaded:
 		var fs := _path("scene_started")
 		if Dialogue.is_active():
-			Dialogue.ended.connect(Dialogue.goto.bind(fs), CONNECT_ONESHOT)
+			Dialogue.ended.connect(Dialogue.start.bind(fs), CONNECT_ONESHOT)
 		else:
-			Dialogue.goto(fs)
+			Dialogue.start(fs)
 
 func _property_changed(property: String):
 	var fs := _path("CHANGED_%s" % property)
