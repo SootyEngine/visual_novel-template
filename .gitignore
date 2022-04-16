@@ -1,6 +1,12 @@
 # Godot 4+ specific ignores
 .godot/
 
+/bind.sh
+/unbind.sh
+/TestClass.gd
+/graph_layout.tres
+/symbols.soot
+
 /addons/sooty_engine/
 /addons/rich_text/
 /addons/util/
