@@ -1,3 +1,5 @@
+@tool
 extends Node
 
-var awards := AwardManager.new()
+# achievements are saved across playthroughs
+var awards := AwardDatabase.new()

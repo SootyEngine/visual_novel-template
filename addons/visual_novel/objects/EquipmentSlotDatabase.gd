@@ -1,8 +1,8 @@
 @tool
-extends DataManager
-class_name EquipmentSlotManager
+extends Database
+class_name EquipmentSlotDatabase
 func get_class() -> String:
-	return "EqupmentSlotManager"
+	return "EqupmentSlotDatabase"
 
 func _get_data_class() -> String:
 	return "EquipmentSlot"

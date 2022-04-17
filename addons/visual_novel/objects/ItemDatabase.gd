@@ -1,8 +1,8 @@
 @tool
-extends DataManager
-class_name ItemManager
+extends Database
+class_name ItemDatabase
 func get_class():
-	return "ItemManager"
+	return "ItemDatabase"
 
 func _get_data_class() -> String:
 	return "Item"

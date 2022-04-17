@@ -14,15 +14,10 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Award.gd"
 }, {
-"base": "DataManager",
-"class": &"AwardManager",
+"base": "Database",
+"class": &"AwardDatabase",
 "language": &"GDScript",
-"path": "res://addons/visual_novel/objects/AwardManager.gd"
-}, {
-"base": "Node",
-"class": &"BaseState",
-"language": &"GDScript",
-"path": "res://addons/sooty_engine/autoloads/state_manager.gd"
+"path": "res://addons/visual_novel/objects/AwardDatabase.gd"
 }, {
 "base": "RefCounted",
 "class": &"Bool",
@@ -34,10 +29,10 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Character.gd"
 }, {
-"base": "DataManager",
-"class": &"CharacterManager",
+"base": "Database",
+"class": &"CharacterDatabase",
 "language": &"GDScript",
-"path": "res://addons/visual_novel/objects/CharacterManager.gd"
+"path": "res://addons/visual_novel/objects/CharacterDatabase.gd"
 }, {
 "base": "ConfigFile",
 "class": &"Config",
@@ -49,15 +44,15 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/sooty_engine/common/Data.gd"
 }, {
-"base": "RefCounted",
-"class": &"DataManager",
-"language": &"GDScript",
-"path": "res://addons/sooty_engine/common/DataManager.gd"
-}, {
 "base": "Resource",
 "class": &"DataParser",
 "language": &"GDScript",
 "path": "res://addons/sooty_engine/data/DataParser.gd"
+}, {
+"base": "RefCounted",
+"class": &"Database",
+"language": &"GDScript",
+"path": "res://addons/sooty_engine/common/Database.gd"
 }, {
 "base": "Data",
 "class": &"DateTime",
@@ -89,10 +84,10 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/EquipmentSlot.gd"
 }, {
-"base": "DataManager",
-"class": &"EquipmentSlotManager",
+"base": "Database",
+"class": &"EquipmentSlotDatabase",
 "language": &"GDScript",
-"path": "res://addons/visual_novel/objects/EquipmentSlotManager.gd"
+"path": "res://addons/visual_novel/objects/EquipmentSlotDatabase.gd"
 }, {
 "base": "Node",
 "class": &"Fader",
@@ -119,10 +114,10 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Goal.gd"
 }, {
-"base": "DataManager",
-"class": &"GoalManager",
+"base": "Database",
+"class": &"GoalDatabase",
 "language": &"GDScript",
-"path": "res://addons/visual_novel/objects/GoalManager.gd"
+"path": "res://addons/visual_novel/objects/GoalDatabase.gd"
 }, {
 "base": "RefCounted",
 "class": &"Grammar",
@@ -144,20 +139,20 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Item.gd"
 }, {
-"base": "DataManager",
-"class": &"ItemManager",
+"base": "Database",
+"class": &"ItemDatabase",
 "language": &"GDScript",
-"path": "res://addons/visual_novel/objects/ItemManager.gd"
+"path": "res://addons/visual_novel/objects/ItemDatabase.gd"
 }, {
 "base": "PatchableData",
 "class": &"Location",
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Location.gd"
 }, {
-"base": "DataManager",
-"class": &"LocationManager",
+"base": "Database",
+"class": &"LocationDatabase",
 "language": &"GDScript",
-"path": "res://addons/visual_novel/objects/LocationManager.gd"
+"path": "res://addons/visual_novel/objects/LocationDatabase.gd"
 }, {
 "base": "Resource",
 "class": &"Markdown",
@@ -199,6 +194,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/rich_text/RichTextLabel2.gd"
 }, {
+"base": "Node",
+"class": &"Scene",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/nodes/Scene.gd"
+}, {
 "base": "RefCounted",
 "class": &"Soot",
 "language": &"GDScript",
@@ -208,11 +208,6 @@ _global_script_classes=[{
 "class": &"SootButton",
 "language": &"GDScript",
 "path": "res://addons/visual_novel/nodes/SootButton.gd"
-}, {
-"base": "Node",
-"class": &"SootScene",
-"language": &"GDScript",
-"path": "res://addons/visual_novel/nodes/SootScene.gd"
 }, {
 "base": "Node2D",
 "class": &"Sprite2DAnimations",
@@ -225,9 +220,19 @@ _global_script_classes=[{
 "path": "res://addons/visual_novel/shaders/SpriteTransition.gd"
 }, {
 "base": "Node",
+"class": &"StateManagerBase",
+"language": &"GDScript",
+"path": "res://addons/sooty_engine/autoloads/StateManagerBase.gd"
+}, {
+"base": "Node",
 "class": &"TestClass",
 "language": &"GDScript",
 "path": "res://TestClass.gd"
+}, {
+"base": "RefCounted",
+"class": &"ToolButton",
+"language": &"GDScript",
+"path": "res://addons/tool_button/constants.gd"
 }, {
 "base": "RefCounted",
 "class": &"UClass",
@@ -326,35 +331,34 @@ _global_script_classes=[{
 }]
 _global_script_class_icons={
 "Award": "res://addons/visual_novel/objects/Award.gd",
-"AwardManager": "",
-"BaseState": "",
+"AwardDatabase": "",
 "Bool": "",
 "Character": "res://addons/visual_novel/icons/person.png",
-"CharacterManager": "res://addons/visual_novel/icons/people.png",
+"CharacterDatabase": "res://addons/visual_novel/icons/people.png",
 "Config": "",
 "Data": "res://addons/sooty_engine/icons/data.png",
-"DataManager": "res://addons/soot_engine/icons/database.png",
 "DataParser": "",
+"Database": "res://addons/soot_engine/icons/database.png",
 "DateTime": "res://addons/sooty_engine/icons/datetime.png",
 "DialogueParser": "",
 "DialogueTools": "",
 "Emoji": "",
 "Equipment": "",
 "EquipmentSlot": "",
-"EquipmentSlotManager": "",
+"EquipmentSlotDatabase": "",
 "Fader": "",
 "FileModifiedScanner": "",
 "Flow": "",
 "FontHelper": "",
 "Goal": "res://addons/visual_novel/icons/goal.png",
-"GoalManager": "",
+"GoalDatabase": "",
 "Grammar": "",
 "Inventory": "res://addons/visual_novel/icons/inventory.png",
 "InventoryItem": "res://addons/visual_novel/icons/item.png",
 "Item": "res://addons/visual_novel/icons/item.png",
-"ItemManager": "",
+"ItemDatabase": "",
 "Location": "res://addons/visual_novel/icons/location.png",
-"LocationManager": "res://addons/visual_novel/icons/locations.png",
+"LocationDatabase": "res://addons/visual_novel/icons/locations.png",
 "Markdown": "",
 "ModInfo": "",
 "Note": "",
@@ -363,12 +367,14 @@ _global_script_class_icons={
 "Reward": "",
 "RichTextAnimation": "",
 "RichTextLabel2": "",
+"Scene": "",
 "Soot": "",
 "SootButton": "",
-"SootScene": "",
 "Sprite2DAnimations": "",
 "SpriteTransitions": "",
+"StateManagerBase": "",
 "TestClass": "",
+"ToolButton": "",
 "UClass": "",
 "UColor": "",
 "UDebug": "",
@@ -399,19 +405,19 @@ config/features=PackedStringArray("4.0", "Vulkan Clustered")
 
 [autoload]
 
+VisualNovel="*res://addons/visual_novel/autoloads/VisualNovel.gd"
+VisualNovelUI="*res://addons/visual_novel/autoloads/VisualNovelUI.tscn"
 Global="*res://addons/sooty_engine/autoloads/Global.gd"
-Mods="*res://addons/sooty_engine/autoloads/Mods.gd"
+ModManager="*res://addons/sooty_engine/autoloads/ModManager.gd"
 Settings="*res://addons/sooty_engine/autoloads/Settings.gd"
-Scene="*res://addons/sooty_engine/autoloads/Scene.gd"
-Saver="*res://addons/sooty_engine/autoloads/Saver.gd"
+SceneManager="*res://addons/sooty_engine/autoloads/SceneManager.gd"
+SaveManager="*res://addons/sooty_engine/autoloads/SaveManager.gd"
 Persistent="*res://addons/sooty_engine/autoloads/Persistent.gd"
 State="*res://addons/sooty_engine/autoloads/State.gd"
 StringAction="*res://addons/sooty_engine/autoloads/StringAction.gd"
-Music="*res://addons/sooty_engine/autoloads/Music.gd"
-SFX="*res://addons/sooty_engine/autoloads/SFX.gd"
+MusicManager="*res://addons/sooty_engine/autoloads/MusicManager.gd"
+SFXManager="*res://addons/sooty_engine/autoloads/SFXManager.gd"
 Dialogue="*res://addons/sooty_engine/autoloads/Dialogue.gd"
-VisualNovel="*res://addons/visual_novel/autoloads/VisualNovel.gd"
-VisualNovelUI="*res://addons/visual_novel/autoloads/VisualNovelUI.tscn"
 
 [debug]
 
@@ -419,7 +425,7 @@ file_logging/enable_file_logging=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/sooty_engine/plugin.cfg", "res://addons/tool_button/plugin.cfg", "res://addons/visual_novel/plugin.cfg")
+enabled=PackedStringArray("res://addons/sooty_engine/plugin.cfg", "res://addons/visual_novel/plugin.cfg")
 
 [input]
 

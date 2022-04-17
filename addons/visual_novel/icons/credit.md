@@ -1,3 +1,5 @@
+<a href="https://www.flaticon.com/free-icons/book" title="book icons">Book icons created by Freepik - Flaticon</a>
+
 <a target="_blank" href="https://icons8.com/icon/11973/database">Database</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
 
 <a href="https://www.flaticon.com/free-icons/person" title="person icons">Person icons created by frans wahyu - Flaticon</a>

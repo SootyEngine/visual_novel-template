@@ -1,7 +1,7 @@
 extends Node
 
 func _ready():
-	await Mods.loaded
+	await ModManager.loaded
 	
 	Dialogue.step_started.connect(_redraw_stack)
 	VisualNovel.waiting_changed.connect(_redraw_halting)
@@ -12,7 +12,7 @@ func _ready():
 	_redraw_halting()
 
 func _reload():
-	Mods._load_mods()
+	ModManager._load_mods()
 
 func _redraw_dialogues():
 	var text := []

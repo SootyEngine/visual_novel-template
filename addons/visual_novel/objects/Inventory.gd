@@ -48,10 +48,8 @@ func count(type: String) -> int:
 	return out
 
 func gain(item: Item, quantity := 1, kwargs := {}):
-	var all_items: ItemManager = item.get_manager()
+	var all_items: ItemDatabase = item.get_database()
 	var id: String = item.get_id()
-	
-	return
 	
 	# try to append to previous slots
 	var q := quantity
@@ -72,16 +70,14 @@ func gain(item: Item, quantity := 1, kwargs := {}):
 	var dif := quantity - q
 	gained.emit(item, dif)
 
-func lose(type: String, quantity := 1, kwargs := {}):
-	var all_items: ItemManager = State.get_first(ItemManager)
-	var info: Item = all_items.find(type, "gain")
-	if not info:
-		return
+func lose(item: Item, quantity := 1, kwargs := {}):
+	var all_items: ItemDatabase = item.get_database()
+	var id: String = item.get_id()
 	
 	var q := quantity
 	for i in range(len(slots)-1, -1, -1):
 		var slot: InventoryItem = slots[i]
-		if slot.id == type:
+		if slot.id == id:
 			var amount := mini(slot.sum, q)
 			slot.sum -= amount
 			q -= amount
@@ -90,7 +86,7 @@ func lose(type: String, quantity := 1, kwargs := {}):
 				break
 	
 	var dif := quantity - q
-	lost.emit(info, dif)
+	lost.emit(item, dif)
 
 func _add_slot(type: String, total: int):
 	slots.append(InventoryItem.new(type, total))

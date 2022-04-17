@@ -58,7 +58,7 @@ func _sub_state_changed(sub: Goal):
 			complete()
 
 func get_required() -> Array:
-	return GoalManager.get_manager(Goal).get_many(requires)
+	return get_database().get_many(requires)
 
 var is_completed: bool:
 	get: return state == GOAL_COMPLETED

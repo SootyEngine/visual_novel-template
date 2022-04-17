@@ -3,9 +3,14 @@ extends Node
 
 const VERSION := "1.0"
 
-func _get_group_action_style():
+# for autocomplete
+func _get_group_action_info():
 	return {
-		"@:": {"tint": Color.GREEN, "icon": preload("res://icon.png")}
+		"@:VisualNovel": {
+			"text": "Visual Novel v%s" % VERSION,
+			"tint": Color.ORANGE_RED,
+			"icon": preload("res://addons/visual_novel/icons/visual_novel.png")
+		}
 	}
 
 signal waiting_changed()
@@ -28,20 +33,62 @@ var caption := ""
 var speaker := ""
 var option := ""
 var current_line: Dictionary
+var scene: Scene
 
 func version() -> String:
 	return VERSION
 
 func _init() -> void:
-	add_to_group("@:VN")
+	add_to_group("@:VisualNovel")
+	add_to_group("has_editor_buttons")
+
+func _get_editor_buttons():
+	if scene:
+		return [
+			{
+				text="Edit %s.soot" % scene.scene_id,
+				call=func(): print("Wow it worked.")
+			}]
 
 func _ready() -> void:
 	await get_tree().process_frame
-	Mods._add_mod("res://addons/visual_novel", true)
-	Scene._goto = _goto_scene
+	ModManager._add_mod("res://addons/visual_novel", true)
+	SceneManager._goto = _goto_scene
+	SceneManager.changed.connect(_scene_changed)
 	Dialogue.caption.connect(_caption)
 	Dialogue.selected.connect(_selected)
 	Dialogue.ended.connect(_dialogue_ended)
+	State._changed.connect(_state_changed)
+	Persistent._changed.connect(_state_changed)
+
+func _get_scene_flow_path(path: String):
+	return "/%s/%s" % [scene.scene_id, path]
+
+func _state_changed(property: String):
+	if scene:
+		var flow_path: String = "/%s/_changed/%s" % [scene.scene_id, property]
+		if Dialogue.has_path(flow_path):
+			Dialogue.goto_and_return(flow_path)
+
+func _scene_changed():
+	if not get_tree().current_scene is Scene:
+		scene = null
+		return
+	
+	scene = get_tree().current_scene
+	
+	# execute the scene_init
+	var fi := _get_scene_flow_path("_init")
+	if Dialogue.has_path(fi):
+		Dialogue.execute(fi)
+	
+	var fs := _get_scene_flow_path("_started")
+	# if dialogue is already running, add this to the end of the current flow
+	if Dialogue.is_active():
+		Dialogue.ended.connect(Dialogue.start.bind(fs), CONNECT_ONESHOT)
+	# otherwise, start a dialogue
+	else:
+		Dialogue.start(fs)
 
 # an option was selected
 # tell ui nodes to react
@@ -49,17 +96,20 @@ func _selected(id: String):
 	option = id
 	option_selected.emit()
 
+func is_scene() -> bool:
+	return scene != null
+
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
 		set_process_input(false)
 		return
 	
 	if event.is_action_pressed("advance"):
-		if VisualNovel.is_waiting():
+		if is_waiting():
 			StringAction.do("@advance_caption")
 		else:
 			StringAction.do("@hide_caption")
-			VisualNovel.unwait(self)
+			unwait(self)
 	
 	# run input for captions
 	for node in waiting_for:
@@ -91,7 +141,7 @@ func _goto_scene(id: String, kwargs := {}):
 	if Scene.find(id):
 		wait(self)
 		Fader.create(
-			Scene.change.bind(Scene.scenes[id]),
+			SceneManager.change.bind(SceneManager.scenes[id]),
 			unwait.bind(self))
 	else:
 		# Scene.find will push_error with more useful data.

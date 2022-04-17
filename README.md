@@ -20,19 +20,19 @@ Check out the [example project](https://github.com/teebarjunk/sooty-example).
 ```
 // res://dialogue/area1.soot
 === START
-    Welcome to Area 1.
-    
-    Robot and Rabbit are here.
-        - Talk to Robot. => robot
-        - Talk to Rabbit.
-            Rabbit tends to his carrot fields.
-            p: Hey [$rabbit], what's new?
-            rabbit: Not much.
+	Welcome to Area 1.
+	
+	Robot and Rabbit are here.
+		- Talk to Robot. => robot
+		- Talk to Rabbit.
+			Rabbit tends to his carrot fields.
+			p: Hey [$rabbit], what's new?
+			rabbit: Not much.
 
 === robot
-    The robot tends to it's oil fields.
-    p: Hey [$robot], what's new?
-    robot: Not much.
+	The robot tends to it's oil fields.
+	p: Hey [$robot], what's new?
+	robot: Not much.
 ```
 
 - Before testing the scene, we will create some `State` data.
@@ -114,25 +114,26 @@ They are all optional.
 
 |Flow ID|Desc|
 |-------|----|
-|INIT|Called when a scene is initialized. Will not run any dialogue, as it should be used for setting up a scene based on the `State`.|
-|START|Called when a scene is entered.|
-|CHANGED:property_name|Called whenever a property is changed. Useful for changing backgrounds.|
+|init|Called when a scene is initialized. Will not run any dialogue, as it should be used for setting up a scene based on the `State`.|
+|started|Called when a scene is entered.|
+|changed:property_name|Called whenever a property is changed. Useful for changing backgrounds.|
 
-```
-=== INIT
-    {{is_night_time}}
-        @bg.set_to night_time
-        @ghosts.show
-    {{else}}
-        @bg.set_to day_time
-        @ghosts.hide
-
-=== CHANGED:is_night_time
-    {{is_night_time}}
-        You sense spookiness.
-        player: I should get home.
-        @ghosts.show
-        @ghosts.animate spooky_dance
+```soot
+=== scene
+	=== init
+		{{is_night_time}}
+			@bg.set_to night_time
+			@ghosts.show
+		{{else}}
+			@bg.set_to day_time
+			@ghosts.hide
+	
+	=== CHANGED:is_night_time
+		{{is_night_time}}
+			You sense spookiness.
+			player: I should get home.
+			@ghosts.show
+			@ghosts.animate spooky_dance
 
 ```
 

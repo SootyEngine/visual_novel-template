@@ -8,13 +8,13 @@ extends Node
 @onready var subtask_list: RichTextLabel2 = get_node(_subtask_list)
 
 func _ready():
-	Mods.loaded.connect(_reloaded)
+	ModManager.loaded.connect(_reloaded)
 
 func _reloaded():
 	_redraw()
 
 func _redraw():
-	var all := DataManager.get_manager(Goal).get_all()
+	var all := Database.get_database(Goal).get_all()
 	var s_started := all.filter(func(x): return x.main and x.is_started)
 	var s_completed := all.filter(func(x): return x.main and x.is_completed)
 	var s_unlocked := all.filter(func(x): return x.main and x.is_unlocked)

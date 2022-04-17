@@ -1,12 +1,12 @@
 @tool
 extends Node
 
-# data managers
-var items := ItemManager.new()
-var characters := CharacterManager.new()
-var goals := GoalManager.new()
-var locations := LocationManager.new()
-var equipment_slots := EquipmentSlotManager.new()
+# databases
+var items := ItemDatabase.new()
+var characters := CharacterDatabase.new()
+var goals := GoalDatabase.new()
+var locations := LocationDatabase.new()
+var equipment_slots := EquipmentSlotDatabase.new()
 
 # flow state
 var flow_history := []
@@ -60,38 +60,43 @@ func _flow_ended(flow: String):
 	if len(flow_history) and not flow_history[-1] in [_FLOW_dialogue_ended, _FLOW_flow_ended] and Dialogue.has_path(_FLOW_flow_ended):
 		Dialogue.stack(_FLOW_flow_ended)
 
-func caption(kwargs: Dictionary):
-	if "at" in kwargs:
-		State._set("caption_at", kwargs.at)
-	if "clear" in kwargs:
-		State._set("caption_auto_clear", kwargs.clear)
+# output a property in a formatted way
+func show(property: String) -> String:
+	# TODO: format
+	return "[b]%s[]" % State._get(property)
 
-func stutter(x):
-	var parts := str(x).split(" ")
+#func caption(kwargs: Dictionary):
+#	if "at" in kwargs:
+#		State._set("caption_at", kwargs.at)
+#	if "clear" in kwargs:
+#		State._set("caption_auto_clear", kwargs.clear)
+
+func stutter(x: String) -> String:
+	var parts := x.split(" ")
 	for i in len(parts):
 		if len(parts[i]) > 2:
 			parts[i] = parts[i].substr(0, 1 if randf()>.5 else 2) + "-" + parts[i].to_lower()
 	return " ".join(parts)
 
-func commas(x: Variant):
+func commas(x: String) -> String:
 	return UString.commas(UObject.get_operator_value(x))
 
-func humanize(x: Variant):
+func humanize(x: String) -> String:
 	return UString.humanize(UObject.get_operator_value(x))
 
-func plural(x: Variant, one := "%s", more := "%s's", none := "%s's"):
+func plural(x: String, one := "%s", more := "%s's", none := "%s's") -> String:
 	return UString.plural(UObject.get_operator_value(x), one, more, none)
 
-func ordinal(x: Variant):
+func ordinal(x: String) -> String:
 	return UString.ordinal(UObject.get_operator_value(x))
 
-func capitalize(x: Variant):
+func capitalize(x: String) -> String:
 	return str(x).capitalize()
 
-func lowercase(x: Variant):
+func lowercase(x: String) -> String:
 	return str(x).to_lower()
 
-func uppercase(x: Variant):
+func uppercase(x: String) -> String:
 	return str(x).to_upper()
 
 # Cache the pick function so it doesn't give the same option too often.

@@ -10,8 +10,8 @@ func _init(type: String, total := 1, kwargs := {}) -> void:
 	super._init(kwargs)
 
 func get_item() -> Item:
-	var item_manager: ItemManager = State.get_first(ItemManager)
-	return item_manager.find(id)
+	var item_database: ItemDatabase = Database.get_database(Item)
+	return item_database.find(id)
 
 #func _to_string() -> String:
 #	if data:
