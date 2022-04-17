@@ -129,6 +129,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Inventory.gd"
 }, {
+"base": "Database",
+"class": &"InventoryDatabase",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/InventoryDatabase.gd"
+}, {
 "base": "PatchableData",
 "class": &"InventoryItem",
 "language": &"GDScript",
@@ -203,11 +208,6 @@ _global_script_classes=[{
 "class": &"Soot",
 "language": &"GDScript",
 "path": "res://addons/sooty_engine/dialogue/Soot.gd"
-}, {
-"base": "Node",
-"class": &"SootButton",
-"language": &"GDScript",
-"path": "res://addons/visual_novel/nodes/SootButton.gd"
 }, {
 "base": "Node2D",
 "class": &"Sprite2DAnimations",
@@ -354,6 +354,7 @@ _global_script_class_icons={
 "GoalDatabase": "",
 "Grammar": "",
 "Inventory": "res://addons/visual_novel/icons/inventory.png",
+"InventoryDatabase": "res://addons/visual_novel/icons/inventory.png",
 "InventoryItem": "res://addons/visual_novel/icons/item.png",
 "Item": "res://addons/visual_novel/icons/item.png",
 "ItemDatabase": "",
@@ -369,7 +370,6 @@ _global_script_class_icons={
 "RichTextLabel2": "",
 "Scene": "",
 "Soot": "",
-"SootButton": "",
 "Sprite2DAnimations": "",
 "SpriteTransitions": "",
 "StateManagerBase": "",

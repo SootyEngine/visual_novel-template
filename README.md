@@ -5,9 +5,11 @@ godot_version: v4.0-alpha5
 ---
 # Sooty Visual Novel
 
-Built on [Sooty Engine](https://github.com/teebarjunk/sooty/), this is a template for creating simple [Visual Novels](https://en.wikipedia.org/wiki/Visual_novel).
+Built on [Sooty Engine](https://github.com/sootyengine/sooty/), this is a template for creating simple [Visual Novels](https://en.wikipedia.org/wiki/Visual_novel).
 
-Check out the [example project](https://github.com/teebarjunk/sooty-example).
+Check out the [docs](https://sootyengine.github.io/docs/visual_novels.html).
+
+Check out the [example project](https://github.com/sooty/visual_novel-example).
 
 # Getting Started
 
