@@ -4,7 +4,6 @@ func get_class() -> String:
 	return "Character"
 
 var name := ""
-var format := ""
 var gender := ""
 var at := ""
 var color := Color.WHITE
@@ -14,4 +13,3 @@ func _get(property: StringName):
 	var k := str(property)
 	# TODO: Grammar pronouns
 	return super._get(property)
-

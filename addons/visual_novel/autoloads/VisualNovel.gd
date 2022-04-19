@@ -130,13 +130,43 @@ func _caption(text: String, line := {}):
 	var had_caption := true if line else false
 	
 	current_line = line
-	speaker = DialogueTools.str_to_speaker(info.from)
-	caption = DialogueTools.str_to_caption(info.from, info.text)
+	speaker = str_to_speaker(info.from)
+	caption = info.text
 	
 	# signal the next speaker, since nodes might not want to hide if it's the same speaker
 	if had_caption:
 		caption_ended.emit()
 	caption_started.emit()
+
+static func get_speaker(from: String) -> String:
+	var db := Database.get_database(Character)
+	var out = from
+	if db and db.has(from):
+		out = db.get(from)
+	elif State._has(from):
+		out = State._get(from)
+	return UString.get_string(out, "speaker_name")
+
+static func str_to_speaker(from: String) -> String:
+	if from:
+		# if wrapped, use as is.
+		if UString.is_wrapped(from, '"'):
+			from = UString.unwrap(from, '"')
+		
+		# if multiple names, join them together.
+		elif " " in from:
+			var names = Array(from.split(" "))
+			for i in len(names):
+				names[i] = get_speaker(names[i])
+			from = names.pop_back()
+			if len(names):
+				from = ", ".join(names) + ", and " + from
+		
+		# if a state, format it's text.
+		else:
+			from = get_speaker(from)
+	
+	return from
 
 func _goto_scene(id: String, kwargs := {}):
 	if SceneManager.find(id):

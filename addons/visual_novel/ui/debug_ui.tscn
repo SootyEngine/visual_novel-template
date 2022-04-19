@@ -1,0 +1,226 @@
+[gd_scene load_steps=14 format=3 uid="uid://bn2sl1txhxk60"]
+
+[ext_resource type="Shader" path="res://addons/visual_novel/ui/screen_blur.gdshader" id="1_rlyem"]
+[ext_resource type="PackedScene" uid="uid://bfngd7b38mvow" path="res://addons/visual_novel/ui/ui_debug.tscn" id="2_8dh7d"]
+[ext_resource type="PackedScene" uid="uid://d1csgqju2u32x" path="res://addons/visual_novel/ui/ui_console.tscn" id="3_d15yt"]
+[ext_resource type="PackedScene" path="res://addons/visual_novel/ui/ui_mods.tscn" id="4_7nmm4"]
+[ext_resource type="PackedScene" uid="uid://frhg24r5fgul" path="res://addons/visual_novel/ui/ui_goal_list.tscn" id="5_6ts2t"]
+[ext_resource type="PackedScene" uid="uid://dlrxahqihqtqi" path="res://addons/visual_novel/ui/achievements/ui_achievements.tscn" id="6_wb620"]
+[ext_resource type="Script" path="res://addons/visual_novel/ui/ui_debug_scenes.gd" id="7_v55gd"]
+[ext_resource type="Script" path="res://addons/rich_text/RichTextLabel2.gd" id="8_sa3m8"]
+[ext_resource type="Script" path="res://addons/visual_novel/ui/ui_debug_dialogues.gd" id="9_tclgc"]
+[ext_resource type="Script" path="res://addons/visual_novel/ui/ui_debug_audio.gd" id="10_nyu20"]
+[ext_resource type="Script" path="res://addons/visual_novel/ui/ui_history.gd" id="11_rwki5"]
+[ext_resource type="Script" path="res://addons/visual_novel/autoloads/History.gd" id="12_pe2hs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_adcva"]
+shader = ExtResource( "1_rlyem" )
+shader_param/blur = null
+
+[node name="debug_ui" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="backing" type="ColorRect" parent="."]
+material = SubResource( "ShaderMaterial_adcva" )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="debug_menu" type="TabContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+drag_to_rearrange_enabled = true
+
+[node name="debug" parent="debug_menu" instance=ExtResource( "2_8dh7d" )]
+offset_top = 31.0
+
+[node name="console" parent="debug_menu" instance=ExtResource( "3_d15yt" )]
+visible = false
+
+[node name="mods" parent="debug_menu" instance=ExtResource( "4_7nmm4" )]
+visible = false
+offset_top = 31.0
+
+[node name="quests" parent="debug_menu" instance=ExtResource( "5_6ts2t" )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 342.0
+offset_right = 681.0
+offset_bottom = 361.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="achievements" parent="debug_menu" instance=ExtResource( "6_wb620" )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 685.0
+offset_right = 1024.0
+offset_bottom = 361.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="scenes" type="Control" parent="debug_menu"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( "7_v55gd" )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="debug_menu/scenes"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+meta_underlined = false
+script = ExtResource( "8_sa3m8" )
+alignment = 0
+markdown_enabled = false
+
+[node name="dialogue" type="Control" parent="debug_menu"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource( "9_tclgc" )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="debug_menu/dialogue"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="reload" type="Button" parent="debug_menu/dialogue/VBoxContainer"]
+offset_right = 304.0
+offset_bottom = 31.0
+text = "Reload"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="debug_menu/dialogue/VBoxContainer"]
+offset_top = 35.0
+offset_right = 304.0
+offset_bottom = 35.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="dialogues" type="RichTextLabel" parent="debug_menu/dialogue/VBoxContainer/HBoxContainer"]
+minimum_size = Vector2(300, 0)
+offset_right = 300.0
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+meta_underlined = false
+autowrap_mode = 0
+script = ExtResource( "8_sa3m8" )
+alignment = 0
+markdown_enabled = false
+
+[node name="stack" type="RichTextLabel" parent="debug_menu/dialogue/VBoxContainer/HBoxContainer"]
+offset_left = 304.0
+offset_right = 304.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+selection_enabled = true
+meta_underlined = false
+autowrap_mode = 0
+script = ExtResource( "8_sa3m8" )
+alignment = 0
+markdown_enabled = false
+
+[node name="halting_for" type="RichTextLabel" parent="debug_menu/dialogue/VBoxContainer"]
+offset_top = 39.0
+offset_right = 304.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+selection_enabled = true
+meta_underlined = false
+autowrap_mode = 0
+script = ExtResource( "8_sa3m8" )
+alignment = 0
+markdown_enabled = false
+
+[node name="audio" type="Control" parent="debug_menu"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource( "10_nyu20" )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="debug_menu/audio"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+meta_underlined = false
+script = ExtResource( "8_sa3m8" )
+alignment = 0
+markdown_enabled = false
+
+[node name="history" type="Control" parent="debug_menu"]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( "11_rwki5" )
+
+[node name="Node" type="Node" parent="debug_menu/history"]
+script = ExtResource( "12_pe2hs" )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="debug_menu/history"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="show_state_changes" type="CheckButton" parent="debug_menu/history/VBoxContainer"]
+offset_right = 158.0
+offset_bottom = 31.0
+text = "State Changes"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="debug_menu/history/VBoxContainer"]
+offset_top = 35.0
+offset_right = 158.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+meta_underlined = false
+script = ExtResource( "8_sa3m8" )
