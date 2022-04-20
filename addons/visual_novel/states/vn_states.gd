@@ -21,6 +21,8 @@ var caption_auto_clear := true
 
 # common
 var time := DateTime.new({weekday="sat"})
+var play_time := 0 # seconds
+var _last_play_time := 0 # seconds
 var score := 0
 
 const F_GAME_STARTED := "_main/game_started"
@@ -34,9 +36,22 @@ func _ready() -> void:
 	Dialogue.flow_started.connect(_flow_started)
 	Dialogue.flow_ended.connect(_flow_ended)
 	Dialogue.selected.connect(_selected)
+	SaveManager.pre_save.connect(_pre_save)
+	SaveManager.loaded.connect(_loaded)
+	
+func _pre_save():
+	# update total time played
+	var current_seconds := DateTime.create_from_current().get_total_seconds()
+	play_time += (current_seconds - _last_play_time)
+	_last_play_time = play_time
+
+func _loaded():
+	_last_play_time = DateTime.create_from_current().get_total_seconds()
 
 func _game_started():
 	if Dialogue.has_path(F_GAME_STARTED):
+		play_time = 0
+		_last_play_time = DateTime.create_from_current().get_total_seconds()
 		Dialogue.goto(F_GAME_STARTED)
 	else:
 		push_error("There is no '%s' flow." % F_GAME_STARTED)

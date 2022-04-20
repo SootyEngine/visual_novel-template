@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8iuyi2wuecpn"]
+
+[ext_resource type="Script" path="res://addons/visual_novel/scenes/menus/main_menu.gd" id="1_j2tuu"]
+
+[node name="main_menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( "1_j2tuu" )
+
+[node name="buttons" type="VBoxContainer" parent="."]
+offset_left = 31.0
+offset_top = 107.0
+offset_right = 236.0
+offset_bottom = 463.0
+alignment = 1
+
+[node name="continue" type="Button" parent="buttons"]
+offset_top = 110.0
+offset_right = 205.0
+offset_bottom = 141.0
+text = "Continue"
+
+[node name="start" type="Button" parent="buttons"]
+offset_top = 145.0
+offset_right = 205.0
+offset_bottom = 176.0
+text = "Start"
+
+[node name="load" type="Button" parent="buttons"]
+offset_top = 180.0
+offset_right = 205.0
+offset_bottom = 211.0
+text = "Load"
+
+[node name="quit" type="Button" parent="buttons"]
+offset_top = 215.0
+offset_right = 205.0
+offset_bottom = 246.0
+text = "Quit"
+
+[node name="title" type="Label" parent="."]
+anchor_right = 1.0
+offset_bottom = 91.0
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 64
+text = "Main Menu"
+horizontal_alignment = 1
+vertical_alignment = 1

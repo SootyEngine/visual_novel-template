@@ -1,0 +1,168 @@
+[gd_scene load_steps=7 format=3 uid="uid://chtnacl027s2l"]
+
+[ext_resource type="Script" path="res://addons/visual_novel/mindmap/graph_edit.gd" id="1_ttuxb"]
+[ext_resource type="Script" path="res://addons/visual_novel/mindmap/node.gd" id="2_db107"]
+[ext_resource type="Script" path="res://addons/rich_text/RichTextLabel2.gd" id="3_qk7pg"]
+[ext_resource type="Script" path="res://addons/visual_novel/mindmap/editor_panel.gd" id="4_v35jk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4g8e5"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6on4g"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="mind_map" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+split_offset = 100
+
+[node name="graph_edit" type="GraphEdit" parent="VSplitContainer"]
+offset_right = 1024.0
+offset_bottom = 394.0
+size_flags_vertical = 3
+scroll_offset = Vector2(-40, 0)
+script = ExtResource( "1_ttuxb" )
+_popup = NodePath("PopupMenu")
+_node_prefab = NodePath("node")
+
+[node name="node" type="GraphNode" parent="VSplitContainer/graph_edit"]
+self_modulate = Color(0, 0, 0, 0.25)
+offset_left = 243.0
+offset_top = 208.0
+offset_right = 443.0
+offset_bottom = 408.0
+mouse_filter = 1
+theme_override_styles/frame = SubResource( "StyleBoxFlat_4g8e5" )
+theme_override_styles/selectedframe = SubResource( "StyleBoxFlat_6on4g" )
+position_offset = Vector2(203, 208)
+resizable = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+script = ExtResource( "2_db107" )
+_richtext = NodePath("ScrollContainer/RichTextLabel")
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/graph_edit/node"]
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 194.0
+offset_bottom = 194.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VSplitContainer/graph_edit/node/ScrollContainer"]
+offset_right = 188.0
+offset_bottom = 188.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+script = ExtResource( "3_qk7pg" )
+bbcode = "Text test.
+[orange]*Woah*[] \"woah\"."
+alignment = 1
+
+[node name="PopupMenu" type="PopupMenu" parent="VSplitContainer/graph_edit"]
+item_count = 1
+item_0/text = "Add Node"
+item_0/id = 0
+
+[node name="editor_panel" type="HBoxContainer" parent="VSplitContainer"]
+offset_top = 406.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( "4_v35jk" )
+_graph = NodePath("../graph_edit")
+_text = NodePath("text")
+_title = NodePath("VBoxContainer/title")
+_color = NodePath("VBoxContainer/tint")
+_is_comment = NodePath("VBoxContainer/is_comment")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/editor_panel"]
+offset_right = 125.0
+offset_bottom = 194.0
+size_flags_horizontal = 4
+size_flags_vertical = 3
+
+[node name="title" type="LineEdit" parent="VSplitContainer/editor_panel/VBoxContainer"]
+offset_right = 125.0
+offset_bottom = 31.0
+placeholder_text = "Title"
+
+[node name="tint" type="ColorPickerButton" parent="VSplitContainer/editor_panel/VBoxContainer"]
+offset_top = 35.0
+offset_right = 125.0
+offset_bottom = 66.0
+size_flags_horizontal = 3
+text = "Color"
+
+[node name="is_comment" type="CheckButton" parent="VSplitContainer/editor_panel/VBoxContainer"]
+offset_top = 70.0
+offset_right = 125.0
+offset_bottom = 101.0
+text = "Comment"
+
+[node name="text" type="CodeEdit" parent="VSplitContainer/editor_panel"]
+offset_left = 129.0
+offset_right = 1024.0
+offset_bottom = 194.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+highlight_all_occurrences = true
+highlight_current_line = true
+draw_tabs = true
+minimap_draw = true
+symbol_lookup_on_click = true
+line_folding = true
+gutters_draw_line_numbers = true
+indent_automatic = true
+
+[connection signal="connection_from_empty" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_connection_from_empty"]
+[connection signal="connection_request" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_connection_request"]
+[connection signal="connection_to_empty" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_connection_to_empty"]
+[connection signal="delete_nodes_request" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_delete_nodes_request"]
+[connection signal="disconnection_request" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_disconnection_request"]
+[connection signal="end_node_move" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_end_node_move"]
+[connection signal="node_deselected" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_node_deselected"]
+[connection signal="node_deselected" from="VSplitContainer/graph_edit" to="VSplitContainer/editor_panel" method="_on_graph_edit_node_deselected"]
+[connection signal="node_selected" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_node_selected"]
+[connection signal="node_selected" from="VSplitContainer/graph_edit" to="VSplitContainer/editor_panel" method="_on_graph_edit_node_selected"]
+[connection signal="popup_request" from="VSplitContainer/graph_edit" to="VSplitContainer/graph_edit" method="_on_graph_edit_popup_request"]
+[connection signal="resize_request" from="VSplitContainer/graph_edit/node" to="VSplitContainer/graph_edit/node" method="_on_node_resize_request"]
+[connection signal="text_changed" from="VSplitContainer/editor_panel/VBoxContainer/title" to="VSplitContainer/editor_panel" method="_on_title_text_changed"]
+[connection signal="color_changed" from="VSplitContainer/editor_panel/VBoxContainer/tint" to="VSplitContainer/editor_panel" method="_on_tint_color_changed"]
+[connection signal="toggled" from="VSplitContainer/editor_panel/VBoxContainer/is_comment" to="VSplitContainer/editor_panel" method="_on_is_comment_toggled"]
+[connection signal="text_changed" from="VSplitContainer/editor_panel/text" to="VSplitContainer/editor_panel" method="_on_code_edit_text_changed"]
