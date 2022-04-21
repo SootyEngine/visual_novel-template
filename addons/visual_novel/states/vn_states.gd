@@ -20,10 +20,9 @@ const F_GAME_STARTED := "_main/game_started"
 const F_DIALOGUE_ENDED := "_main/dialogue_ended"
 const F_FLOW_ENDED := "_main/flow_ended"
 
-func _init() -> void:
-	StringAction.connect_methods(self, [advance_time])
-	
 func _ready() -> void:
+	StringAction.connect_methods(self, [advance_time, scene_id])
+	
 	Global.started.connect(_game_started)
 	Dialogue.started.connect(_dialogue_started)
 	Dialogue.ended.connect(_dialogue_ended)
@@ -75,8 +74,8 @@ func show(property: String) -> String:
 	# TODO: format
 	return "[b]%s[]" % State._get(property)
 
-# the current location
-func location() -> String:
+# the current scen name
+func scene_id() -> String:
 	return VisualNovel.scene.scene_id if VisualNovel.scene else ""
 	
 #func caption(kwargs: Dictionary):

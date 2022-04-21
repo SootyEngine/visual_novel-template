@@ -1,6 +1,6 @@
+@tool
 extends PatchableData
 class_name Reward
-
 func get_class() -> String:
 	return "Reward"
 

@@ -4,6 +4,7 @@ extends Node
 
 # databases
 var data := Database.new() # unorganized data
+var stats := StatDatabase.new()
 var inventories := InventoryDatabase.new()
 var items := ItemDatabase.new()
 var characters := CharacterDatabase.new()
@@ -18,9 +19,9 @@ func _init() -> void:
 		# goals
 		goal_started, goal_failed, goal_passed, goal_advanced,
 		# items
-		gained, lost,
+		gain, lose,
 		# stats
-		gained_stat
+		gain_stat
 	])
 
 
@@ -62,7 +63,7 @@ func goal_passed(goal: String, kwargs := {}):
 #
 # INVENTORY RELATED
 #
-func gained(item: Item, quantity: int, kwargs := {}):
+func gain(item: Item, quantity: int, kwargs := {}):
 	var from: String = kwargs.get("from", "")
 	var to: String = kwargs.get("to", "p") # player by default
 	if to:
@@ -72,13 +73,13 @@ func gained(item: Item, quantity: int, kwargs := {}):
 		var inv_from: Inventory = characters.find(from).inventory
 		inv_from.lose(item, quantity, kwargs)
 
-func lost(item: Item, amount: int, kwargs := {}):
-	gained(item, -amount, kwargs)
+func lose(item: Item, amount: int, kwargs := {}):
+	gain(item, -amount, kwargs)
 
 #
 # STAT RELATED
 #
-func gained_stat(stat: String, amount: int = 1, kwargs := {}):
+func gain_stat(stat: String, amount: int = 1, kwargs := {}):
 	var whom: String = kwargs.get("who", "p") # player by default
 	var character: Character = characters.find(whom)
 	# TODO: do this in a way it will trigger the State.changed signal
