@@ -3,12 +3,12 @@ extends RichTextAnimation
 
 @export var disabled := false
 
-func _init() -> void:
-	add_to_group("@.caption_label")
-	add_to_group("@.advance_caption")
-
 func _ready() -> void:
 	visible = false
+	
+	await get_tree().process_frame
+	StringAction.connect_methods(self, [caption_label, advance_caption])
+	
 	if not Engine.is_editor_hint():
 		VisualNovel.caption_started.connect(_caption_started)
 		VisualNovel.caption_ended.connect(_caption_ended)

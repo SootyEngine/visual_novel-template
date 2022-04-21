@@ -7,7 +7,8 @@ var name := ""
 var gender := ""
 var at := ""
 var color := Color.WHITE
-var inventory := ""
+var inventory := Inventory.new()
+var birthday := DateTime.new()
 
 func _get(property: StringName):
 	var k := str(property)

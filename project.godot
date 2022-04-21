@@ -431,7 +431,7 @@ file_logging/enable_file_logging=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/sooty_engine/plugin.cfg", "res://addons/visual_novel/plugin.cfg")
+enabled=PackedStringArray("res://addons/sooty_engine/plugin.cfg", "res://addons/tool_button/plugin.cfg", "res://addons/visual_novel/plugin.cfg")
 
 [input]
 

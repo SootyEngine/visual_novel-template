@@ -10,8 +10,7 @@ extends Control
 @export var default_duration := 2.0
 
 func _init() -> void:
-	add_to_group("@.blur")
-	add_to_group("@.unblur")
+	StringAction.connect_methods(self, [blur, unblur])
 	amount = 0.0
 	visible = false
 

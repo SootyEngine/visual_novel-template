@@ -1,15 +1,6 @@
 @tool
 extends Node
 
-# databases
-var data := Database.new() # unorganized data
-var inventories := InventoryDatabase.new()
-var items := ItemDatabase.new()
-var characters := CharacterDatabase.new()
-var goals := GoalDatabase.new()
-var locations := LocationDatabase.new()
-var equipment_slots := EquipmentSlotDatabase.new()
-
 # flow state
 var flow_history := []
 var flow_visited := {}
@@ -29,6 +20,9 @@ const F_GAME_STARTED := "_main/game_started"
 const F_DIALOGUE_ENDED := "_main/dialogue_ended"
 const F_FLOW_ENDED := "_main/flow_ended"
 
+func _init() -> void:
+	StringAction.connect_methods(self, [advance_time])
+	
 func _ready() -> void:
 	Global.started.connect(_game_started)
 	Dialogue.started.connect(_dialogue_started)
@@ -142,3 +136,6 @@ func pick(x: Variant):
 
 func test(s: Variant, ontrue := "yes", onfalse := "no"):
 	return ontrue if s else onfalse
+
+func advance_time(kwargs := {}):
+	time.advance(kwargs)

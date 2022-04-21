@@ -5,7 +5,7 @@ class_name Scene
 @export var scene_id: String = UFile.get_file_name(scene_file_path)
 
 func _init() -> void:
-	add_to_group("@:scene")
+	StringAction.connect_as_node(self, "scene")
 
 #func _get_tool_buttons():
 #	# edit existing

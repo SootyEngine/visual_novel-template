@@ -38,10 +38,6 @@ var scene: Scene
 func version() -> String:
 	return VERSION
 
-func _init() -> void:
-	add_to_group("@:VisualNovel")
-	add_to_group("has_editor_buttons")
-
 func _get_editor_buttons():
 	if scene:
 		return [
@@ -52,6 +48,9 @@ func _get_editor_buttons():
 
 func _ready() -> void:
 	await get_tree().process_frame
+	StringAction.connect_as_node(self, "VisualNovel")
+	add_to_group("has_editor_buttons")
+	
 	ModManager._add_mod("res://addons/visual_novel", true)
 	SceneManager._goto = _goto_scene
 	SceneManager.changed.connect(_scene_changed)

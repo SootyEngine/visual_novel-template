@@ -1,9 +1,43 @@
-[gd_scene load_steps=7 format=3 uid="uid://chtnacl027s2l"]
+[gd_scene load_steps=9 format=3 uid="uid://chtnacl027s2l"]
 
 [ext_resource type="Script" path="res://addons/visual_novel/mindmap/graph_edit.gd" id="1_ttuxb"]
 [ext_resource type="Script" path="res://addons/visual_novel/mindmap/node.gd" id="2_db107"]
 [ext_resource type="Script" path="res://addons/rich_text/RichTextLabel2.gd" id="3_qk7pg"]
 [ext_resource type="Script" path="res://addons/visual_novel/mindmap/editor_panel.gd" id="4_v35jk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snk2i"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 0.25098)
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_osi2w"]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 0.05)
+border_width_left = 16
+border_width_top = 16
+border_width_right = 16
+border_width_bottom = 16
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4g8e5"]
 content_margin_left = 6.0
@@ -43,6 +77,7 @@ offset_right = 1024.0
 offset_bottom = 394.0
 size_flags_vertical = 3
 scroll_offset = Vector2(-40, 0)
+connection_lines_thickness = 1.0
 script = ExtResource( "1_ttuxb" )
 _popup = NodePath("PopupMenu")
 _node_prefab = NodePath("node")
@@ -54,6 +89,8 @@ offset_top = 208.0
 offset_right = 443.0
 offset_bottom = 408.0
 mouse_filter = 1
+theme_override_styles/commentfocus = SubResource( "StyleBoxFlat_snk2i" )
+theme_override_styles/comment = SubResource( "StyleBoxFlat_osi2w" )
 theme_override_styles/frame = SubResource( "StyleBoxFlat_4g8e5" )
 theme_override_styles/selectedframe = SubResource( "StyleBoxFlat_6on4g" )
 position_offset = Vector2(203, 208)
@@ -89,8 +126,8 @@ mouse_filter = 2
 theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 script = ExtResource( "3_qk7pg" )
-bbcode = "Text test.
-[orange]*Woah*[] \"woah\"."
+bbcode = "[h1]Title[]
+Body."
 alignment = 1
 
 [node name="PopupMenu" type="PopupMenu" parent="VSplitContainer/graph_edit"]

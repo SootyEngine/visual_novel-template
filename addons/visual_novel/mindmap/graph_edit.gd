@@ -180,17 +180,24 @@ func _on_graph_edit_node_deselected(node: Node) -> void:
 		selected.erase(node)
 
 var _motion: Tween
+var _selected_time := 0.0
 func _on_graph_edit_node_selected(node: Node) -> void:
+	var current_time := Time.get_ticks_msec()
+	
+	# add to selection list
 	if not node in selected:
 		selected.append(node)
-	else:
-		# scroll camera to double clicked node
+	
+	# if double clicking, scroll camera
+	elif current_time - _selected_time <= 500:
 		var dest = (node.position_offset+node.size*.5)*zoom - size * .5
 		_motion = get_tree().create_tween()
 		_motion.bind_node(self)
 		_motion.tween_property(self, "scroll_offset", dest, 0.25)\
 			.set_ease(Tween.EASE_IN_OUT)\
 			.set_trans(Tween.TRANS_QUAD)
+	
+	_selected_time = current_time
 
 
 func _on_graph_edit_end_node_move() -> void:
