@@ -2,18 +2,18 @@
 extends Node
 
 # achievements are saved across playthroughs
-var awards := AwardDatabase.new()
-var rewards := RewardDatabase.new()
+var awards := Database.new(Award)
+var rewards := Database.new(Reward)
 
 func _init() -> void:
 	StringAction.connect_methods(self, [
 		has_award, gain_award,
 		has_reward, gain_reward
-		])
+	])
 
 # gain an achievement
-func gain_award(award: String):
-	awards.achieve(award)
+func gain_award(award: Award):
+	award.achieve()
 
 # check if achievement is unlocked
 func has_award(award: String) -> bool:

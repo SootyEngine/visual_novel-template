@@ -4,52 +4,77 @@ class_name Inventory, "res://addons/visual_novel/icons/inventory.png"
 
 signal gained(item: Item, quantity: int)
 signal lost(item: Item, quantity: int)
+signal equipped(item: Item, slot: EquipmentSlot)
+signal unequipped(item: Item, slot: EquipmentSlot)
 
-var slots := []
+var worn := {}
+var items := []
 
-#func _patch(key: String, type: String, patch: Variant, sources: Array):
-##	match key:
-##		"items":
-#		patch = UObject.patch_to_var(patch, sources, TYPE_INT)
-#		gain.call_deferred(key, patch)
-#		match typeof(patch):
-#			TYPE_ARRAY:
-#				for item in patch:
-#					gain(item)
-#			TYPE_DICTIONARY:
-#				for k in patch:
-#					gain(k, patch[k])
-#			_:
-#				push_error("Not implemented %s %s." % [key, patch])
+func _patch_manually_deferred(key: String, value: Variant, sources: Array):
+	value = DataParser.patch_to_var(value, sources)
+	if key == "items":
+		match typeof(value):
+			TYPE_DICTIONARY:
+				for item_id in value:
+					gain(Item.from_id(item_id), value[item_id])
+			_: push_error("Not implemented.")
+	elif key == "wearing":
+		match typeof(value):
+			TYPE_DICTIONARY:
+				for item_id in value:
+					wear(Item.from_id(item_id), EquipmentSlot.from_id(value[item_id]))
+			_: push_error("Not implemented.")
+	else:
+		push_error("Nothing patchable to '%s' for %s." % [key, value])
 
-func _get(property: StringName):
-	if has(str(property)):
-		return count(str(property))
+#func _patch_property_deferred(key: String, value: Variant):
+#	var item: Item = DataManager.get_data(Item, key)
+#	if item:
+#		if value is int:
+#			gain(item, value)
+#		elif value is Dictionary:
+#			gain(item, 1, value)
+#		else:
+#			push_error("Don't know how to patch '%s' with %s." % [key, value])
+#	else:
+#		push_error("No item '%s' to add %s." % [key, value])
 
-func has(type: String, quantity := 1) -> bool:
+#func _patch_property_deferred(key: String, value: Variant):
+#	var item: Item = DataManager.get_data(Item, value)
+#	var slot: EquipmentSlot = DataManager.get_data(EquipmentSlot, key)
+#	if item and slot:
+#		wear(item, slot)
+#	else:
+#		push_error("No item '%s' or slot '%s'." % [value, key])
+
+func get_at(index: int) -> InventoryItem:
+	return items[index] if index >= 0 and index < len(items) else null
+
+func has(item: Item, quantity := 1, include_equipped := true) -> bool:
+	var item_id := item.get_id()
 	var q := 0
-	for i in len(slots):
-		if slots[i].id == type:
-			q += slots[i].sum
+	for inv_item in _all_items(include_equipped):
+		if inv_item.id == item_id:
+			q += inv_item.sum
 		if q >= quantity:
 			return true
 	return false
 
-func count(type: String) -> int:
+func count(item: Item, include_equipped := true) -> int:
+	var item_id := item.get_id()
 	var out := 0
-	for i in len(slots):
-		if slots[i].id == type:
-			out += slots[i].sum
+	for inv_item in _all_items(include_equipped):
+		if inv_item.id == item_id:
+			out += inv_item.sum
 	return out
 
 func gain(item: Item, quantity := 1, kwargs := {}):
-	var all_items: ItemDatabase = item.get_database()
-	var id: String = item.get_id()
+	var q := quantity
 	
 	# try to append to previous slots
-	var q := quantity
-	for slot in slots:
-		if slot.id == id and slot.sum < item.slot_max:
+	var item_id := item.get_id()
+	for slot in items:
+		if slot.id == item_id and slot.sum < item.slot_max:
 			var amount := mini(item.slot_max, q)
 			slot.sum += amount
 			q -= amount
@@ -58,30 +83,135 @@ func gain(item: Item, quantity := 1, kwargs := {}):
 	
 	# create new slots for leftovers
 	for i in ceil(q / float(item.slot_max)):
-		var amount := mini(item.slot_max, q)
-		q -= amount
-		_add_slot(id, amount)
+		var min := mini(item.slot_max, q)
+		q -= min
+		_add_slot(item, min)
 	
 	var dif := quantity - q
 	gained.emit(item, dif)
+	signal_changed()
 
 func lose(item: Item, quantity := 1, kwargs := {}):
-	var all_items: ItemDatabase = item.get_database()
-	var id: String = item.get_id()
-	
 	var q := quantity
-	for i in range(len(slots)-1, -1, -1):
-		var slot: InventoryItem = slots[i]
-		if slot.id == id:
-			var amount := mini(slot.sum, q)
-			slot.sum -= amount
-			q -= amount
-			if q <= 0:
-				slots.remove_at(i)
+	var item_id := item.get_id()
+	for i in range(len(items)-1, -1, -1):
+		var slot: InventoryItem = items[i]
+		if slot.id == item_id:
+			var min := mini(slot.sum, q)
+			q -= min
+			slot.sum -= min
+			if slot.sum <= 0:
+				items.remove_at(i)
 				break
 	
 	var dif := quantity - q
 	lost.emit(item, dif)
+	signal_changed()
 
-func _add_slot(type: String, total: int):
-	slots.append(InventoryItem.new(type, total))
+func _find_slot(item: Item) -> InventoryItem:
+	for i in len(items):
+		if items[i].id == item.get_id():
+			return items[i]
+	return null
+
+func _add_slot(item: Item, total: int):
+	items.append(InventoryItem.new(item, total))
+
+func _all_items(include_equipped := true) -> Array[InventoryItem]:
+	if include_equipped:
+		return items + worn.values()
+	else:
+		return items
+
+#
+# EQUIPMENT RELATED
+#
+
+# get an item equiped at the current slot (or null)
+func get_equipped_at(slot: EquipmentSlot) -> InventoryItem:
+	var slot_id := slot.get_id()
+	for slot in worn:
+		if slot == slot_id:
+			return worn[slot]
+	return null
+
+# wear an item from the inventory
+func wear(item: Item, slot: EquipmentSlot = null, create_if_hasnt := true) -> bool:
+	var item_id := item.get_id()
+	
+	# item is wearable?
+	if not item.is_wearable():
+		push_error("Item '%s' isn't wearable." % item_id)
+		return false
+	
+	# check if we have the item
+	var inv_item := _find_slot(item)
+	if not inv_item:
+		if create_if_hasnt:
+			# create it
+			inv_item = InventoryItem.new(item)
+			items.append(inv_item)
+			# alert that item was gained
+			gained.emit(item, 1)
+		else:
+			push_error("Don't have '%s' to wear." % [item_id])
+			return false
+	
+	return wear_from(inv_item, slot)
+
+func wear_from(inv_item: InventoryItem, slot: EquipmentSlot = null) -> bool:
+	var item: Item = inv_item.get_item()
+	var _slot := slot
+	
+	# item is wearable?
+	if not item.is_wearable():
+		push_error("Item '%s' isn't wearable." % item.get_id())
+		return false
+	
+	# if no explicit slot set, just use the first
+	if _slot == null:
+		_slot = item.get_first_slot()
+	
+	# bare any other slots
+	# and bare whatever this one is
+	var slot_id := _slot.get_id()
+	for b in [slot_id] + _slot.bare:
+		_bare_slot(b)
+	
+	# remove it from the inventory
+	items.erase(inv_item)
+	inv_item.worn_to = slot_id
+	# add it to worn
+	worn[slot_id] = inv_item
+	equipped.emit(item, _slot)
+	signal_changed()
+	return true
+
+func bare(item: Item):
+	var item_id := item.get_id()
+	for slot_id in worn.keys():
+		if worn[slot_id].type == item_id:
+			_bare_slot(slot_id)
+			break
+
+func bare_at(inv_item: InventoryItem):
+	if inv_item.is_worn():
+		_bare_slot(inv_item.worn_to)
+
+func bare_slot(slot: EquipmentSlot):
+	_bare_slot(slot.get_id())
+
+func _bare_slot(slot_id: String):
+	if slot_id in worn:
+		var inv_item: InventoryItem = worn[slot_id]
+		inv_item.worn_to = ""
+		# add the item back to the inventory
+		items.append(inv_item)
+		
+		# remove equipment slot
+		worn.erase(slot_id)
+		
+		# signal that item was unequipped
+		var slot: EquipmentSlot = DataManager.get_data(EquipmentSlot, slot_id)
+		unequipped.emit(inv_item.get_item(), slot)
+		signal_changed()

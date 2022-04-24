@@ -1,0 +1,228 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://addons/vn_os/OperatingSystem.gd" id="1_mgl85"]
+[ext_resource type="Shader" path="res://addons/vn_os/blur.gdshader" id="2_0tded"]
+[ext_resource type="Script" path="res://addons/vn_os/OSIconContainer.gd" id="3_8n8d4"]
+[ext_resource type="Script" path="res://addons/vn_os/phone/page_indicator.gd" id="5_10nsi"]
+[ext_resource type="Script" path="res://addons/vn_os/OSLockScreen.gd" id="5_leu52"]
+[ext_resource type="Texture2D" uid="uid://05k5g35bx38x" path="res://icon.png" id="6_qsgcj"]
+[ext_resource type="PackedScene" path="res://addons/vn_os/phone/window.tscn" id="8_wx8wv"]
+
+[sub_resource type="Gradient" id="Gradient_inhbk"]
+offsets = PackedFloat32Array(0, 0.719818, 1)
+colors = PackedColorArray(1, 0.600874, 0.623268, 1, 0.898438, 0.582195, 0.109396, 1, 0.605469, 0.306877, 0.164136, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kwtoh"]
+gradient = SubResource( "Gradient_inhbk" )
+fill_from = Vector2(0.461538, 0.0598291)
+fill_to = Vector2(1, 0.987179)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kucd0"]
+shader = ExtResource( "2_0tded" )
+shader_param/blur = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qj5ri"]
+shader = ExtResource( "2_0tded" )
+shader_param/blur = 0.766
+
+[sub_resource type="Gradient" id="Gradient_su2fy"]
+offsets = PackedFloat32Array(0.004, 1)
+colors = PackedColorArray(0.118107, 0, 0.328125, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_g3bym"]
+gradient = SubResource( "Gradient_su2fy" )
+fill_from = Vector2(0.388889, 0)
+fill_to = Vector2(0.324786, 1)
+
+[node name="os" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 316.0
+offset_right = -289.0
+script = ExtResource( "1_mgl85" )
+_windows = NodePath("windows")
+_desktop = NodePath("VBoxContainer/icons/icons")
+window_template = ExtResource( "8_wx8wv" )
+data_source = "res://addons/sim_os/files.soda"
+
+[node name="background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( "GradientTexture2D_kwtoh" )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="info_bar" type="ColorRect" parent="VBoxContainer"]
+material = SubResource( "ShaderMaterial_kucd0" )
+minimum_size = Vector2(0, 48)
+offset_right = 419.0
+offset_bottom = 48.0
+size_flags_horizontal = 3
+color = Color(0.615686, 0.615686, 0.615686, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/info_bar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="VBoxContainer/info_bar/HBoxContainer"]
+offset_right = 419.0
+offset_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 32
+text = "1:00  pm"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="icons" type="MarginContainer" parent="VBoxContainer"]
+offset_top = 52.0
+offset_right = 419.0
+offset_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_left = 16
+
+[node name="icons" type="Control" parent="VBoxContainer/icons"]
+offset_left = 16.0
+offset_right = 403.0
+offset_bottom = 428.0
+script = ExtResource( "3_8n8d4" )
+cell_size = Vector2(96, 96)
+
+[node name="page_indicator" type="Control" parent="VBoxContainer"]
+minimum_size = Vector2(0, 16)
+offset_top = 484.0
+offset_right = 419.0
+offset_bottom = 500.0
+script = ExtResource( "5_10nsi" )
+
+[node name="app_bar" type="ColorRect" parent="VBoxContainer"]
+material = SubResource( "ShaderMaterial_kucd0" )
+minimum_size = Vector2(0, 96)
+offset_top = 504.0
+offset_right = 419.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+color = Color(0.615686, 0.615686, 0.615686, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/app_bar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/app_bar/MarginContainer"]
+offset_top = 4.0
+offset_right = 419.0
+offset_bottom = 92.0
+alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/app_bar/MarginContainer/HBoxContainer"]
+minimum_size = Vector2(72, 72)
+offset_left = 173.0
+offset_right = 245.0
+offset_bottom = 88.0
+flat = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/app_bar/MarginContainer/HBoxContainer/Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="icon" type="TextureRect" parent="VBoxContainer/app_bar/MarginContainer/HBoxContainer/Button/VBoxContainer"]
+offset_right = 72.0
+offset_bottom = 76.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( "6_qsgcj" )
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="indicator" type="TextureRect" parent="VBoxContainer/app_bar/MarginContainer/HBoxContainer/Button/VBoxContainer"]
+modulate = Color(0, 0, 0, 0.5)
+minimum_size = Vector2(8, 8)
+offset_top = 80.0
+offset_right = 72.0
+offset_bottom = 88.0
+texture = ExtResource( "6_qsgcj" )
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="windows" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="lock_screen" type="TextureRect" parent="."]
+visible = false
+material = SubResource( "ShaderMaterial_qj5ri" )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( "GradientTexture2D_g3bym" )
+script = ExtResource( "5_leu52" )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="lock_screen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="lock_screen/VBoxContainer"]
+minimum_size = Vector2(0, 32)
+offset_right = 424.0
+offset_bottom = 32.0
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="lock_screen/VBoxContainer"]
+offset_top = 36.0
+offset_right = 424.0
+offset_bottom = 600.0
+size_flags_vertical = 3
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_left = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="lock_screen/VBoxContainer/MarginContainer"]
+offset_left = 32.0
+offset_right = 392.0
+offset_bottom = 564.0
+alignment = 1
+
+[node name="time" type="Label" parent="lock_screen/VBoxContainer/MarginContainer/VBoxContainer"]
+offset_top = 183.0
+offset_right = 360.0
+offset_bottom = 274.0
+theme_override_font_sizes/font_size = 64
+text = "1:00 PM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="locked" type="Label" parent="lock_screen/VBoxContainer/MarginContainer/VBoxContainer"]
+offset_top = 278.0
+offset_right = 360.0
+offset_bottom = 304.0
+text = "Locked"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="password_input" type="LineEdit" parent="lock_screen/VBoxContainer/MarginContainer/VBoxContainer"]
+offset_top = 308.0
+offset_right = 360.0
+offset_bottom = 350.0
+theme_override_colors/font_outline_color = Color(0.470588, 0.470588, 0.470588, 1)
+theme_override_constants/caret_width = 3
+theme_override_constants/minimum_character_width = 16
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 24
+alignment = 1
+context_menu_enabled = false
+caret_blink = true
+
+[node name="message" type="Label" parent="lock_screen/VBoxContainer/MarginContainer/VBoxContainer"]
+offset_top = 354.0
+offset_right = 360.0
+offset_bottom = 380.0
+text = "Wrong password."
+horizontal_alignment = 1

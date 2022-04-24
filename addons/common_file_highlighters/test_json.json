@@ -1,0 +1,23 @@
+{
+	"key": "string value",
+	"color": "#ff0dd0",
+	"key": 0.0,
+	"key": 1,
+	"key": true,
+	"null": null,
+	"key": [1, 2, 3],
+	"key": [
+		1,
+		2,
+		3,
+		{"key": "okay"}
+	],
+	
+	"key": { "key2": true, "key2": false, "array": [adsa] }
+	"key": {
+		"key1": "string",
+		"key2": true,
+		"key3": 0.1,
+		"key4": []
+	}
+}

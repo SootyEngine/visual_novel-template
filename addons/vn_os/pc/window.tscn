@@ -1,0 +1,89 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/vn_os/OSAppWindow.gd" id="1_ni1c5"]
+[ext_resource type="Texture2D" uid="uid://05k5g35bx38x" path="res://icon.png" id="2_1u3ww"]
+
+[node name="window" type="ColorRect"]
+offset_right = 329.0
+offset_bottom = 282.0
+color = Color(0.0235294, 0.584314, 0.792157, 1)
+script = ExtResource( "1_ni1c5" )
+_close_button = NodePath("parts/top_bar/items/close")
+_minimize_button = NodePath("parts/top_bar/items/minimize")
+_title_label = NodePath("parts/top_bar/items/title")
+_content_container = NodePath("parts/content/content_container")
+metadata/_edit_use_custom_anchors = false
+metadata/_edit_group_ = true
+
+[node name="parts" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="top_bar" type="MarginContainer" parent="parts"]
+offset_right = 329.0
+offset_bottom = 35.0
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_left = 4
+
+[node name="items" type="HBoxContainer" parent="parts/top_bar"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 325.0
+offset_bottom = 35.0
+
+[node name="icon" type="TextureRect" parent="parts/top_bar/items"]
+texture_filter = 4
+minimum_size = Vector2(24, 24)
+offset_right = 24.0
+offset_bottom = 31.0
+texture = ExtResource( "2_1u3ww" )
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="title" type="Label" parent="parts/top_bar/items"]
+offset_left = 28.0
+offset_top = 2.0
+offset_right = 278.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.25)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/outline_size = 4
+text = "Window"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="minimize" type="Button" parent="parts/top_bar/items"]
+offset_left = 282.0
+offset_right = 299.0
+offset_bottom = 31.0
+focus_mode = 0
+text = "v"
+
+[node name="close" type="Button" parent="parts/top_bar/items"]
+offset_left = 303.0
+offset_right = 321.0
+offset_bottom = 31.0
+focus_mode = 0
+text = "X"
+
+[node name="content" type="MarginContainer" parent="parts"]
+offset_top = 39.0
+offset_right = 329.0
+offset_bottom = 282.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="content_container" type="Control" parent="parts/content"]
+offset_left = 4.0
+offset_right = 325.0
+offset_bottom = 239.0
+size_flags_horizontal = 3
+size_flags_vertical = 3

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cothkje4x7xw8"]
+[gd_scene load_steps=3 format=3 uid="uid://cothkje4x7xw8"]
 
 [ext_resource type="Script" path="res://addons/visual_novel/scenes/menus/main_hud.gd" id="1_lrka8"]
+[ext_resource type="Script" path="res://addons/visual_novel/nodes/SceneButton.gd" id="2_41atf"]
 
 [node name="main_hud" type="Control"]
 anchor_right = 1.0
@@ -21,3 +22,16 @@ theme_override_constants/outline_size = 4
 text = "HUD"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="inventory" type="Button" parent="."]
+offset_left = 13.0
+offset_top = 13.0
+offset_right = 130.0
+offset_bottom = 64.0
+text = "inventory"
+script = ExtResource( "2_41atf" )
+path = &"_show_inventory"
+as_pressed = false
+_preview = "/_show_inventory"
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false

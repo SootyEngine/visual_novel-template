@@ -12,7 +12,8 @@ var caption_auto_clear := true
 
 # common
 var time := DateTime.new({weekday="sat"})
-var play_time := 0 # seconds
+var start_time := 0 # seconds from DateTime
+var play_time := 0 # seconds from DateTime
 var _last_play_time := 0 # seconds
 var score := 0
 

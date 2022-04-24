@@ -1,0 +1,72 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/vn_os/apps/image_viewer/image_viewer.gd" id="1_3qd11"]
+[ext_resource type="Shader" path="res://addons/vn_os/apps/image_viewer/image_viewer.gdshader" id="2_nwx43"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qroia"]
+shader = ExtResource( "2_nwx43" )
+
+[node name="image_viewer" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 0
+script = ExtResource( "1_3qd11" )
+_texture = NodePath("ColorRect2/MarginContainer/TextureRect")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+minimum_size = Vector2(0, 32)
+offset_right = 1024.0
+offset_bottom = 32.0
+color = Color(0.133333, 0.133333, 0.133333, 1)
+
+[node name="top_buttons" type="HBoxContainer" parent="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="file" type="Button" parent="ColorRect/top_buttons"]
+offset_right = 35.0
+offset_bottom = 32.0
+focus_mode = 0
+text = "File"
+flat = true
+
+[node name="edit" type="Button" parent="ColorRect/top_buttons"]
+offset_left = 39.0
+offset_right = 77.0
+offset_bottom = 32.0
+focus_mode = 0
+text = "Edit"
+flat = true
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_top = 32.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect2/MarginContainer"]
+material = SubResource( "ShaderMaterial_qroia" )
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1020.0
+offset_bottom = 564.0
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect2/MarginContainer"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1020.0
+offset_bottom = 564.0
+ignore_texture_size = true
+stretch_mode = 5

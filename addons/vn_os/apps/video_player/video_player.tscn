@@ -1,0 +1,85 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/vn_os/apps/video_player/video_player.gd" id="1_yqrvo"]
+
+[node name="video_player" type="ColorRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 1)
+script = ExtResource( "1_yqrvo" )
+_player = NodePath("VBoxContainer/VideoStreamPlayer")
+_slider = NodePath("VBoxContainer/MarginContainer/VBoxContainer/scrubber/slider")
+_label_current = NodePath("VBoxContainer/MarginContainer/VBoxContainer/scrubber/current_time")
+_label_left = NodePath("VBoxContainer/MarginContainer/VBoxContainer/scrubber/time_left")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="VBoxContainer"]
+offset_right = 1024.0
+offset_bottom = 519.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+offset_top = 523.0
+offset_right = 1024.0
+offset_bottom = 600.0
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+offset_left = 32.0
+offset_top = 8.0
+offset_right = 992.0
+offset_bottom = 69.0
+
+[node name="scrubber" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+offset_right = 960.0
+offset_bottom = 26.0
+
+[node name="current_time" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/scrubber"]
+minimum_size = Vector2(120, 0)
+offset_right = 120.0
+offset_bottom = 26.0
+text = "0:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="slider" type="HSlider" parent="VBoxContainer/MarginContainer/VBoxContainer/scrubber"]
+offset_left = 124.0
+offset_right = 836.0
+offset_bottom = 16.0
+size_flags_horizontal = 3
+
+[node name="time_left" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/scrubber"]
+minimum_size = Vector2(120, 0)
+offset_left = 840.0
+offset_right = 960.0
+offset_bottom = 26.0
+text = "1:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="buttons" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+offset_top = 30.0
+offset_right = 960.0
+offset_bottom = 61.0
+alignment = 1
+
+[node name="pause" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/buttons"]
+offset_left = 430.0
+offset_right = 485.0
+offset_bottom = 31.0
+text = "Pause"
+
+[node name="play" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/buttons"]
+offset_left = 489.0
+offset_right = 530.0
+offset_bottom = 31.0
+text = "Play"

@@ -1,19 +1,37 @@
+@tool
 extends BaseButton
 
-@export var id := name
-@export var local_to_scene := false
-@export var as_pressed := true
+@export var path := name:
+	set(s):
+		path = s
+		_update_preview()
+
+@export var as_local_to_scene := false:
+	set(s):
+		as_local_to_scene = s
+		_update_preview()
+
+@export var as_pressed := true:
+	set(s):
+		as_pressed = s
+		_update_preview()
+
+@export var _preview := ""
 
 func _pressed() -> void:
-	var flow: String
+	Dialogue.goto(_get_path())
+
+func _update_preview():
+	_preview = _get_path()
+
+func _get_path() -> String:
 	if as_pressed:
-		if local_to_scene:
-			flow = VisualNovel._get_scene_flow_path("_pressed/%s" % id)
+		if as_local_to_scene:
+			return VisualNovel._get_scene_flow_path("_pressed/%s" % path)
 		else:
-			flow = "/%s/_pressed" % id
+			return "/%s/_pressed" % path
 	else:
-		if local_to_scene:
-			flow = VisualNovel._get_scene_flow_path("%s" % id)
+		if as_local_to_scene:
+			return VisualNovel._get_scene_flow_path("%s" % path)
 		else:
-			flow = "/%s" % id
-	Dialogue.goto(flow)
+			return "/%s" % path

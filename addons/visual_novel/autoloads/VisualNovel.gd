@@ -34,6 +34,7 @@ var speaker := ""
 var option := ""
 var current_line: Dictionary
 var scene: Scene
+var something_changed := false
 
 func version() -> String:
 	return VERSION
@@ -56,6 +57,7 @@ func _ready() -> void:
 	SceneManager.changed.connect(_scene_changed)
 	Dialogue.caption.connect(_caption)
 	Dialogue.selected.connect(_selected)
+	Dialogue.started.connect(_dialogue_started)
 	Dialogue.ended.connect(_dialogue_ended)
 	State._changed.connect(_state_changed)
 	Persistent._changed.connect(_state_changed)
@@ -64,6 +66,8 @@ func _get_scene_flow_path(path: String):
 	return "/%s/%s" % [scene.scene_id, path]
 
 func _state_changed(property: String):
+	something_changed = true
+	
 	if scene:
 		var flow_path: String = "/%s/_changed/%s" % [scene.scene_id, property]
 		if Dialogue.has_path(flow_path):
@@ -138,7 +142,7 @@ func _caption(text: String, line := {}):
 	caption_started.emit()
 
 static func get_speaker(from: String) -> String:
-	var db := Database.get_database(Character)
+	var db: Database = DataManager.get_database(Character)
 	var out = from
 	if db and db.has(from):
 		out = db.get(from)
@@ -177,11 +181,19 @@ func _goto_scene(id: String, kwargs := {}):
 		# Scene.find will push_error with more useful data.
 		pass
 
+func _dialogue_started():
+	something_changed = false
+	
 func _dialogue_ended():
 	current_line = {}
 	speaker = ""
 	caption = ""
 	caption_ended.emit()
+
+	if something_changed:
+		something_changed = false
+		print("Autosaving")
+		SaveManager.save_slot("auto")
 
 # causes the dialogue to pause
 func wait(node: Node):

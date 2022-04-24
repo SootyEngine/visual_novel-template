@@ -4,6 +4,7 @@ var _tween: Tween
 var _shown := true
 
 func _ready() -> void:
+	await ModManager.loaded
 	Dialogue.started.connect(_hide)
 	Dialogue.ended.connect(_show)
 	SceneManager.changed.connect(_scene_changed)
@@ -31,7 +32,7 @@ func _hide():
 		_tween.tween_callback(set_visible.bind(false))
 
 func _show():
-	if not _shown and get_tree().current_scene is Scene:
+	if not _shown:# and get_tree().current_scene is Scene:
 		_shown = true
 		_init_tween()
 		_tween.tween_callback(set_visible.bind(true))

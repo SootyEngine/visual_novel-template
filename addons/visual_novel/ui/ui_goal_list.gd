@@ -14,7 +14,7 @@ func _reloaded():
 	_redraw()
 
 func _redraw():
-	var all := Database.get_database(Goal).get_all()
+	var all := DataManager.get_all(Goal)
 	var s_started := all.filter(func(x): return x.main and x.is_started)
 	var s_completed := all.filter(func(x): return x.main and x.is_completed)
 	var s_unlocked := all.filter(func(x): return x.main and x.is_unlocked)

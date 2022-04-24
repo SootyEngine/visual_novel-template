@@ -5,5 +5,3 @@ func get_class() -> String:
 
 @export var name := ""
 @export var parent := ""
-@export var format := ""
-@export var color := Color.WHITE

@@ -1,0 +1,31 @@
+password: ass_word
+
+desktop: [My Photos/Photo001.jpeg, My Photos/image.png, My Photos/coin.ogv]
+
+files:
+	game.exe:
+		type: game
+		desc: A game to play.
+	
+	My Photos:
+		Photo001.jpeg: res://icon.png
+		image.png: res://icon.png
+		coin.ogv: res://addons/sim_os/test/coin.ogv
+		
+	My Docs:
+		Contacts:
+			app: contacts
+		
+		pass.txt:
+			""""
+			acc: MyBarro
+			pass: egg_lover321
+			""""
+		
+		my_text.txt:
+			""""
+			Once upon a time in a land far away
+			
+			There lived a stranger.
+				- Signed, a a a
+			""""

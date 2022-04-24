@@ -1,0 +1,209 @@
+[gd_scene load_steps=7 format=3 uid="uid://wp1djqsqlsdj"]
+
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/inventory/inventory.gd" id="1_irgpu"]
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/inventory/inventory_slots.gd" id="1_trskn"]
+[ext_resource type="PackedScene" uid="uid://crron85rn8b4q" path="res://addons/visual_novel/scenes_ui/inventory/prefabs/inventory_slot.tscn" id="2_5fqku"]
+[ext_resource type="Script" path="res://addons/rich_text/RichTextLabel2.gd" id="2_717da"]
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/inventory/item_description.gd" id="3_bkcgc"]
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/inventory/equipment_slots.gd" id="5_jttg5"]
+
+[node name="inventory" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( "1_irgpu" )
+_inventory = "mary"
+
+[node name="CenterContainer" type="VBoxContainer" parent="."]
+minimum_size = Vector2(0, 80)
+anchor_right = 1.0
+offset_right = -508.0
+offset_bottom = 590.0
+grow_horizontal = 2
+alignment = 2
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="Label" type="Label" parent="CenterContainer"]
+offset_top = 278.0
+offset_right = 516.0
+offset_bottom = 304.0
+text = "Wearing"
+
+[node name="worn" type="GridContainer" parent="CenterContainer"]
+offset_top = 308.0
+offset_right = 516.0
+offset_bottom = 308.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+columns = 5
+script = ExtResource( "5_jttg5" )
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="s" type="Label" parent="CenterContainer"]
+offset_top = 312.0
+offset_right = 516.0
+offset_bottom = 338.0
+text = "Items"
+
+[node name="items" type="GridContainer" parent="CenterContainer"]
+offset_top = 342.0
+offset_right = 516.0
+offset_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+columns = 5
+script = ExtResource( "1_trskn" )
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="slot0" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+
+[node name="slot1" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 84.0
+offset_right = 164.0
+
+[node name="slot2" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 168.0
+offset_right = 248.0
+
+[node name="slot3" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 252.0
+offset_right = 332.0
+
+[node name="slot4" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 336.0
+offset_right = 416.0
+
+[node name="slot5" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_top = 84.0
+offset_bottom = 164.0
+
+[node name="slot6" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 84.0
+offset_top = 84.0
+offset_right = 164.0
+offset_bottom = 164.0
+
+[node name="slot7" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 168.0
+offset_top = 84.0
+offset_right = 248.0
+offset_bottom = 164.0
+
+[node name="slot8" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 252.0
+offset_top = 84.0
+offset_right = 332.0
+offset_bottom = 164.0
+
+[node name="slot9" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 336.0
+offset_top = 84.0
+offset_right = 416.0
+offset_bottom = 164.0
+
+[node name="slot10" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_top = 168.0
+offset_bottom = 248.0
+
+[node name="slot11" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 84.0
+offset_top = 168.0
+offset_right = 164.0
+offset_bottom = 248.0
+
+[node name="slot12" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 168.0
+offset_top = 168.0
+offset_right = 248.0
+offset_bottom = 248.0
+
+[node name="slot13" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 252.0
+offset_top = 168.0
+offset_right = 332.0
+offset_bottom = 248.0
+
+[node name="slot14" parent="CenterContainer/items" instance=ExtResource( "2_5fqku" )]
+offset_left = 336.0
+offset_top = 168.0
+offset_right = 416.0
+offset_bottom = 248.0
+
+[node name="description" type="ColorRect" parent="."]
+offset_left = 520.0
+offset_top = 357.0
+offset_right = 921.0
+offset_bottom = 578.0
+color = Color(0, 0, 0, 0.431373)
+script = ExtResource( "3_bkcgc" )
+_label = NodePath("MarginContainer/VBoxContainer/RichTextLabel")
+_button_container = NodePath("MarginContainer/VBoxContainer/actions")
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="description"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="description/MarginContainer"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 385.0
+offset_bottom = 205.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="description/MarginContainer/VBoxContainer"]
+offset_right = 369.0
+offset_bottom = 185.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.25)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/mono_font_size = 20
+theme_override_font_sizes/bold_italics_font_size = 20
+theme_override_font_sizes/italics_font_size = 20
+theme_override_font_sizes/bold_font_size = 20
+theme_override_font_sizes/normal_font_size = 20
+script = ExtResource( "2_717da" )
+bbcode = "[150;light_green]Item[]
+Description"
+alignment = 1
+font_size = 20
+shadow = true
+outline_size = 4
+
+[node name="actions" type="HBoxContainer" parent="description/MarginContainer/VBoxContainer"]
+offset_top = 189.0
+offset_right = 369.0
+offset_bottom = 189.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="close" type="Button" parent="."]
+offset_left = 451.0
+offset_top = 10.0
+offset_right = 556.0
+offset_bottom = 68.0
+text = "Close"
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[connection signal="changed" from="." to="CenterContainer/worn" method="_on_inventory_changed"]
+[connection signal="changed" from="." to="CenterContainer/items" method="_on_inventory_changed"]
+[connection signal="item_selected" from="CenterContainer/worn" to="." method="_on_worn_item_selected"]
+[connection signal="item_selected" from="CenterContainer/worn" to="description" method="_on_worn_item_selected"]
+[connection signal="item_selected" from="CenterContainer/items" to="." method="_on_items_item_selected"]
+[connection signal="item_selected" from="CenterContainer/items" to="description" method="_on_items_item_selected"]
+[connection signal="item_action" from="description" to="." method="_on_description_item_action"]

@@ -4,11 +4,12 @@ func get_class() -> String:
 	return "Character"
 
 var name := ""
+var surname := ""
 var gender := ""
 var at := ""
-var color := Color.WHITE
-var inventory := Inventory.new()
-var birthday := DateTime.new()
+var birthday: DateTime = DateTime.new()
+var inventory: Inventory = Inventory.new()
+var stats := Stats.new()
 
 func _get(property: StringName):
 	var k := str(property)

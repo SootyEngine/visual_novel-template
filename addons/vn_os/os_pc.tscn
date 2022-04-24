@@ -1,0 +1,162 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://addons/vn_os/OperatingSystem.gd" id="1_2x5g4"]
+[ext_resource type="Texture2D" uid="uid://05k5g35bx38x" path="res://icon.png" id="1_v4a6m"]
+[ext_resource type="PackedScene" path="res://addons/vn_os/pc/window.tscn" id="2_5cqjx"]
+[ext_resource type="Script" path="res://addons/vn_os/OSCursor.gd" id="2_f87wv"]
+[ext_resource type="Script" path="res://addons/vn_os/OSIconContainer.gd" id="2_hkbsn"]
+[ext_resource type="PackedScene" path="res://addons/vn_os/OSFile.tscn" id="3_76k6d"]
+[ext_resource type="PackedScene" path="res://addons/vn_os/apps/app_button.tscn" id="5_gidon"]
+[ext_resource type="Script" path="res://addons/vn_os/OSAppBar.gd" id="5_w73hd"]
+
+[sub_resource type="Gradient" id="Gradient_xgg3a"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.572289, 1)
+colors = PackedColorArray(0.528542, 0.730469, 0.586733, 1, 0.664433, 0.684798, 0.52882, 1, 1, 0.565791, 0.625682, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0wxrc"]
+gradient = SubResource( "Gradient_xgg3a" )
+fill_from = Vector2(0.086758, 0.96347)
+
+[node name="personal_computer" type="ColorRect" groups=["os"]]
+clip_children = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 283.0
+offset_top = 83.0
+offset_right = -161.0
+offset_bottom = -78.0
+script = ExtResource( "1_2x5g4" )
+window_template = ExtResource( "2_5cqjx" )
+data_source = "res://addons/sim_os/files.soda"
+
+[node name="background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( "GradientTexture2D_0wxrc" )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="icons_and_windows" type="MarginContainer" parent="VBoxContainer"]
+offset_right = 580.0
+offset_bottom = 399.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="icons" type="Control" parent="VBoxContainer/icons_and_windows"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 576.0
+offset_bottom = 397.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource( "2_hkbsn" )
+cell_size = Vector2(96, 96)
+
+[node name="icon" parent="VBoxContainer/icons_and_windows/icons" instance=ExtResource( "3_76k6d" )]
+offset_right = 96.0
+offset_bottom = 98.0
+icon = null
+_icon = NodePath("")
+_label = NodePath("")
+
+[node name="icon2" parent="VBoxContainer/icons_and_windows/icons" instance=ExtResource( "3_76k6d" )]
+offset_left = 96.0
+offset_right = 192.0
+offset_bottom = 98.0
+icon = null
+_icon = NodePath("")
+_label = NodePath("")
+
+[node name="icon3" parent="VBoxContainer/icons_and_windows/icons" instance=ExtResource( "3_76k6d" )]
+offset_left = 192.0
+offset_right = 288.0
+offset_bottom = 98.0
+icon = null
+_icon = NodePath("")
+_label = NodePath("")
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="icon4" parent="VBoxContainer/icons_and_windows/icons" instance=ExtResource( "3_76k6d" )]
+offset_left = 288.0
+offset_right = 384.0
+offset_bottom = 98.0
+icon = null
+_icon = NodePath("")
+_label = NodePath("")
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="windows" type="Control" parent="VBoxContainer/icons_and_windows"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 576.0
+offset_bottom = 397.0
+mouse_filter = 2
+
+[node name="app_bar" type="ColorRect" parent="VBoxContainer"]
+minimum_size = Vector2(0, 36)
+offset_top = 403.0
+offset_right = 580.0
+offset_bottom = 439.0
+size_flags_horizontal = 3
+script = ExtResource( "5_w73hd" )
+_window_container = NodePath("../icons_and_windows/windows")
+_button_container = NodePath("MarginContainer/HBoxContainer/app_buttons")
+button_prefab = ExtResource( "5_gidon" )
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/app_bar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/app_bar/MarginContainer"]
+offset_left = 4.0
+offset_top = 2.0
+offset_right = 576.0
+offset_bottom = 34.0
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="start_menu" type="Button" parent="VBoxContainer/app_bar/MarginContainer/HBoxContainer"]
+offset_right = 46.0
+offset_bottom = 32.0
+text = "Start"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/app_bar/MarginContainer/HBoxContainer"]
+offset_left = 50.0
+offset_right = 54.0
+offset_bottom = 32.0
+
+[node name="app_buttons" type="HBoxContainer" parent="VBoxContainer/app_bar/MarginContainer/HBoxContainer"]
+offset_left = 58.0
+offset_right = 572.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="cursor" type="TextureRect" parent="."]
+offset_left = 370.0
+offset_top = 174.0
+offset_right = 402.0
+offset_bottom = 206.0
+rotation = 0.436332
+mouse_filter = 2
+texture = ExtResource( "1_v4a6m" )
+ignore_texture_size = true
+script = ExtResource( "2_f87wv" )
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false

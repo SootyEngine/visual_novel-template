@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/vn_os/OSAppWindow.gd" id="1_37pjj"]
+
+[node name="window" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 0
+script = ExtResource( "1_37pjj" )
+allow_drag = false
+allow_resize = false
+_close_button = NodePath("top_bar/HBoxContainer/back")
+_minimize_button = NodePath("")
+_title_label = NodePath("top_bar/HBoxContainer/title")
+_content_container = NodePath("content_container")
+
+[node name="top_bar" type="ColorRect" parent="."]
+minimum_size = Vector2(0, 48)
+offset_right = 1024.0
+offset_bottom = 48.0
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="top_bar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="back" type="Button" parent="top_bar/HBoxContainer"]
+minimum_size = Vector2(48, 0)
+offset_right = 48.0
+offset_bottom = 48.0
+text = "<"
+
+[node name="title" type="Label" parent="top_bar/HBoxContainer"]
+offset_left = 52.0
+offset_right = 972.0
+offset_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "App Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bars" type="Button" parent="top_bar/HBoxContainer"]
+minimum_size = Vector2(48, 0)
+offset_left = 976.0
+offset_right = 1024.0
+offset_bottom = 48.0
+text = ".::"
+
+[node name="content_container" type="Control" parent="."]
+offset_top = 48.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3

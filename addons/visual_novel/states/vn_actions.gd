@@ -1,16 +1,24 @@
 @tool
 extends Node
 
+var _shortcuts := {
+	inv="characters.p.inventory"
+}
 
 # databases
-var data := Database.new() # unorganized data
-var stats := StatDatabase.new()
-var inventories := InventoryDatabase.new()
-var items := ItemDatabase.new()
-var characters := CharacterDatabase.new()
-var goals := GoalDatabase.new()
-var locations := LocationDatabase.new()
-var equipment_slots := EquipmentSlotDatabase.new()
+var data := Database.new(Data) # misc data
+var stats := Database.new(Stat)
+var inventories := Database.new(Inventory)
+var inventory_items := Database.new(InventoryItem)
+var items := Database.new(Item)
+var characters := Database.new(Character, {
+	# always have a default character
+	# doesn't have to be used
+	p=Character.new({name="p"})
+})
+var goals := Database.new(Goal)
+var locations := Database.new(Location)
+var equipment_slots := Database.new(EquipmentSlot)
 
 func _init() -> void:
 	StringAction.connect_methods(self, [
@@ -19,11 +27,10 @@ func _init() -> void:
 		# goals
 		goal_started, goal_failed, goal_passed, goal_advanced,
 		# items
-		gain, lose,
+#		gain, lose, has_item,
 		# stats
 		gain_stat
 	])
-
 
 # checks that a state flag is set, typicall a bool.
 func has_flag(flag: String) -> bool:
@@ -60,21 +67,36 @@ func goal_passed(goal: String, kwargs := {}):
 	goals.start(goal)
 
 
+##
+## INVENTORY RELATED
+##
+#func gain(item: Item, amount: int, kwargs := {}):
+#	var from: String = kwargs.get("from", "")
+#	var who: String = kwargs.get("who", "p") # player by default
+#	if who:
+#		var inv_to: Inventory = characters.find(who).inventory
+#		inv_to.gain(item, amount)
+#	if from:
+#		var inv_from: Inventory = characters.find(from).inventory
+#		inv_from.lose(item, amount)
 #
-# INVENTORY RELATED
+#func lose(item: Item, amount: int, kwargs := {}):
+#	var to: String = kwargs.get("to", "")
+#	var who: String = kwargs.get("who", "p") # player by default
+#	if who:
+#		var inv_to: Inventory = characters.find(who).inventory
+#		inv_to.lose(item, amount)
+#	if to:
+#		var inv_from: Inventory = characters.find(to).inventory
+#		inv_from.gain(item, amount)
 #
-func gain(item: Item, quantity: int, kwargs := {}):
-	var from: String = kwargs.get("from", "")
-	var to: String = kwargs.get("to", "p") # player by default
-	if to:
-		var inv_to: Inventory = characters.find(to).inventory
-		inv_to.gain(item, quantity, kwargs)
-	if from:
-		var inv_from: Inventory = characters.find(from).inventory
-		inv_from.lose(item, quantity, kwargs)
-
-func lose(item: Item, amount: int, kwargs := {}):
-	gain(item, -amount, kwargs)
+#func has_item(item: Item, amount: int = 1, kwargs := {}) -> bool:
+#	var c: Character = characters.find(kwargs.get("who", "p"))
+#	return c.inventory.has(item, amount) if c else false
+#
+#func has_items(itms: Array, kwargs := {}) -> bool:
+#	var c: Character = characters.find(kwargs.get("who", "p"))
+#	return c.inventory.has_all(item, amount)
 
 #
 # STAT RELATED
