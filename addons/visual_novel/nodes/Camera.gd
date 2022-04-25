@@ -24,7 +24,7 @@ var position_offset := Vector2.ZERO
 		update()
 
 func _init():
-	StringAction.connect_methods(self, [camera])
+	Sooty.actions.connect_methods(self, [camera])
 
 func target(id: String, snap := false):
 	__target(_get_tween(), id, snap)
@@ -64,7 +64,7 @@ func camera(action: String, args: Array = [], kwargs: Dictionary = {}):
 		push_error("\tno action '%s'." % action)
 
 func set_target(id: String):
-	var target := UGroup.get_first_where("camera_target", {name=id})
+	var target := UGroup.first_where("camera_target", {name=id})
 	if target:
 		position = target.pos - Global.window_size * .5
 

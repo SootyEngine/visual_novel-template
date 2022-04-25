@@ -1,6 +1,8 @@
 @tool
 extends Data
 class_name Inventory, "res://addons/visual_novel/icons/inventory.png"
+func _get_database_id():
+	return "Inventory"
 
 signal gained(item: Item, quantity: int)
 signal lost(item: Item, quantity: int)
@@ -16,36 +18,21 @@ func _patch_manually_deferred(key: String, value: Variant, sources: Array):
 		match typeof(value):
 			TYPE_DICTIONARY:
 				for item_id in value:
-					gain(Item.from_id(item_id), value[item_id])
+					var item := Item.from_id(item_id)
+					if item:
+						gain(item, value[item_id])
 			_: push_error("Not implemented.")
-	elif key == "wearing":
+	elif key == "worn":
 		match typeof(value):
 			TYPE_DICTIONARY:
 				for item_id in value:
-					wear(Item.from_id(item_id), EquipmentSlot.from_id(value[item_id]))
+					var slot := EquipmentSlot.from_id(item_id)
+					var item := Item.from_id(value[item_id])
+					if item and slot:
+						wear(item, slot)
 			_: push_error("Not implemented.")
 	else:
 		push_error("Nothing patchable to '%s' for %s." % [key, value])
-
-#func _patch_property_deferred(key: String, value: Variant):
-#	var item: Item = DataManager.get_data(Item, key)
-#	if item:
-#		if value is int:
-#			gain(item, value)
-#		elif value is Dictionary:
-#			gain(item, 1, value)
-#		else:
-#			push_error("Don't know how to patch '%s' with %s." % [key, value])
-#	else:
-#		push_error("No item '%s' to add %s." % [key, value])
-
-#func _patch_property_deferred(key: String, value: Variant):
-#	var item: Item = DataManager.get_data(Item, value)
-#	var slot: EquipmentSlot = DataManager.get_data(EquipmentSlot, key)
-#	if item and slot:
-#		wear(item, slot)
-#	else:
-#		push_error("No item '%s' or slot '%s'." % [value, key])
 
 func get_at(index: int) -> InventoryItem:
 	return items[index] if index >= 0 and index < len(items) else null
@@ -212,6 +199,6 @@ func _bare_slot(slot_id: String):
 		worn.erase(slot_id)
 		
 		# signal that item was unequipped
-		var slot: EquipmentSlot = DataManager.get_data(EquipmentSlot, slot_id)
+		var slot: EquipmentSlot = Sooty.databases.get_data(EquipmentSlot, slot_id)
 		unequipped.emit(inv_item.get_item(), slot)
 		signal_changed()

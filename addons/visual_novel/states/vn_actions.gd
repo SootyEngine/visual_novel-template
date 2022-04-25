@@ -7,8 +7,9 @@ var _shortcuts := {
 
 # databases
 var data := Database.new(Data) # misc data
-var stats := Database.new(Stat)
-var inventories := Database.new(Inventory)
+var traits := Database.new(Trait) # unchanging properties of characters, items, locations...
+var stats := Database.new(Stat) # like traits, but changeable.
+var inventories := Database.new(Inventory) # inventories disconnected from characters and locations
 var inventory_items := Database.new(InventoryItem)
 var items := Database.new(Item)
 var characters := Database.new(Character, {
@@ -21,7 +22,7 @@ var locations := Database.new(Location)
 var equipment_slots := Database.new(EquipmentSlot)
 
 func _init() -> void:
-	StringAction.connect_methods(self, [
+	Sooty.actions.connect_methods(self, [
 		# flags
 		has_flag, flag,
 		# goals
@@ -35,8 +36,8 @@ func _init() -> void:
 # checks that a state flag is set, typicall a bool.
 func has_flag(flag: String) -> bool:
 	flag = "flags.%s" % flag
-	if State._has(flag):
-		return true if State._get(flag) else false
+	if Sooty.state._has(flag):
+		return true if Sooty.state._get(flag) else false
 	push_error("No flag property %s." % [flag])
 	return false
 
@@ -44,8 +45,8 @@ func has_flag(flag: String) -> bool:
 # set's a state flag, typically a bool.
 func flag(flag: String, to: Variant = true):
 	flag = "flags.%s" % flag
-	if State._has(flag):
-		State._set(flag, to)
+	if Sooty.state._has(flag):
+		Sooty.state._set(flag, to)
 	else:
 		push_error("No flag property %s." % flag)
 

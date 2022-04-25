@@ -24,10 +24,10 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Character.gd"
 }, {
-"base": "ConfigFile",
-"class": &"Config",
+"base": "RefCounted",
+"class": &"ConvertMass",
 "language": &"GDScript",
-"path": "res://addons/util/Config.gd"
+"path": "res://addons/visual_novel/ConvertMass.gd"
 }, {
 "base": "RefCounted",
 "class": &"Data",
@@ -102,7 +102,7 @@ _global_script_classes=[{
 "base": "RefCounted",
 "class": &"Grammar",
 "language": &"GDScript",
-"path": "res://addons/visual_novel/objects/Grammar.gd"
+"path": "res://addons/visual_novel/Grammar.gd"
 }, {
 "base": "Data",
 "class": &"Inventory",
@@ -154,7 +154,7 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/sooty_engine/common/PatchableData.gd"
 }, {
-"base": "Resource",
+"base": "RefCounted",
 "class": &"PropList",
 "language": &"GDScript",
 "path": "res://addons/util/PropList.gd"
@@ -204,15 +204,30 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Stat.gd"
 }, {
-"base": "Node",
-"class": &"StateManagerBase",
-"language": &"GDScript",
-"path": "res://addons/sooty_engine/autoloads/StateManagerBase.gd"
-}, {
-"base": "PatchableData",
+"base": "Data",
 "class": &"Stats",
 "language": &"GDScript",
 "path": "res://addons/visual_novel/objects/Stats.gd"
+}, {
+"base": "Trait",
+"class": &"TEnum",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/traits/TEnum.gd"
+}, {
+"base": "Trait",
+"class": &"THeight",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/traits/THeight.gd"
+}, {
+"base": "Trait",
+"class": &"TLevel",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/traits/TLevel.gd"
+}, {
+"base": "Trait",
+"class": &"TMass",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/traits/TMass.gd"
 }, {
 "base": "Node",
 "class": &"TestClass",
@@ -223,6 +238,16 @@ _global_script_classes=[{
 "class": &"ToolButton",
 "language": &"GDScript",
 "path": "res://addons/tool_button/constants.gd"
+}, {
+"base": "Data",
+"class": &"Trait",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Trait.gd"
+}, {
+"base": "Data",
+"class": &"Traits",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/objects/Traits.gd"
 }, {
 "base": "RefCounted",
 "class": &"UClass",
@@ -318,12 +343,17 @@ _global_script_classes=[{
 "class": &"UType",
 "language": &"GDScript",
 "path": "res://addons/util/UType.gd"
+}, {
+"base": "RefCounted",
+"class": &"Unit",
+"language": &"GDScript",
+"path": "res://addons/visual_novel/UnitConvert.gd"
 }]
 _global_script_class_icons={
 "Award": "res://addons/visual_novel/objects/Award.gd",
 "Bool": "",
 "Character": "res://addons/visual_novel/icons/person.png",
-"Config": "",
+"ConvertMass": "",
 "Data": "res://addons/sooty_engine/icons/data.png",
 "DataParser": "",
 "Database": "res://addons/soot_engine/icons/database.png",
@@ -359,10 +389,15 @@ _global_script_class_icons={
 "Sprite2DAnimations": "",
 "SpriteTransitions": "",
 "Stat": "",
-"StateManagerBase": "",
 "Stats": "",
+"TEnum": "",
+"THeight": "",
+"TLevel": "",
+"TMass": "",
 "TestClass": "",
 "ToolButton": "",
+"Trait": "",
+"Traits": "",
 "UClass": "",
 "UColor": "",
 "UDebug": "",
@@ -381,7 +416,8 @@ _global_script_class_icons={
 "UTime": "",
 "UTween": "",
 "UTween2D": "",
-"UType": ""
+"UType": "",
+"Unit": ""
 }
 
 [application]
@@ -393,20 +429,10 @@ config/features=PackedStringArray("4.0", "Vulkan Clustered")
 
 [autoload]
 
+Global="*res://addons/sooty_engine/autoloads/Global.gd"
+Sooty="*res://addons/sooty_engine/autoloads/Sooty.gd"
 VisualNovel="*res://addons/visual_novel/autoloads/VisualNovel.gd"
 VisualNovelUI="*res://addons/visual_novel/autoloads/VisualNovelUI.tscn"
-Global="*res://addons/sooty_engine/autoloads/Global.gd"
-DataManager="*res://addons/sooty_engine/autoloads/DataManager.gd"
-ModManager="*res://addons/sooty_engine/autoloads/ModManager.gd"
-Settings="*res://addons/sooty_engine/autoloads/Settings.gd"
-SceneManager="*res://addons/sooty_engine/autoloads/SceneManager.gd"
-SaveManager="*res://addons/sooty_engine/autoloads/SaveManager.gd"
-Persistent="*res://addons/sooty_engine/autoloads/Persistent.gd"
-State="*res://addons/sooty_engine/autoloads/State.gd"
-StringAction="*res://addons/sooty_engine/autoloads/StringAction.gd"
-MusicManager="*res://addons/sooty_engine/autoloads/MusicManager.gd"
-SFXManager="*res://addons/sooty_engine/autoloads/SFXManager.gd"
-Dialogue="*res://addons/sooty_engine/autoloads/Dialogue.gd"
 
 [debug]
 

@@ -5,7 +5,7 @@ extends Node
 @export var scene_id := ""
 
 func _ready() -> void:
-	ModManager.loaded.connect(_recreate)
+	Sooty.mods.loaded.connect(_recreate)
 
 func _recreate():
 	UNode.remove_children(self)
@@ -14,7 +14,7 @@ func _recreate():
 		var node: Node = load("res://%s.tscn" % scene_id).instantiate()
 		add_child(node)
 	# otherwise use the built in dummy
-	elif SceneManager.has(scene_id):
-		SceneManager.create(scene_id, self)
+	elif Sooty.scenes.has(scene_id):
+		Sooty.scenes.create(scene_id, self)
 	else:
 		push_error("No scene '%s'." % scene_id)

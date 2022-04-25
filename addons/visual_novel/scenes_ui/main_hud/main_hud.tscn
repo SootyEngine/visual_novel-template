@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cothkje4x7xw8"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://addons/visual_novel/scenes/menus/main_hud.gd" id="1_lrka8"]
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/main_hud/main_hud.gd" id="1_lrka8"]
 [ext_resource type="Script" path="res://addons/visual_novel/nodes/SceneButton.gd" id="2_41atf"]
 
 [node name="main_hud" type="Control"]

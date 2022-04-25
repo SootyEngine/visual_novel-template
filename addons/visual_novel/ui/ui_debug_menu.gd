@@ -4,7 +4,7 @@ var debug_menu: Node
 
 func _ready() -> void:
 	visible = false
-	SaveManager.loaded.connect(_hide)
+	Sooty.mods.loaded.connect(_hide)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_debug") and VisualNovel.debug.allow_debug_menu:
@@ -15,8 +15,9 @@ func _input(event: InputEvent) -> void:
 
 func _hide():
 	visible = false
-	debug_menu.queue_free()
-	debug_menu = null
+	if debug_menu:
+		debug_menu.queue_free()
+		debug_menu = null
 	get_tree().paused = false
 
 func _show():

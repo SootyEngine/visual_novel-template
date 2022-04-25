@@ -9,7 +9,7 @@ func _ready():
 	$close.pressed.connect(_close)
 	
 #	await ModManager.loaded
-	inventory = State.characters[_inventory].inventory
+	inventory = Sooty.state.characters[_inventory].inventory
 	inventory.changed.connect(_update)
 	
 	_update()
@@ -25,15 +25,15 @@ func get_item_actions() -> Array:
 		out.append({text="Unequip", call=_unequip})
 		
 		var p := "/_inventory_item_worn/%s" % item.get_id()
-		if Dialogue.exists(p):
-			out.append({text="Use", call=Dialogue.start.bind(p)})
+		if Sooty.dialogue.has(p):
+			out.append({text="Use", call=Sooty.dialogue.start.bind(p)})
 	else:
 		if item.is_wearable():
 			out.append({text="Equip", call=_equip})
 	
 	var p := "/_inventory_item/%s" % item.get_id()
-	if Dialogue.exists(p):
-		out.append({text="Use", call=Dialogue.start.bind(p)})
+	if Sooty.dialogue.has(p):
+		out.append({text="Use", call=Sooty.dialogue.start.bind(p)})
 	
 	return out
 
@@ -55,8 +55,8 @@ func _on_description_item_action(action: String) -> void:
 		match action:
 			"use":
 				var goto := "/_inventory_item/%s" % selected_item.get_item().get_id()
-				if Dialogue.can_goto(goto):
-					Dialogue.start(goto)
+				if Sooty.dialogue.has(goto):
+					Sooty.dialogue.start(goto)
 			
 			"equip":
 				inventory.wear_from(selected_item)

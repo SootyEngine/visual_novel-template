@@ -8,17 +8,17 @@ extends Node
 @onready var subtask_list: RichTextLabel2 = get_node(_subtask_list)
 
 func _ready():
-	ModManager.loaded.connect(_reloaded)
+	Sooty.mods.loaded.connect(_reloaded)
 
 func _reloaded():
 	_redraw()
 
 func _redraw():
-	var all := DataManager.get_all(Goal)
-	var s_started := all.filter(func(x): return x.main and x.is_started)
-	var s_completed := all.filter(func(x): return x.main and x.is_completed)
-	var s_unlocked := all.filter(func(x): return x.main and x.is_unlocked)
-	var s_other := all.filter(func(x): return not x.main or (not x.is_started and not x.is_completed and not x.is_unlocked))
+	var all = Sooty.databases.get_all(Goal)
+	var s_started = all.filter(func(x): return x.main and x.is_started)
+	var s_completed = all.filter(func(x): return x.main and x.is_completed)
+	var s_unlocked = all.filter(func(x): return x.main and x.is_unlocked)
+	var s_other = all.filter(func(x): return not x.main or (not x.is_started and not x.is_completed and not x.is_unlocked))
 	
 	var text := ["[center;i]ALL[]"]
 	for part in [

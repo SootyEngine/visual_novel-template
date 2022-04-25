@@ -17,12 +17,12 @@ func _ready() -> void:
 	$VBoxContainer/HBoxContainer/show_type.toggled.connect(_toggle_show_type)
 	$VBoxContainer/HBoxContainer/hide_empty.toggled.connect(_hide_empty)
 	$VBoxContainer/HBoxContainer/filter.text_changed.connect(_filter_changed)
-	State.changed.connect(_changed)
-	Persistent.changed.connect(_changed)
-	ModManager.loaded.connect(_changed)
+	Sooty.state.changed.connect(_changed)
+	Sooty.persistent.changed.connect(_changed)
+	Sooty.mods.loaded.connect(_changed)
 
 func _force_reload():
-	ModManager._load_mods()
+	Sooty.mods.load_mods()
 
 func _toggle_persistent(t):
 	persistent = t
@@ -48,8 +48,8 @@ func _filter_changed(t: String):
 	_redraw()
 
 func _update():
-	var node = Persistent if persistent else State
-	var state := node._get_changed_states() if only_modified else node._get_state()
+	var node: Object = Sooty.persistent if persistent else Sooty.state
+	var state = node._get_changed_states() if only_modified else node._get_state()
 	if hide_empty:
 		state = UDict.trim_empty(state)
 	text = DataParser.dict_to_str(state, show_type)

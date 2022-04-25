@@ -3,6 +3,8 @@ extends Data
 class_name EquipmentSlot
 func get_class() -> String:
 	return "EquipmentSlot"
+func _get_database_id():
+	return "EquipmentSlot"
 
 var name := ""
 var desc := ""
@@ -25,4 +27,4 @@ func can_equip(item: Item) -> bool:
 	return false
 
 static func from_id(id: String) -> EquipmentSlot:
-	return DataManager.get_data(EquipmentSlot, id)
+	return Sooty.databases.get_data(EquipmentSlot, id)

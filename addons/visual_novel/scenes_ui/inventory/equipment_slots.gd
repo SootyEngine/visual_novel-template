@@ -3,9 +3,8 @@ extends Node
 signal item_selected(item: InventoryItem)
 
 func _ready():
-	await ModManager.loaded
-	Dialogue.started.connect(_dialogue_started)
-	Dialogue.ended.connect(_dialogue_ended)
+	Sooty.dialogue.started.connect(_dialogue_started)
+	Sooty.dialogue.ended.connect(_dialogue_ended)
 
 func _dialogue_started():
 	for child in get_children():
@@ -18,7 +17,7 @@ func _dialogue_ended():
 func _on_inventory_changed(inventory) -> void:
 	UNode.remove_children(self)
 	
-	var inv: Inventory = State.characters.mary.inventory
+	var inv: Inventory = Sooty.state.characters.mary.inventory
 	for item in inv.worn.values():
 		var btn: Button = load("res://addons/visual_novel/scenes_ui/inventory/prefabs/inventory_slot.tscn").instantiate()
 		btn.set_item.call_deferred(item)

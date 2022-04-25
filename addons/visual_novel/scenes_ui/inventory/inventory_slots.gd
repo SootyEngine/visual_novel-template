@@ -8,9 +8,8 @@ func _ready():
 		btn.pressed.connect(_pressed.bind(i))
 		btn.mouse_entered.connect(_mouse_entered.bind(i))
 	
-	await ModManager.loaded
-	Dialogue.started.connect(_dialogue_started)
-	Dialogue.ended.connect(_dialogue_ended)
+	Sooty.dialogue.started.connect(_dialogue_started)
+	Sooty.dialogue.ended.connect(_dialogue_ended)
 
 func _on_inventory_changed(inventory: Inventory) -> void:
 	for i in get_child_count():

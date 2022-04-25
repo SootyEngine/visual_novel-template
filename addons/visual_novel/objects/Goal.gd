@@ -3,6 +3,8 @@ extends Data
 class_name Goal, "res://addons/visual_novel/icons/goal.png"
 func get_class() -> String:
 	return "Goal"
+func _get_database_id():
+	return "Goal"
 
 const MSG_STATE_CHANGED := "MSG_GOAL_STATE_CHANGED"
 

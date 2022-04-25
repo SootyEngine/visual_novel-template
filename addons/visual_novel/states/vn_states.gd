@@ -7,31 +7,30 @@ var flow_visited := {}
 var choice_history := {}
 
 # captions
-var caption_at := "bottom"
-var caption_auto_clear := true
+var caption_at: String = "bottom"
+var caption_auto_clear: bool = true
 
 # common
-var time := DateTime.new({weekday="sat"})
-var start_time := 0 # seconds from DateTime
-var play_time := 0 # seconds from DateTime
-var _last_play_time := 0 # seconds
-var score := 0
+var time: DateTime = DateTime.new({weekday="sat"})
+var start_time: int = 0 # seconds from DateTime
+var play_time: int = 0 # seconds from DateTime
+var _last_play_time: int = 0 # seconds
+var score: int = 0
 
-const F_GAME_STARTED := "_main/game_started"
-const F_DIALOGUE_ENDED := "_main/dialogue_ended"
-const F_FLOW_ENDED := "_main/flow_ended"
+const F_GAME_STARTED: String = "_main/game_started"
+const F_DIALOGUE_ENDED: String = "_main/dialogue_ended"
+const F_FLOW_ENDED: String = "_main/flow_ended"
 
 func _ready() -> void:
-	StringAction.connect_methods(self, [advance_time, scene_id])
-	
-	Global.started.connect(_game_started)
-	Dialogue.started.connect(_dialogue_started)
-	Dialogue.ended.connect(_dialogue_ended)
-	Dialogue.flow_started.connect(_flow_started)
-	Dialogue.flow_ended.connect(_flow_ended)
-	Dialogue.selected.connect(_selected)
-	SaveManager.pre_save.connect(_pre_save)
-	SaveManager.loaded.connect(_loaded)
+	Sooty.started.connect(_game_started)
+	Sooty.actions.connect_methods(self, [advance_time])
+	Sooty.dialogue.started.connect(_dialogue_started)
+	Sooty.dialogue.ended.connect(_dialogue_ended)
+	Sooty.dialogue.flow_started.connect(_flow_started)
+	Sooty.dialogue.flow_ended.connect(_flow_ended)
+	Sooty.dialogue.selected.connect(_selected)
+	Sooty.saver.pre_save.connect(_pre_save)
+	Sooty.saver.loaded.connect(_loaded)
 	
 func _pre_save():
 	# update total time played
@@ -43,10 +42,10 @@ func _loaded():
 	_last_play_time = DateTime.create_from_current().get_total_seconds()
 
 func _game_started():
-	if Dialogue.has_path(F_GAME_STARTED):
+	if Sooty.dialogue.has_path(F_GAME_STARTED):
 		play_time = 0
 		_last_play_time = DateTime.create_from_current().get_total_seconds()
-		Dialogue.goto(F_GAME_STARTED)
+		Sooty.dialogue.goto(F_GAME_STARTED)
 	else:
 		push_error("There is no '%s' flow." % F_GAME_STARTED)
 
@@ -57,8 +56,8 @@ func _dialogue_started():
 	flow_history.clear()
 
 func _dialogue_ended():
-	if len(flow_history) and flow_history[-1] != F_DIALOGUE_ENDED and Dialogue.has_path(F_DIALOGUE_ENDED):
-		Dialogue.stack(F_DIALOGUE_ENDED)
+	if len(flow_history) and flow_history[-1] != F_DIALOGUE_ENDED and Sooty.dialogue.can_goto(F_DIALOGUE_ENDED):
+		Sooty.dialogue.stack(F_DIALOGUE_ENDED)
 
 func _flow_started(flow: String):
 	flow_history.append(flow)
@@ -67,23 +66,13 @@ func _flow_ended(flow: String):
 	# tick number of times visited
 	UDict.tick(flow_visited, flow)
 	# goto the ending node
-	if len(flow_history) and not flow_history[-1] in [F_DIALOGUE_ENDED, F_FLOW_ENDED] and Dialogue.has_path(F_FLOW_ENDED):
-		Dialogue.stack(F_FLOW_ENDED)
+	if len(flow_history) and not flow_history[-1] in [F_DIALOGUE_ENDED, F_FLOW_ENDED] and Sooty.dialogue.can_goto(F_FLOW_ENDED):
+		Sooty.dialogue.stack(F_FLOW_ENDED)
 
 # output a property in a formatted way
 func show(property: String) -> String:
 	# TODO: format
-	return "[b]%s[]" % State._get(property)
-
-# the current scen name
-func scene_id() -> String:
-	return VisualNovel.scene.scene_id if VisualNovel.scene else ""
-	
-#func caption(kwargs: Dictionary):
-#	if "at" in kwargs:
-#		State._set("caption_at", kwargs.at)
-#	if "clear" in kwargs:
-#		State._set("caption_auto_clear", kwargs.clear)
+	return "[b]%s[]" % Sooty.state._get(property)
 
 func stutter(x: String) -> String:
 	var parts := x.split(" ")
@@ -98,7 +87,7 @@ func commas(x: String) -> String:
 func humanize(x: String) -> String:
 	return UString.humanize(UObject.get_operator_value(x))
 
-func plural(x: String, one := "%s", more := "%s's", none := "%s's") -> String:
+func plural(x: String, one: String = "%s", more: String = "%s's", none: String = "%s's") -> String:
 	return UString.plural(UObject.get_operator_value(x), one, more, none)
 
 func ordinal(x: String) -> String:
@@ -116,7 +105,7 @@ func uppercase(x: String) -> String:
 # Cache the pick function so it doesn't give the same option too often.
 # Still random, just not as boring.
 var _pick_cache := {}
-func pick(x: Variant):
+func pick(x):
 	# if a dictionary? treat as weighted dict
 	if x is Dictionary:
 		return URand.pick_weighted(x)
@@ -134,8 +123,9 @@ func pick(x: Variant):
 	
 	return got
 
-func test(s: Variant, ontrue := "yes", onfalse := "no"):
+func test(s, ontrue: String = "yes", onfalse: String = "no"):
 	return ontrue if s else onfalse
 
 func advance_time(kwargs := {}):
 	time.advance(kwargs)
+

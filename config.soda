@@ -1,0 +1,28 @@
+rich_text_tags:
+	# Headings
+	h1: 120;b;light_green
+	h2: 140;b;light_green
+	h3: 160;b;light_green
+
+sooty:
+	# Print all the mods that were loaded and their files?
+	print_mods_loaded: false
+
+addons:
+	visual_novel: res://addons/visual_novel
+
+visual_novel:
+	# Show the text instantly without animations.
+	instant_text: true
+	# Show options that didn't pass their test.
+	show_hidden_options: true
+
+simple_os:
+	# Names of operating systems.
+	pc_os: Bindows
+	phone_os: Plumb
+	# Custom app names for the Operating System addon.
+	text_editor: Texty
+	image_viewer: Graphikon
+	video_player: Vidoo
+	console: Codex

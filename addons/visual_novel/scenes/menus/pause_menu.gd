@@ -16,7 +16,7 @@ func _init() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _ready():
-	SaveManager.loaded.connect(_hide)
+	Sooty.saver.loaded.connect(_hide)
 	
 	_hide()
 	save_load_screen.visible = false
@@ -34,8 +34,8 @@ func _ready():
 func _goto_main_menu():
 	# TODO: Are you sure?
 	_hide()
-	Global.end()
-	SceneManager.goto("main_menu")
+	Sooty.end()
+	Sooty.scenes.goto("main_menu")
 
 func _hide_screens():
 	for child in screen_parent.get_children():

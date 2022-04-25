@@ -13,7 +13,7 @@ func setup(info: Dictionary):
 	label.set_bbcode("[hide].[]")
 	
 	if "play" in info:
-		SFXManager.play(info.play)
+		Sooty.sound.play_sound(info.play)
 	
 	var time := 5.0
 	

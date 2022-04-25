@@ -35,12 +35,12 @@ func _text_submitted(t: String):
 	_set_input("")
 	
 	if t[0] in "~@$":
-		var got = StringAction.do(t)
+		var got = Sooty.actions.do(t)
 		add_line(LineType.RESULT, str(got))
 	else:
 		var parts = UString.split_outside(t, " ")
 		match parts[0]:
-			"list": _list(State._get_all_of_class(parts[1]))
+			"list": _list(Sooty.state._get_all_of_class(parts[1]))
 
 func _list(item):
 	if item is Dictionary:

@@ -19,7 +19,7 @@ extends BaseButton
 @export var _preview := ""
 
 func _pressed() -> void:
-	Dialogue.goto(_get_path())
+	Sooty.dialogue.try_start(_get_path())
 
 func _update_preview():
 	_preview = _get_path()

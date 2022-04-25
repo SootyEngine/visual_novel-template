@@ -10,7 +10,7 @@ extends Control
 @export var default_duration := 2.0
 
 func _init() -> void:
-	StringAction.connect_methods(self, [blur, unblur])
+	Sooty.actions.connect_methods(self, [blur, unblur])
 	amount = 0.0
 	visible = false
 

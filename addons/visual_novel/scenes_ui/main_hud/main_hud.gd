@@ -4,11 +4,10 @@ var _tween: Tween
 var _shown := true
 
 func _ready() -> void:
-	await ModManager.loaded
-	Dialogue.started.connect(_hide)
-	Dialogue.ended.connect(_show)
-	SceneManager.changed.connect(_scene_changed)
-	if Dialogue.is_active():
+	Sooty.dialogue.started.connect(_hide)
+	Sooty.dialogue.ended.connect(_show)
+	Sooty.scenes.changed.connect(_scene_changed)
+	if Sooty.dialogue.is_active():
 		_hide()
 
 func _scene_changed():

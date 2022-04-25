@@ -1,8 +1,7 @@
 extends Node
 
 func _ready() -> void:
-	await get_tree().process_frame
-	ModManager.loaded.connect(_redraw)
+	Sooty.mods.loaded.connect(_redraw)
 
 func _redraw():
 	var text := []
@@ -10,16 +9,16 @@ func _redraw():
 	
 	text.append("[b]MUSIC[]")
 	text.append("[meta stop_music]Stop[]")
-	meta["stop_music"] = MusicManager.stop()
+	meta["stop_music"] = Sooty.music.stop()
 	
-	for id in MusicManager._files:
+	for id in Sooty.music._files:
 		text.append("[meta music:%s]\t%s[]" % [id, id])
-		meta["music:"+id] = MusicManager.play.bind(id)
+		meta["music:"+id] = Sooty.music.play_music.bind(id)
 		
 	text.append("[b]SFX[]")
-	for id in SFXManager._files:
+	for id in Sooty.sound._files:
 		text.append("[meta sfx:%s]\t%s[]" % [id, id])
-		meta["sfx:"+id] = SFXManager.play.bind(id)
+		meta["sfx:"+id] = Sooty.sound.play_sound.bind(id)
 	
 	$RichTextLabel.set_bbcode("\n".join(text))
 	$RichTextLabel._meta = meta

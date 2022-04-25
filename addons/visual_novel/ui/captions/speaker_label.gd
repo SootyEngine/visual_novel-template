@@ -17,7 +17,7 @@ func _ready() -> void:
 	visible = false
 	
 	await get_tree().process_frame
-	StringAction.connect_methods(self, [speaker_label])
+	Sooty.actions.connect_methods(self, [speaker_label])
 	
 	if not Engine.is_editor_hint():
 		VisualNovel.caption_started.connect(_caption_started)

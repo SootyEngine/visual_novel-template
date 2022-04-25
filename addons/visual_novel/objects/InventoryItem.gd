@@ -1,5 +1,7 @@
 extends PatchableData
 class_name InventoryItem, "res://addons/visual_novel/icons/item.png"
+func _get_database_id():
+	return "InventoryItem"
 
 var id := "" # item type
 var sum := 0 # total
@@ -15,7 +17,7 @@ func is_worn() -> bool:
 	return worn_to != ""
 
 func get_item() -> Item:
-	return DataManager.get_data(Item, id)
+	return Sooty.databases.get_data(Item, id)
 
 func _get_state() -> Dictionary:
 	var out := {id=id, sum=sum}

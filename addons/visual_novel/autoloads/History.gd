@@ -12,7 +12,7 @@ enum { STEP_TEXT, STEP_CHOICE, STEP_STATE }
 func _ready() -> void:
 #	Dialogue.caption.connect(_caption)
 #	Dialogue.selected.connect(_option_selected)
-	State.changed_from_to.connect(_changed_from_to)
+	Sooty.state.changed_from_to.connect(_changed_from_to)
 	
 #func _caption(from: String, text: String, kwargs := {}):
 #	_push_step({

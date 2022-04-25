@@ -48,19 +48,20 @@ func _get_editor_buttons():
 			}]
 
 func _ready() -> void:
-	await get_tree().process_frame
-	StringAction.connect_as_node(self, "VisualNovel")
+	Sooty.actions.connect_as_node(self, "VisualNovel")
 	add_to_group("has_editor_buttons")
 	
-	ModManager._add_mod("res://addons/visual_novel", true)
-	SceneManager._goto = _goto_scene
-	SceneManager.changed.connect(_scene_changed)
-	Dialogue.caption.connect(_caption)
-	Dialogue.selected.connect(_selected)
-	Dialogue.started.connect(_dialogue_started)
-	Dialogue.ended.connect(_dialogue_ended)
-	State._changed.connect(_state_changed)
-	Persistent._changed.connect(_state_changed)
+	Sooty.mods._add_mod("res://addons/visual_novel", true)
+	Sooty.scenes._goto = _goto_scene
+	Sooty.scenes.changed.connect(_scene_changed)
+	Sooty.dialogue.caption.connect(_caption)
+	Sooty.dialogue.selected.connect(_selected)
+	Sooty.dialogue.started.connect(_dialogue_started)
+	Sooty.dialogue.ended.connect(_dialogue_ended)
+	Sooty.state._changed.connect(_state_changed)
+	Sooty.persistent._changed.connect(_state_changed)
+	
+	Sooty.mods.load_mods.call_deferred()
 
 func _get_scene_flow_path(path: String):
 	return "/%s/%s" % [scene.scene_id, path]
@@ -70,8 +71,8 @@ func _state_changed(property: String):
 	
 	if scene:
 		var flow_path: String = "/%s/_changed/%s" % [scene.scene_id, property]
-		if Dialogue.has_path(flow_path):
-			Dialogue.goto_and_return(flow_path)
+		if Sooty.dialogue.has(flow_path):
+			Sooty.dialogue.goto_and_return(flow_path)
 
 func _scene_changed():
 	if not get_tree().current_scene is Scene:
@@ -82,13 +83,11 @@ func _scene_changed():
 	
 	# execute the scene_init
 	var fi := _get_scene_flow_path("_init")
-	if Dialogue.has_path(fi):
-		Dialogue.execute(fi)
+	Sooty.dialogue.try_execute(fi)
 	
 	var fs := _get_scene_flow_path("_started")
 	# if dialogue is already running, add this to the end of the current flow
-	if not Dialogue.is_active():
-		Dialogue.start(fs)
+	Sooty.dialogue.try_start(fs)
 
 # an option was selected
 # tell ui nodes to react
@@ -107,9 +106,9 @@ func _input(event: InputEvent) -> void:
 	if is_showing_caption():
 		if event.is_action_pressed("advance"):
 			if is_waiting():
-				StringAction.do("@advance_caption")
+				Sooty.actions.do("@advance_caption")
 			else:
-				StringAction.do("@hide_caption")
+				Sooty.actions.do("@hide_caption")
 				unwait(self)
 		
 		# run input for captions
@@ -122,7 +121,7 @@ func is_showing_caption() -> bool:
 
 func _caption(text: String, line := {}):
 	# replace list patterns
-	text = Dialogue.replace_list_text(line.M.id, text)
+	text = Sooty.dialogue.replace_list_text(line.M.id, text)
 	
 	var info := DialogueTools.str_to_dialogue(text)
 	if info.from == DialogueTools.LAST_SPEAKER:
@@ -142,12 +141,12 @@ func _caption(text: String, line := {}):
 	caption_started.emit()
 
 static func get_speaker(from: String) -> String:
-	var db: Database = DataManager.get_database(Character)
+	var db: Database = Sooty.databases.get_database(Character)
 	var out = from
 	if db and db.has(from):
 		out = db.get(from)
-	elif State._has(from):
-		out = State._get(from)
+	elif Sooty.state._has(from):
+		out = Sooty.state._get(from)
 	return UString.get_string(out, "speaker_name")
 
 static func str_to_speaker(from: String) -> String:
@@ -172,10 +171,10 @@ static func str_to_speaker(from: String) -> String:
 	return from
 
 func _goto_scene(id: String, kwargs := {}):
-	if SceneManager.find(id):
+	if Sooty.scenes.find(id):
 		wait(self)
 		Fader.create(
-			SceneManager.change.bind(SceneManager.scenes[id]),
+			Sooty.scenes.change.bind(Sooty.scenes.scenes[id]),
 			unwait.bind(self))
 	else:
 		# Scene.find will push_error with more useful data.
@@ -193,12 +192,12 @@ func _dialogue_ended():
 	if something_changed:
 		something_changed = false
 		print("Autosaving")
-		SaveManager.save_slot("auto")
+		Sooty.saver.save_slot("auto")
 
 # causes the dialogue to pause
 func wait(node: Node):
 	if not node in waiting_for:
-		Dialogue.break_step()
+		Sooty.dialogue.break_step()
 		waiting_for.append(node)
 		waiting_changed.emit()
 
@@ -210,51 +209,8 @@ func unwait(node: Node):
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint():
-		if not is_waiting() and Dialogue.is_active():
-			Dialogue.step()
+		if not is_waiting() and Sooty.dialogue.is_active():
+			Sooty.dialogue.step()
 
 func is_waiting() -> bool:
 	return len(waiting_for) > 0
-
-#func format_text(text: String, has_speaker: bool) -> String:
-#	var out := ""
-#	var part_count := 0
-#	# when someone is speaking, use brakets to toggle 'predicate' mode.
-#	if has_speaker:
-#		var parts = UString.split_between(text, "(", ")")
-#		for p in parts:
-#			if not part_count == 0:
-#				out += "[w=%s]" % QUOTE_DELAY
-#			var whitespace = _get_whitespace_format(p)
-#			if UString.is_wrapped(p, '(', ')'):
-#				p = UString.unwrap(p, '(', ')').strip_edges()
-#				out += whitespace % FORMAT_PREDICATE % p
-#			else:
-#				p = p.strip_edges()
-#				p = UString.replace_between(p, '"', '"', _replace_inner_quotes)
-#				out += whitespace % FORMAT_QUOTE % QUOTES % p
-#			part_count += 1
-#	else:
-#		var parts = UString.split_between(text, "\"", "\"")
-#		for p in parts:
-#			if not part_count == 0:
-#				out += "[w=%s]" % QUOTE_DELAY
-#			var whitespace = _get_whitespace_format(p)
-#			if UString.is_wrapped(p, '"'):
-#				p = UString.unwrap(p, '"')
-#				p = UString.replace_between(p, "'", "'", _replace_inner_quotes)
-#				out += whitespace % FORMAT_QUOTE % QUOTES % p
-#			else:
-#				p = p.strip_edges()
-#				out += whitespace % FORMAT_PREDICATE % p
-#			part_count += 1
-#	return out
-
-#func _replace_inner_quotes(t: String) -> String:
-#	return FORMAT_INNER_QUOTE % INNER_QUOTES % t
-
-# get the left and right whitespace, as a format string.
-#func _get_whitespace_format(s: String):
-#	var l := len(s) - len(s.strip_edges(true, false))
-#	var r := len(s) - len(s.strip_edges(false, true))
-#	return s.substr(0, l) + "%s" + s.substr(len(s) - r)

@@ -15,8 +15,8 @@ var hovered := 0:
 func _ready() -> void:
 	visible = false
 	button_parent.remove_child(button_prefab)
-	Dialogue.reloaded.connect(_hide)
-	Dialogue.ended.connect(_hide)
+	Sooty.dialogue.reloaded.connect(_hide)
+	Sooty.dialogue.ended.connect(_hide)
 	VisualNovel.caption_started.connect(_caption_started)
 	VisualNovel.caption_ended.connect(_caption_ended)
 	VisualNovel.option_selected.connect(_caption_ended)
@@ -24,8 +24,8 @@ func _ready() -> void:
 func _caption_started():
 	var line: Dictionary = VisualNovel.current_line
 	
-	if Dialogue.line_has_options(line):
-		_options = Dialogue.line_get_options(line)
+	if Sooty.dialogue.line_has_options(line):
+		_options = Sooty.dialogue.line_get_options(line)
 		if not VisualNovel.debug.show_hidden_options:
 			_options = _options.filter(func(x): return x.passed)
 		
@@ -98,7 +98,7 @@ func _select(option: String):
 	get_tree().process_frame
 	_hide()
 	_can_select = false
-	Dialogue.select_option(option)
+	Sooty.dialogue.select_option(option)
 
 func _hide():
 	visible = false

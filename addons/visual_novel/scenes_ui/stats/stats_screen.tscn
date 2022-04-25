@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy4xps7q8mya0"]
+
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/stats/stats_screen.gd" id="1_lur7n"]
+
+[node name="stats_screen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( "1_lur7n" )
+_container = NodePath("stat_container")
+
+[node name="stat_container" type="VBoxContainer" parent="."]
+offset_right = 422.0
+offset_bottom = 123.0
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false

@@ -1,0 +1,97 @@
+[gd_scene load_steps=4 format=3 uid="uid://kb7i5wophdpd"]
+
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/stats/prefabs/stat_info.gd" id="1_x133u"]
+[ext_resource type="Texture2D" uid="uid://05k5g35bx38x" path="res://icon.png" id="2_7fc70"]
+[ext_resource type="Script" path="res://addons/rich_text/RichTextLabel2.gd" id="3_50uv4"]
+
+[node name="stat" type="HBoxContainer"]
+offset_right = 422.0
+offset_bottom = 123.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( "1_x133u" )
+
+[node name="icon" type="TextureRect" parent="."]
+minimum_size = Vector2(72, 72)
+offset_top = 25.0
+offset_right = 72.0
+offset_bottom = 97.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( "2_7fc70" )
+ignore_texture_size = true
+
+[node name="info" type="VBoxContainer" parent="."]
+offset_left = 76.0
+offset_right = 422.0
+offset_bottom = 123.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="info" type="RichTextLabel" parent="info"]
+offset_top = 21.0
+offset_right = 346.0
+offset_bottom = 71.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.25)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+fit_content_height = true
+script = ExtResource( "3_50uv4" )
+bbcode = "[h1]Stat[]
+Description."
+alignment = 1
+shadow = true
+outline_size = 4
+
+[node name="progress" type="HBoxContainer" parent="info"]
+offset_top = 75.0
+offset_right = 346.0
+offset_bottom = 102.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="progress" type="ProgressBar" parent="info/progress"]
+minimum_size = Vector2(0, 24)
+offset_top = 1.0
+offset_right = 282.0
+offset_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 20.0
+percent_visible = false
+
+[node name="level" type="RichTextLabel" parent="info/progress"]
+minimum_size = Vector2(60, 0)
+offset_left = 286.0
+offset_right = 346.0
+offset_bottom = 27.0
+theme_override_colors/font_outline_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.25)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/mono_font_size = 16
+theme_override_font_sizes/bold_italics_font_size = 16
+theme_override_font_sizes/italics_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+fit_content_height = true
+script = ExtResource( "3_50uv4" )
+bbcode = "[h1]1[;dim]/[]10"
+alignment = 1
+shadow = true
+outline_size = 4

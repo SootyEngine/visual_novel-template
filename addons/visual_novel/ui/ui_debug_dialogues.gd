@@ -1,9 +1,7 @@
 extends Node
 
 func _ready():
-	await ModManager.loaded
-	
-	Dialogue.step_started.connect(_redraw_stack)
+	Sooty.dialogue.step_started.connect(_redraw_stack)
 	VisualNovel.waiting_changed.connect(_redraw_halting)
 	$VBoxContainer/reload.pressed.connect(_reload)
 	
@@ -12,24 +10,24 @@ func _ready():
 	_redraw_halting()
 
 func _reload():
-	ModManager._load_mods()
+	Sooty.mods.load_mods()
 
 func _redraw_dialogues():
 	var text := []
 	var meta := {}
-	for d_id in Dialogue._flows:
-		var d: Dictionary = Dialogue._flows[d_id]
+	for d_id in Sooty.dialogue.flows:
+		var d: Dictionary = Sooty.dialogue.flows[d_id]
 		text.append("[b]%s[]" % [d_id])
 		for f_id in d.flows:
 			text.append("\t[meta %s]%s[]" % [f_id, f_id])
-			meta[f_id] = Dialogue.goto.bind(f_id)
+			meta[f_id] = Sooty.dialogue.start.bind(f_id)
 	$VBoxContainer/HBoxContainer/dialogues.set_bbcode("\n".join(text))
 	$VBoxContainer/HBoxContainer/dialogues._meta = meta
 
 func _redraw_stack():
 	var text := []
 	var meta := {}
-	for part in Dialogue._stack:
+	for part in Sooty.dialogue._stack:
 		text.append(str(part))
 #		var d: Dictionary = Dialogue.get_dialogue(part.d_id)
 #		for i in range(len(part.lines)):

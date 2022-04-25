@@ -7,7 +7,7 @@ extends Node
 
 func _ready() -> void:
 	$Button.pressed.connect(_ping)
-	Global.message.connect(_global_message)
+	Sooty.message.connect(_global_message)
 
 func _global_message(type, payload):
 	if type == "notification":
