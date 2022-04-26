@@ -1,107 +1,158 @@
-@tool
 extends Node
-
-const VERSION := "1.0"
-
-# for autocomplete
-func _get_group_action_info():
-	return {
-		"@:VisualNovel": {
-			"text": "Visual Novel v%s" % VERSION,
-			"tint": Color.ORANGE_RED,
-			"icon": preload("res://addons/visual_novel/icons/visual_novel.png")
-		}
-	}
 
 signal waiting_changed()
 signal caption_started()
+signal speaker_started()
 signal caption_ended()
+signal speaker_ended()
 signal option_selected()
 
-class Debug:
-	# when displaying dialogue options, do you want hidden ones to be shown?
-	var show_hidden_options := false
-	# toggle with q
-	var allow_debug_menu := true
+# flow state
+var history := [] # flow history
+var visited := {} # flow visit counts
+var choices := {} # choice counts
 
-var debug := Debug.new()
-var grammar := Grammar.new()
-var last_speaker: String
-var waiting_for := []
+# time
+var start_time: int = 0 # seconds from DateTime
+var play_time: int = 0 # seconds from DateTime
+var _last_play_time: int = 0 # seconds
 
-var caption := ""
-var speaker := ""
-var option := ""
-var current_line: Dictionary
-var scene: Scene
-var something_changed := false
+# if state changes during dialogue, trigger an autosave
+var _state_changed := false
 
-func version() -> String:
-	return VERSION
-
-func _get_editor_buttons():
-	if scene:
-		return [
-			{
-				text="Edit %s.soot" % scene.scene_id,
-				call=func(): print("Wow it worked.")
-			}]
+# current line info
+var _caption := ""
+var _speaker := ""
+var _option := ""
+var _current_line: Dictionary
+var _waiting_for := []
 
 func _ready() -> void:
-	Sooty.actions.connect_as_node(self, "VisualNovel")
-	add_to_group("has_editor_buttons")
-	
-	Sooty.mods._add_mod("res://addons/visual_novel", true)
-	Sooty.scenes._goto = _goto_scene
-	Sooty.scenes.changed.connect(_scene_changed)
-	Sooty.dialogue.caption.connect(_caption)
-	Sooty.dialogue.selected.connect(_selected)
-	Sooty.dialogue.started.connect(_dialogue_started)
-	Sooty.dialogue.ended.connect(_dialogue_ended)
-	Sooty.state._changed.connect(_state_changed)
-	Sooty.persistent._changed.connect(_state_changed)
-	
+	if not Engine.is_editor_hint():
+		Sooty.started.connect(_on_game_started)
+		Sooty.actions.connect_methods([goto_scene])
+		
+		Sooty.dialogue.started.connect(_on_dialogue_started)
+		Sooty.dialogue.ended.connect(_on_dialogue_ended)
+		Sooty.dialogue.flow_started.connect(_on_flow_started)
+		Sooty.dialogue.flow_ended.connect(_on_flow_ended)
+		Sooty.dialogue.selected.connect(_option_selected)
+		Sooty.dialogue.caption.connect(_on_caption)
+		
+		Sooty.state._changed.connect(_on_state_changed)
+		Sooty.persistent._changed.connect(_on_state_changed)
+		
+		Sooty.saver._get_state.connect(_save_state)
+		Sooty.saver._set_state.connect(_load_state)
+		
+		Sooty.scenes.changed.connect(_on_scene_changed)
+		
+		start_new_game.call_deferred()
+
+func start_new_game():
 	Sooty.mods.load_mods.call_deferred()
+	await Sooty.mods.loaded
+	Sooty.dialogue.start("_start")
 
-func _get_scene_flow_path(path: String):
-	return "/%s/%s" % [scene.scene_id, path]
+enum Transition { FADE_OUT, INSTANT }
+func goto_scene(id: String, transition: Transition = Transition.FADE_OUT, kwargs := {}):
+	if Sooty.scenes.find(id):
+		wait(self)
+		Fader.create(
+			Sooty.scenes.change.bind(Sooty.scenes.scenes[id]),
+			unwait.bind(self))
+	else:
+		# Scene.find will push_error with more useful data.
+		pass
 
-func _state_changed(property: String):
-	something_changed = true
-	
-	if scene:
-		var flow_path: String = "/%s/_changed/%s" % [scene.scene_id, property]
-		if Sooty.dialogue.has(flow_path):
-			Sooty.dialogue.goto_and_return(flow_path)
+func get_current_line() -> Dictionary:
+	return _current_line
 
-func _scene_changed():
-	if not get_tree().current_scene is Scene:
-		scene = null
-		return
-	
-	scene = get_tree().current_scene
-	
-	# execute the scene_init
-	var fi := _get_scene_flow_path("_init")
-	Sooty.dialogue.try_execute(fi)
-	
-	var fs := _get_scene_flow_path("_started")
-	# if dialogue is already running, add this to the end of the current flow
-	Sooty.dialogue.try_start(fs)
+func _on_scene_changed():
+	if Sooty.scenes.is_current_a_scene():
+		# execute the scene_init
+		Sooty.dialogue.try_execute(Flow.get_scene_path("_init"))
+		
+		# if dialogue is already running, add this to the end of the current flow
+		Sooty.dialogue.try_start(Flow.get_scene_path("_started"))
+
+func _save_state(state: Dictionary):
+	# update total time played
+	var current_seconds := DateTime.create_from_current().get_total_seconds()
+	play_time += (current_seconds - _last_play_time)
+	_last_play_time = play_time
+	state["VN"] = UObject.get_state(self)
+
+func _load_state(state: Dictionary):
+	_last_play_time = DateTime.create_from_current().get_total_seconds()
+
+func _on_state_changed(property: String):
+	_state_changed = true
+	Sooty.dialogue.try_start(Flow.get_scene_path("_changed/%s" % [property]))
 
 # an option was selected
 # tell ui nodes to react
-func _selected(id: String):
-	option = id
+func _option_selected(id: String):
+	_option = id
 	option_selected.emit()
+	UDict.tick(choices, id)
 
-func is_scene() -> bool:
-	return scene != null
+func is_showing_caption() -> bool:
+	return true if _current_line else false
+
+func _on_caption(text: String, line := {}):
+	# replace list patterns
+	text = Sooty.dialogue.replace_list_text(line.M.id, text)
+	
+	var info := DialogueTools.str_to_dialogue(text)
+	var has_speaker := true if _speaker else false
+	var had_caption := true if _caption else false
+	
+	_current_line = line
+	_speaker = str_to_speaker(info.from)
+	_caption = info.text
+	
+	# signal the next speaker, since nodes might not want to hide if it's the same speaker
+	if had_caption:
+		caption_ended.emit()
+	if has_speaker:
+		speaker_ended.emit()
+	
+	caption_started.emit(_caption)
+	
+	if _speaker:
+		speaker_started.emit(_speaker)
+
+func _on_game_started():
+	if Sooty.dialogue.try_start("_start"):
+		play_time = 0
+		_last_play_time = DateTime.create_from_current().get_total_seconds()
+	else:
+		push_error("There is no '%s' flow." % "_start")
+
+func _on_flow_started(flow: String):
+	history.append(flow)
+
+func _on_flow_ended(flow: String):
+	# tick number of times visited
+	UDict.tick(visited, flow)
+	# goto the ending node
+	if len(history) and not history[-1] in ["_dialogue_ended", "_flow_ended"]:
+		Sooty.dialogue.try_start("_flow_ended")
+
+func _process(delta: float) -> void:
+	if not Engine.is_editor_hint():
+		if not is_waiting() and Sooty.dialogue.is_active():
+			Sooty.dialogue.step()
 
 func _input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
 		set_process_input(false)
 		return
+	
+	for action in InputMap.get_actions():
+		if Input.is_action_just_pressed(action):
+			print("ACTION ", action)
 	
 	if is_showing_caption():
 		if event.is_action_pressed("advance"):
@@ -110,35 +161,64 @@ func _input(event: InputEvent) -> void:
 			else:
 				Sooty.actions.do("@hide_caption")
 				unwait(self)
-		
+				
 		# run input for captions
-		for node in waiting_for:
+		for node in _waiting_for:
 			if node.has_method("_vn_input"):
 				node._vn_input(event)
 
-func is_showing_caption() -> bool:
-	return true if current_line else false
+func _on_dialogue_started():
+	history.clear()
+	_state_changed = false
 
-func _caption(text: String, line := {}):
-	# replace list patterns
-	text = Sooty.dialogue.replace_list_text(line.M.id, text)
+func _on_dialogue_ended():
+	_current_line = {}
 	
-	var info := DialogueTools.str_to_dialogue(text)
-	if info.from == DialogueTools.LAST_SPEAKER:
-		info.from = last_speaker
-	elif info.from:
-		last_speaker = info.from
+	if _speaker:
+		_speaker = ""
+		speaker_ended.emit()
 	
-	var had_caption := true if line else false
-	
-	current_line = line
-	speaker = str_to_speaker(info.from)
-	caption = info.text
-	
-	# signal the next speaker, since nodes might not want to hide if it's the same speaker
-	if had_caption:
+	if _caption:
+		_caption = ""
 		caption_ended.emit()
-	caption_started.emit()
+	
+	# auto save if state changed
+	if _state_changed:
+		_state_changed = false
+		print("Autosaving")
+		Sooty.saver.save_slot("auto")
+	
+	if len(history) and history[-1] != "_dialogue_ended":
+		Sooty.dialogue.try_start("_dialogue_ended")
+
+# causes the dialogue to pause
+func wait(node: Node):
+	if not node in _waiting_for:
+		Sooty.dialogue.break_step()
+		_waiting_for.append(node)
+		waiting_changed.emit()
+
+# unpauses dialogue, when empty
+func unwait(node: Node):
+	if node in _waiting_for:
+		_waiting_for.erase(node)
+		waiting_changed.emit()
+
+func is_waiting() -> bool:
+	return len(_waiting_for) > 0
+
+func _get_method_info(method: String):
+	match method:
+		"goto_scene":
+			return {
+				args={
+					path={
+						# auto complete list of scenes
+						id=Sooty.scenes.get_all_ids,
+						icon=preload("res://addons/sooty_engine/icons/scene.png"),
+					}
+				}
+			}
 
 static func get_speaker(from: String) -> String:
 	var db: Database = Sooty.databases.get_database(Character)
@@ -169,48 +249,3 @@ static func str_to_speaker(from: String) -> String:
 			from = get_speaker(from)
 	
 	return from
-
-func _goto_scene(id: String, kwargs := {}):
-	if Sooty.scenes.find(id):
-		wait(self)
-		Fader.create(
-			Sooty.scenes.change.bind(Sooty.scenes.scenes[id]),
-			unwait.bind(self))
-	else:
-		# Scene.find will push_error with more useful data.
-		pass
-
-func _dialogue_started():
-	something_changed = false
-	
-func _dialogue_ended():
-	current_line = {}
-	speaker = ""
-	caption = ""
-	caption_ended.emit()
-
-	if something_changed:
-		something_changed = false
-		print("Autosaving")
-		Sooty.saver.save_slot("auto")
-
-# causes the dialogue to pause
-func wait(node: Node):
-	if not node in waiting_for:
-		Sooty.dialogue.break_step()
-		waiting_for.append(node)
-		waiting_changed.emit()
-
-# unpauses dialogue, when empty
-func unwait(node: Node):
-	if node in waiting_for:
-		waiting_for.erase(node)
-		waiting_changed.emit()
-
-func _process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		if not is_waiting() and Sooty.dialogue.is_active():
-			Sooty.dialogue.step()
-
-func is_waiting() -> bool:
-	return len(waiting_for) > 0

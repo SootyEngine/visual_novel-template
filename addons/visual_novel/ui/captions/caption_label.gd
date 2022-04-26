@@ -7,24 +7,23 @@ func _ready() -> void:
 	visible = false
 	
 	await get_tree().process_frame
-	Sooty.actions.connect_methods(self, [caption_label, advance_caption])
+	Sooty.actions.connect_methods([caption_label, advance_caption])
 	
-	if not Engine.is_editor_hint():
-		VisualNovel.caption_started.connect(_caption_started)
-		VisualNovel.caption_ended.connect(_caption_ended)
-		VisualNovel.option_selected.connect(_option_selected)
-		clear()
+	VisualNovel.caption_started.connect(_caption_started)
+	VisualNovel.caption_ended.connect(_caption_ended)
+	VisualNovel.option_selected.connect(_option_selected)
+	clear()
 
-func _caption_started():
+func _caption_started(caption: String):
 	if disabled:
 		return
 	
 	visible = true
 	VisualNovel.wait(self)
-	set_bbcode(VisualNovel.caption)
+	set_bbcode(caption)
 	
 	# skip text animation?
-	if Sooty.config.instant_text_animation:
+	if Sooty.config.skip_text_animation:
 		advance()
 
 func _caption_ended():

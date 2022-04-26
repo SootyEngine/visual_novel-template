@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d118gcdl1wkns"]
+[gd_scene load_steps=7 format=3 uid="uid://d118gcdl1wkns"]
 
 [ext_resource type="Script" path="res://addons/visual_novel/ui/saver/ui_save_slot.gd" id="1_vn5ea"]
 [ext_resource type="Script" path="res://addons/rich_text/RichTextLabel2.gd" id="3_aic4g"]
@@ -12,9 +12,14 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0.601562, 0.601562
 gradient = SubResource( "Gradient_g0bwb" )
 fill_to = Vector2(0, 1)
 
-[sub_resource type="Texture2D" id="Texture2D_3bbfe"]
-resource_local_to_scene = false
-resource_name = ""
+[sub_resource type="Gradient" id="Gradient_fokei"]
+colors = PackedColorArray(0.90625, 0.569824, 0.177518, 1, 0, 0.557249, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_s10je"]
+gradient = SubResource( "Gradient_fokei" )
+width = 16
+height = 16
+fill_from = Vector2(0, 1)
 
 [node name="save_slot" type="VBoxContainer"]
 minimum_size = Vector2(240, 160)
@@ -52,7 +57,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = SubResource( "Texture2D_3bbfe" )
+texture = SubResource( "GradientTexture2D_s10je" )
 stretch_mode = 6
 
 [node name="align" type="VBoxContainer" parent="Control"]

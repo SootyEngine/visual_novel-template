@@ -59,6 +59,11 @@ func _get_state():
 func _set_state(state: Dictionary):
 	base = state
 
-func _patch_manually_deferred(stat_id: String, value: Variant, sources: Array):
-	value = DataParser.patch_to_var(value, sources)
+func _patch_property(stat_id: String, value: Variant):
 	_set(stat_id, value)
+
+func get_string(property: String, for_what: String = "") -> String:
+	if property in base:
+		return Stat.from_id(property).value_to_string(base[property])
+	else:
+		return super.get_string(property, for_what)

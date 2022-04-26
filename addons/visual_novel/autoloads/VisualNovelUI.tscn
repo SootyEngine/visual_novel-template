@@ -101,6 +101,7 @@ scene_id = "menus/main_hud"
 [node name="pause_menu" type="CanvasLayer" parent="."]
 script = ExtResource( "7_8v3aq" )
 scene_id = "menus/pause_menu"
+action = "ui_cancel"
 
 [node name="notification" parent="." groups=["notification_manager"] instance=ExtResource( "4_sf4ru" )]
 prefab = ExtResource( "6_ep3a5" )

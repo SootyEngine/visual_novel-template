@@ -2,10 +2,12 @@
 extends Node
 
 var _shortcuts := {
-	inv="characters.p.inventory"
+	p="characters.player",
+	inv="characters.player.inventory"
 }
 
 # databases
+var time: DateTime = DateTime.new({weekday="sat"})
 var data := Database.new(Data) # misc data
 var traits := Database.new(Trait) # unchanging properties of characters, items, locations...
 var stats := Database.new(Stat) # like traits, but changeable.
@@ -15,14 +17,16 @@ var items := Database.new(Item)
 var characters := Database.new(Character, {
 	# always have a default character
 	# doesn't have to be used
-	p=Character.new({name="p"})
+	player=Character.new({name="player"})
 })
 var goals := Database.new(Goal)
 var locations := Database.new(Location)
 var equipment_slots := Database.new(EquipmentSlot)
 
 func _init() -> void:
-	Sooty.actions.connect_methods(self, [
+	Sooty.actions.connect_methods([
+		# time
+		advance_time,
 		# flags
 		has_flag, flag,
 		# goals
@@ -32,6 +36,21 @@ func _init() -> void:
 		# stats
 		gain_stat
 	])
+
+# output a property in a formatted way
+func show(property: String, for_what: String = "") -> String:
+	var path := property.split(".")
+	var obj = UObject.get_penultimate(Sooty.state, path)
+	if obj:
+		if obj.has_method("get_string"):
+			return obj.get_string(path[-1], for_what)
+		else:
+			return str(obj.get(path[-1]))
+	else:
+		return "<?%s?>" % [property]
+
+func advance_time(kwargs := {}):
+	time.advance(kwargs)
 
 # checks that a state flag is set, typicall a bool.
 func has_flag(flag: String) -> bool:

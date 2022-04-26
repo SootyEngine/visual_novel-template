@@ -17,3 +17,6 @@ func is_value_allowed(value: Variant) -> bool:
 
 static func from_id(id: String) -> Trait:
 	return Sooty.databases.get_data(Trait, id)
+
+func value_to_string(value: Variant) -> String:
+	return str(value)

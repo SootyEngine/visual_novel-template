@@ -6,7 +6,7 @@ var awards := Database.new(Award)
 var rewards := Database.new(Reward)
 
 func _init() -> void:
-	Sooty.actions.connect_methods(self, [
+	Sooty.actions.connect_methods([
 		has_award, gain_award,
 		has_reward, gain_reward
 	])

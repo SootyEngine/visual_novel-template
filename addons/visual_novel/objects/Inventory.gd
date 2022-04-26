@@ -12,8 +12,7 @@ signal unequipped(item: Item, slot: EquipmentSlot)
 var worn := {}
 var items := []
 
-func _patch_manually_deferred(key: String, value: Variant, sources: Array):
-	value = DataParser.patch_to_var(value, sources)
+func _patch_property_deferred(key: String, value: Variant):
 	if key == "items":
 		match typeof(value):
 			TYPE_DICTIONARY:

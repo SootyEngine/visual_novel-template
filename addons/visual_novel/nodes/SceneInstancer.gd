@@ -1,20 +1,18 @@
-extends Node
+extends CanvasLayer
 # Creates a scene as a child.
 # Updates when mods are loaded so a mod can replace it.
 
 @export var scene_id := ""
+@export var action := ""
 
-func _ready() -> void:
-	Sooty.mods.loaded.connect(_recreate)
-
-func _recreate():
-	UNode.remove_children(self)
-	# check if user has a replacement
-	if File.new().file_exists("res://%s.tscn" % scene_id):
-		var node: Node = load("res://%s.tscn" % scene_id).instantiate()
-		add_child(node)
-	# otherwise use the built in dummy
-	elif Sooty.scenes.has(scene_id):
-		Sooty.scenes.create(scene_id, self)
-	else:
-		push_error("No scene '%s'." % scene_id)
+func _input(event: InputEvent) -> void:
+	if action != "" and event.is_action_pressed(action):
+		if get_child_count():
+			get_child(0).queue_free()
+			visible = false
+		
+		elif VisualNovel.is_scene():
+			Sooty.scenes.show_ui(scene_id, self)
+			visible = true
+			
+		get_viewport().set_input_as_handled()

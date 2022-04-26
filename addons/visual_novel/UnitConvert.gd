@@ -2,34 +2,36 @@
 extends RefCounted
 class_name Unit
 
-enum Length { Inch, Foot, Centimeter, Meter, Kilometer, Mile }
+# TODO: These numbers are mostly Googled, and untested.
+
+enum Dist { Inch, Foot, Centimeter, Meter, Kilometer, Mile }
 enum Mass { Gram, Pound, Ounce, Kilogram, Ton }
+enum Temp { Celsius, Farenheit, Kelvin }
 
-# TODO: Better test these numbers
-
-const _LENGTH_FORMS := {
-	"in": Length.Inch,
-	"ft": Length.Foot,
-	"cm": Length.Centimeter,
-	"m": Length.Meter,
-	"km": Length.Kilometer,
-	"mi": Length.Mile
+const _DIST_FORMS := {
+	"in": Dist.Inch,
+	"ft": Dist.Foot,
+	"cm": Dist.Centimeter,
+	"m": Dist.Meter,
+	"km": Dist.Kilometer,
+	"mi": Dist.Mile
 }
 
 const _INCH := {
-	Length.Inch: 1.0,
-	Length.Foot: 0.0833333,
-	Length.Centimeter: 2.54,
-	Length.Kilometer: 2.54e-5,
-	Length.Mile: 1.57828e-5,
+	Dist.Centimeter: 2.54,
+	Dist.Inch: 1.0,
+	Dist.Foot: 0.0833333,
+	Dist.Mile: 1.57828e-5,
+	Dist.Kilometer: 2.54e-5,
 }
 
 const _FOOT := {
-	Length.Inch: 12.0,
-	Length.Foot: 1.0,
-	Length.Centimeter: 30.48,
-	Length.Kilometer: 0.0003048,
-	Length.Mile: 0.000189394,
+	Dist.Centimeter: 30.48,
+	Dist.Inch: 12.0,
+	Dist.Foot: 1.0,
+	Dist.Meter: 0.3048,
+	Dist.Kilometer: 0.0003048,
+	Dist.Mile: 0.000189394,
 }
 
 const _METER := {
@@ -56,12 +58,21 @@ const _MILE := {
 #	Mile: 0.000189394,
 }
 
+const _CENTIMETER := {
+	Dist.Inch: 0.393701,
+	Dist.Foot: 0.0328084,
+	Dist.Meter: 0.01,
+	Dist.Centimeter: 1.0,
+	Dist.Kilometer: 1e-5,
+	Dist.Mile: 6.21371e-6
+}
 const _LENGTH_CONVERT := {
-	Length.Inch: _INCH,
-	Length.Foot: _FOOT,
-	Length.Meter: _METER,
-	Length.Kilometer: _KILOMETER,
-	Length.Mile: _MILE,
+	Dist.Inch: _INCH,
+	Dist.Foot: _FOOT,
+	Dist.Meter: _METER,
+	Dist.Centimeter: _CENTIMETER,
+	Dist.Kilometer: _KILOMETER,
+	Dist.Mile: _MILE,
 }
 
 static func length(value: Variant, to: Variant, from: Variant = null) -> float:
@@ -72,7 +83,7 @@ static func length(value: Variant, to: Variant, from: Variant = null) -> float:
 			var feet = p[0]
 			var inches = "0" if not '"' in p[1] else p[1].split('"', true, 1)[0]
 			value = feet.to_float() * 12.0 + inches.to_float()
-			from = Length.Inch
+			from = Dist.Inch
 		# form: 0 unit
 		elif " " in value:
 			var p = value.split(" ", true, 1)
@@ -82,19 +93,28 @@ static func length(value: Variant, to: Variant, from: Variant = null) -> float:
 			push_error("Can't convert length '%s'." % [value])
 	
 	if to is String:
-		to = _from_form(_LENGTH_FORMS, from)
+		to = _from_form(_DIST_FORMS, from)
 	
 	if from == null:
-		push_error("Can't convert %s to %s: Unknown unit. Leaving unconverted." % [value, Length.keys()[to]])
+		push_error("Can't convert %s to %s: Unknown unit. Leaving unconverted." % [value, Dist.keys()[to]])
 		return value
 	
 	if from is String:
-		from = _from_form(_LENGTH_FORMS, from)
+		from = _from_form(_DIST_FORMS, from)
 	
 	if from == to:
 		return value
 	
-	return value * _LENGTH_CONVERT[from][to]
+	if from in _LENGTH_CONVERT:
+		if to in _LENGTH_CONVERT[from]:
+			return value * _LENGTH_CONVERT[from][to]
+		
+		else:
+			push_error("Can't convert from %s to %s." % [Dist.keys()[from], Dist.keys()[to]])
+			return 0.0
+	else:
+		push_error("Can't convert %s." % [Dist.keys()[from]])
+		return 0.0
 
 static func to_feet_and_inches(inches: float) -> String:
 	inches = ceil(inches)
@@ -102,11 +122,17 @@ static func to_feet_and_inches(inches: float) -> String:
 
 const _MASS_FORMS := {
 	"oz": Mass.Ounce,
+	"ozs": Mass.Ounce,
 	"lb": Mass.Pound,
+	"lbs": Mass.Pound,
 	"g": Mass.Gram,
+	"gs": Mass.Gram,
 	"kg": Mass.Kilogram,
+	"kgs": Mass.Kilogram,
 	"ton": Mass.Ton,
+	"tons": Mass.Ton
 }
+
 const _OUNCE := {
 	Mass.Ounce: 1.0,
 	Mass.Gram: 28.3495,
@@ -165,7 +191,7 @@ static func mass(value: Variant, to: Variant, from: Variant = null) -> float:
 		to = _from_form(_MASS_FORMS, to)
 	
 	if from == null:
-		push_error("Can't convert %s to %s: Unknown unit." % [value, Length.keys()[to]])
+		push_error("Can't convert %s to %s: Unknown unit." % [value, Dist.keys()[to]])
 		return 0.0
 	
 	if from is String:
@@ -187,3 +213,42 @@ static func mass(value: Variant, to: Variant, from: Variant = null) -> float:
 
 static func _from_form(d: Dictionary, form: String) -> int:
 	return d[form.trim_suffix(".")]
+
+const _TEMP_FORMS := {
+	"k": Temp.Kelvin,
+	"f": Temp.Farenheit,
+	"c": Temp.Celsius,
+}
+
+static func temp(value: Variant, to: Variant, from: Variant = null) -> float:
+	if value is String:
+		# form: 0 unit
+		if " " in value:
+			var p = value.split(" ", true, 1)
+			value = p[0].to_float()
+			from = p[1]
+		else:
+			push_error("Can't convert temp '%s'." % [value])
+			return 0.0
+	
+	if to is String:
+		to = _from_form(_TEMP_FORMS, to)
+	
+	if from == null:
+		push_error("Can't convert %s to %s: Unknown unit." % [value, Temp.keys()[to]])
+		return 0.0
+	
+	if from is String:
+		from = _from_form(_TEMP_FORMS, from)
+	
+	if from == to:
+		return value
+	
+	match [from, to]:
+		[Temp.Celsius, Temp.Farenheit]: return value * 1.8 + 32.0
+		[Temp.Celsius, Temp.Kelvin]: return value + 273.15
+		[Temp.Farenheit, Temp.Celsius]: return (value - 32.0) / 1.8
+		[Temp.Farenheit, Temp.Kelvin]: return 5.0 * (value - 32.0) / 9.0 + 273.15
+		[Temp.Kelvin, Temp.Celsius]: return value - 273.15
+		[Temp.Kelvin, Temp.Farenheit]: return value * 1.8 - 459.67
+		_: return 0.0

@@ -21,12 +21,12 @@ func _ready() -> void:
 	VisualNovel.caption_ended.connect(_caption_ended)
 	VisualNovel.option_selected.connect(_caption_ended)
 
-func _caption_started():
-	var line: Dictionary = VisualNovel.current_line
+func _caption_started(_caption: String):
+	var line: Dictionary = VisualNovel.get_current_line()
 	
 	if Sooty.dialogue.line_has_options(line):
 		_options = Sooty.dialogue.line_get_options(line)
-		if not VisualNovel.debug.show_hidden_options:
+		if not Sooty.config.show_hidden_options:
 			_options = _options.filter(func(x): return x.passed)
 		
 		visible = true

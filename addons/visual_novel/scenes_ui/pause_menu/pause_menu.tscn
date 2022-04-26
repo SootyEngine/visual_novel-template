@@ -1,12 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://crc7mfjdgtmdu"]
+[gd_scene load_steps=6 format=3 uid="uid://b827ax4krgodj"]
 
-[ext_resource type="Script" path="res://addons/visual_novel/scenes/menus/pause_menu.gd" id="1_udiu2"]
-[ext_resource type="Shader" path="res://addons/visual_novel/screen_effects/blur/blur.gdshader" id="2_g01dm"]
-[ext_resource type="PackedScene" uid="uid://bxkconmuncr0c" path="res://addons/visual_novel/ui/settings/ui_settings.tscn" id="3_mstfr"]
-[ext_resource type="PackedScene" uid="uid://3kiavxcgtsmg" path="res://addons/visual_novel/ui/saver/ui_save_load.tscn" id="4_0dlk1"]
+[ext_resource type="Script" path="res://addons/visual_novel/scenes_ui/pause_menu/pause_menu.gd" id="1_s6vwv"]
+[ext_resource type="Shader" path="res://addons/visual_novel/screen_effects/blur/blur.gdshader" id="2_etdkf"]
+[ext_resource type="PackedScene" path="res://addons/visual_novel/ui/settings/ui_settings.tscn" id="3_fw35d"]
+[ext_resource type="PackedScene" path="res://addons/visual_novel/ui/saver/ui_save_load.tscn" id="4_ic0al"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w3ekw"]
-shader = ExtResource( "2_g01dm" )
+shader = ExtResource( "2_etdkf" )
 shader_param/amount = 1.0
 shader_param/power = 1.0
 
@@ -15,7 +15,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( "1_udiu2" )
+script = ExtResource( "1_s6vwv" )
 _buttons = NodePath("MarginContainer/HBoxContainer/items")
 _screen_parent = NodePath("MarginContainer/HBoxContainer/Control")
 _save_load_screen = NodePath("MarginContainer/HBoxContainer/Control/save_load")
@@ -93,7 +93,7 @@ size_flags_vertical = 3
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_left = 32
 
-[node name="settings" parent="MarginContainer/HBoxContainer/Control" instance=ExtResource( "3_mstfr" )]
+[node name="settings" parent="MarginContainer/HBoxContainer/Control" instance=ExtResource( "3_fw35d" )]
 visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -101,7 +101,7 @@ offset_left = 32.0
 offset_right = 876.0
 offset_bottom = 600.0
 
-[node name="save_load" parent="MarginContainer/HBoxContainer/Control" instance=ExtResource( "4_0dlk1" )]
+[node name="save_load" parent="MarginContainer/HBoxContainer/Control" instance=ExtResource( "4_ic0al" )]
 visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0

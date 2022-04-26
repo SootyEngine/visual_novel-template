@@ -7,7 +7,7 @@ func _ready() -> void:
 	Sooty.mods.loaded.connect(_hide)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("toggle_debug") and VisualNovel.debug.allow_debug_menu:
+	if event.is_action_pressed("toggle_debug") and Sooty.config.allow_debug_menu:
 		if debug_menu:
 			_hide()
 		else:

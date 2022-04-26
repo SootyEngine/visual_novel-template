@@ -55,15 +55,6 @@ func _show_load_screen():
 	save_load_screen.visible = true
 	save_load_screen.save_mode = false
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		if visible:
-			_hide()
-		elif VisualNovel.is_scene():
-			_show()
-			
-		get_viewport().set_input_as_handled()
-
 func _hide():
 	if visible:
 		visible = false

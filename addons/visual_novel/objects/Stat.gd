@@ -12,3 +12,6 @@ var max: int = 1
 
 static func from_id(id: String) -> Stat:
 	return Sooty.databases.get_data(Stat, id)
+
+func value_to_string(value: Variant) -> String:
+	return str(value)

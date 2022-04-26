@@ -9,6 +9,6 @@ func get_value(value: Variant) -> Variant:
 	# store data as inches
 	return Unit.mass(value, Unit.Mass.Gram)
 
-func get_string(value: Variant, for_what := "") -> String:
+func value_to_string(value: Variant) -> String:
 	# convert to `0 lb` format.
 	return "%s lb" % Unit.mass(value, Unit.Length.Pound, Unit.Mass.Gram)
